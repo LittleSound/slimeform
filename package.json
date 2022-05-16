@@ -1,9 +1,19 @@
 {
-  "name": "ts-lib-starter",
+  "name": "slimeform",
   "version": "0.0.0",
   "type": "module",
-  "description": "boilerplate for your next TypeScript library",
+  "description": "Form state management and validation for Vue3",
   "main": "dist/index.cjs",
+  "author": {
+    "name": "Ayaka Rizumu",
+    "url": "https://github.com/LittleSound"
+  },
+  "keywords": [
+    "vue3",
+    "form",
+    "utilities-library",
+    "vue3-typescript"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
