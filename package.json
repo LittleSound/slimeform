@@ -1,0 +1,62 @@
+{
+  "name": "ts-lib-starter",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "boilerplate for your next TypeScript library",
+  "main": "dist/index.cjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "format": "dprint fmt",
+    "lint": "run-p lint:*",
+    "lint:format": "dprint check",
+    "lint:types": "tsc",
+    "lint:js": "eslint .",
+    "prepare": "husky install",
+    "prepublishOnly": "pnpm build",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.29",
+    "@typescript-eslint/eslint-plugin": "5.21.0",
+    "@typescript-eslint/parser": "5.21.0",
+    "dprint": "0.27.0",
+    "eslint": "8.14.0",
+    "eslint-config-prettier": "8.5.0",
+    "husky": "7.0.4",
+    "nano-staged": "0.8.0",
+    "npm-run-all": "4.1.5",
+    "tsup": "5.12.6",
+    "typescript": "4.6.3",
+    "vite": "2.9.6",
+    "vitest": "0.10.0"
+  },
+  "sideEffects": false,
+  "nano-staged": {
+    "*.{js,ts,md,json,yaml}": "dprint fmt"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "dts": {
+      "resolve": true
+    },
+    "splitting": true,
+    "clean": true
+  }
+}
