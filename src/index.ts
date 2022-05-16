@@ -138,6 +138,7 @@ function initStatus<FormT extends {}>(
       if (stopEffect) {
         return
       }
+
       // monitor changes
       stopEffect = watchEffect(verify)
     }
@@ -160,6 +161,7 @@ function initStatus<FormT extends {}>(
       if (!fri) {
         return true
       }
+
       // Functions or arrays of functions are allowed
       const fieldRules = typeof fri === 'function' ? [fri] : fri
 

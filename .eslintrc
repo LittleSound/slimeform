@@ -15,5 +15,15 @@
     "react/no-unescaped-entities": "off",
     "no-restricted-syntax": "off",
     "no-void": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.md", "**/*.md/*.*"],
+      "rules": {
+        "curly": "off",
+        "vue/html-self-closing": "off",
+        "vue/singleline-html-element-content-newline": "off"
+      }
+    }
+  ]
 }
