@@ -2,3 +2,6 @@ dist
 public
 node_modules
 node_modules/
+.vscode
+.github
+package.json

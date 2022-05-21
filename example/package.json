@@ -5,7 +5,6 @@
     "build": "vite build",
     "dev": "vite --port 3333 --open",
     "lint": "eslint .",
-    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest"
   },

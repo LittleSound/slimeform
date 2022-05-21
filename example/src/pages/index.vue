@@ -15,7 +15,7 @@ const go = () => {
     </div>
     <p text-2xl>
       <a rel="noreferrer" href="https://github.com/LittleSound/slimeform" target="_blank">
-        Slimeform
+        SlimeForm
       </a>
     </p>
     <p>

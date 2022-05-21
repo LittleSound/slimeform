@@ -26,17 +26,24 @@
     "dist"
   ],
   "scripts": {
+    "dev": "run-p build && run-p example",
     "example": "vite example",
-    "build": "tsup",
-    "format": "dprint fmt",
+    "build": "run-p build:tsup && run-p build:example",
+    "build:tsup": "tsup src/index.ts --format esm,cjs --dts",
+    "build:example": "vite build example",
+    "preview": "vite preview example --port 8080",
+    "format": "eslint . --fix",
     "lint": "run-p lint:*",
     "lint:example": "eslint ./example",
-    "lint:format": "dprint check",
+    "lint:format": "eslint .",
     "lint:types": "tsc",
-    "lint:js": "eslint .",
     "prepare": "husky install",
     "prepublishOnly": "pnpm build",
+    "clear": "rm -rf dist example/dist",
     "test": "vitest"
+  },
+  "dependencies": {
+    "@vueuse/shared": "^8.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.23.1",
@@ -46,8 +53,6 @@
     "@vitejs/plugin-vue-jsx": "^1.3.10",
     "@vue/test-utils": "2.0.0-rc.21",
     "@vue/tsconfig": "^0.1.3",
-    "@vueuse/shared": "^8.5.0",
-    "dprint": "0.27.0",
     "eslint": "8.14.0",
     "husky": "7.0.4",
     "jsdom": "^19.0.0",
@@ -68,7 +73,7 @@
   },
   "sideEffects": false,
   "nano-staged": {
-    "*.{js,ts,md,json,yaml}": "dprint fmt"
+    "*.{js,ts,md,json,yaml}": "eslint . --fix"
   },
   "tsup": {
     "entry": [

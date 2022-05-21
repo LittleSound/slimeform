@@ -1,11 +1,11 @@
 /// <reference types="vitest" />
 
-import Vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { fileURLToPath } from 'url'
+import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 import Pages from 'vite-plugin-pages'
 
@@ -15,6 +15,7 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
       'root': fileURLToPath(new URL('./..', import.meta.url)),
     },
+    dedupe: ['vue'],
   },
   plugins: [
     Vue({
