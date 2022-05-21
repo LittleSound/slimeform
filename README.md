@@ -1,4 +1,10 @@
-# useForm
+<br>
+
+<h1 align="center">SlimeForm</h1>
+<p align="center">English | <a href="./README.zh-Hans.md">简体中文</a></p>
+
+<br>
+
 
 Form state management and validation
 
@@ -21,7 +27,7 @@ const { form, status, reset } = useForm({
 
 // whether the username has been modified
 status.username.isDirty
-// whether the username has been modified
+// whether the password has been modified
 status.password.isDirty
 
 // Reset form, restore form values to default
