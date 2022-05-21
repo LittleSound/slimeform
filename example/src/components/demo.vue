@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useForm } from 'root/src'
+import { useForm } from 'slimeform'
 
 const { form, status, reset, onSubmit, clearErrors } = useForm({
   // Initial form value
@@ -23,24 +23,39 @@ function mySubmit() {
 </script>
 
 <template>
-  <h3>Please enter your age</h3>
+  <h3 mb-4>
+    Please enter your age
+  </h3>
 
   <form @submit.prevent="onSubmit(mySubmit)">
     <label>
-      <input v-model="form.age" type="text" :class="status.age.isError && '!border-red'">
+      <input
+        v-model="form.age"
+        placeholder="What's your age?"
+        type="text"
+        autocomplete="false"
+        p="x-4 y-2"
+        w="250px"
+        text="center"
+        bg="transparent"
+        border="~ rounded gray-200 dark:gray-700"
+        outline="none active:none"
+        :class="status.age.isError && '!border-red'"
+      >
       <p class="text-red !mb-0 !mt-1 text-sm">{{ status.age.message || '&nbsp;' }}</p>
     </label>
+    <div space-x-3 mt-1>
+      <button class="text-sm btn" type="submit">
+        Submit
+      </button>
 
-    <button type="submit">
-      Submit
-    </button>
+      <button class="text-sm btn" type="button" @click="clearErrors">
+        Clear Errors
+      </button>
 
-    <button type="button" @click="clearErrors">
-      Clear Errors
-    </button>
-
-    <button type="button" @click="reset">
-      Reset
-    </button>
+      <button class="text-sm btn" type="button" @click="reset">
+        Reset
+      </button>
+    </div>
   </form>
 </template>

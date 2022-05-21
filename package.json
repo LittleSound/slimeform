@@ -30,6 +30,7 @@
     "build": "tsup",
     "format": "dprint fmt",
     "lint": "run-p lint:*",
+    "lint:example": "eslint ./example",
     "lint:format": "dprint check",
     "lint:types": "tsc",
     "lint:js": "eslint .",
@@ -61,6 +62,9 @@
   },
   "peerDependencies": {
     "vue": ">=3"
+  },
+  "eslintConfig": {
+    "extends": "@antfu"
   },
   "sideEffects": false,
   "nano-staged": {
