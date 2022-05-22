@@ -12,11 +12,11 @@
 <br>
 
 
-Form state management and validation
+表单状态管理和数值校验
 
-## Usage
+## 使用方式
 
-### Form state management
+### 表单状态管理
 
 将 `form` 用 `v-model` 绑定到 `<input>` 或是其他组件。
 值改变时 `status` 会产生对应的变化；使用 reset 方法重置表单的值到初始状态。
