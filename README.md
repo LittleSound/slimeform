@@ -11,8 +11,17 @@
 
 <br>
 
-
 Form state management and validation
+
+## TODO
+
+- [x] Improve the functionalities
+  - [x] Use reactive type to return the form
+  - [x] For a single rule, the array can be omitted
+  - [x] Mark whether the value of the form has been modified
+- [x] Unit tests
+- [x] Documentations
+- [x] Better type definations for Typescript
 
 ## Install
 
@@ -167,3 +176,4 @@ Some suggestions:
   </form>
 </template>
 ```
+

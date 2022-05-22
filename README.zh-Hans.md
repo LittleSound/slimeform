@@ -11,8 +11,34 @@
 
 <br>
 
-
 表单状态管理和数值校验
+
+## 由来
+
+在 Vue 项目中，我们经常会使用各种预制的表单组件，它可能是自己编写的，或者来自第三方 UI 库，对于第三方 UI 库而言，它们可能有自己的表单校验器，而自己的组件则需要自己编写表单校验器，很多时候这些表单的校验器是不统一的，特别是当你在项目中混合使用第三方 UI 库 和自己的组件时，将它们结合在一起会十分困难。
+
+基于现代 css 工具类和组件化，编写自己风格的 `<input>` 组件并将它们组合成表单十分容易，然而涉及到整合所有 Input 的表单状态管理和规则校验时问题就变得复杂起来了。
+
+因此我开始实验一个解决方案用于满足这一需求，并将其取名为 SlimeForm，含义为像史莱姆一样嵌入并粘粘所有表单 💗。
+
+SlimeForm 是一个**无组件**、**无内置规则**的表单状态管理器和验证器，通过 `v-model` 绑定所有的原生或自定义组件，并响应式的管理以及验证它们。
+
+## 待办事项
+
+- [x] 改进功能
+  - [x] 使用 `reactive` 类型返回表单
+  - [x] 对于单个规则，可以省略数组
+  - [x] 使用 `status[key].isDirty` 标记表单的值是否被修改
+- [x] 文档
+- [x] 更好的Typescript类型定义
+- [ ] 单元测试
+
+- [ ] 添加对  `object` 类型字段的支持
+- [ ] 添加对异步规则的支持
+- [ ] 支持过滤器，例如过滤未修改的条目，只留下已经修改的条目进行提交
+- [ ] 💡 更多的点子
+
+**欢迎贡献**
 
 ## 安装
 
@@ -31,7 +57,10 @@ npm i slimeform
 将 `form` 用 `v-model` 绑定到 `<input>` 或是其他组件。
 值改变时 `status` 会产生对应的变化；使用 reset 方法重置表单的值到初始状态。
 
-```ts
+```vue
+<script setup>
+import { useForm } from 'slimeform'
+
 const { form, status, reset } = useForm({
   // 初始的 form 值
   form: () => ({
@@ -39,6 +68,23 @@ const { form, status, reset } = useForm({
     password: '',
   }),
 })
+</script>
+
+<template>
+  <form @submit.prevent="mySubmit">
+    <label>
+      <!-- 这里 -->
+      <input v-model="form.username" type="text">
+      <input v-model="form.password" type="text">
+    </label>
+    <button type="submit">提交</button>
+  </form>
+</template>
+```
+#### 状态管理
+
+```ts
+const { form, status, reset } = useForm(/* ... */)
 
 // username 是否已经被修改
 status.username.isDirty
@@ -48,6 +94,7 @@ status.password.isDirty
 // 重置表单, 恢复到初始状态
 reset()
 ```
+
 ### 可变的初始 form 值
 
 `useForm` 的表单初始值可以其它变量或 pinia 的状态，初始值的改变将在表单重置时同步到 `form` 对象中
@@ -165,3 +212,6 @@ reset()
   </form>
 </template>
 ```
+
+
+
