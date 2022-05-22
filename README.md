@@ -14,6 +14,16 @@
 
 Form state management and validation
 
+## Install
+
+> ⚗️ **Experimental**
+
+```
+npm i slimeform
+```
+
+> SlimeForm only works for Vue 3
+
 ## Usage
 
 ### Form state management
