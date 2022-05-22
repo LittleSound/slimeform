@@ -26,10 +26,11 @@
     "dist"
   ],
   "scripts": {
-    "dev": "run-p build && run-p example",
-    "example": "vite example",
+    "dev": "run-p dev:*",
+    "dev:tsup": "tsup --watch",
+    "dev:example": "vite example",
     "build": "run-p build:tsup && run-p build:example",
-    "build:tsup": "tsup src/index.ts --format esm,cjs --dts",
+    "build:tsup": "tsup",
     "build:example": "vite build example",
     "preview": "vite preview example --port 8080",
     "format": "eslint . --fix",
