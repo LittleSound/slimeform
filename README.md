@@ -21,7 +21,7 @@ Base on modern CSS utilities class and component-based design, it has now become
 
 So I started to experiment a solution to achieve this kind of functionalities, and naming it with SlimeForm, which means this utilities would try it best to fit in the forms just like the slime does 💙.
 
-SlimeForm is a form state management and validator which is **dependency free**, **internal validation rules free**. By binding all native or custom components through `v-model`, SlimeForm is able to manage and validate values reactively.
+SlimeForm is a form state management and validator which is **dependency free**, **no internal validation rules shipped and required**. By binding all native or custom components through `v-model`, SlimeForm is able to manage and validate values reactively.
 
 ## TODO
 
