@@ -1,4 +1,10 @@
 <br>
+<br>
+<br>
+
+<p align="center">
+  <img height="80px" src="https://github.com/LittleSound/slimeform/raw/main/example/public/favicon.svg">
+</p>
 
 <h1 align="center">SlimeForm</h1>
 <p align="center">English | <a href="./README.zh-Hans.md">简体中文</a></p>
