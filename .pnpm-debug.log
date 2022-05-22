@@ -1,0 +1,22 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 error pnpm": {
+    "code": "ELIFECYCLE",
+    "errno": "ENOENT",
+    "syscall": "spawn",
+    "file": "sh",
+    "pkgid": "slimeform@0.0.0",
+    "stage": "dev",
+    "script": "run-p dev:*",
+    "pkgname": "slimeform",
+    "err": {
+      "name": "pnpm",
+      "message": "slimeform@0.0.0 dev: `run-p dev:*`\nspawn ENOENT",
+      "code": "ELIFECYCLE",
+      "stack": "pnpm: slimeform@0.0.0 dev: `run-p dev:*`\nspawn ENOENT\n    at ChildProcess.<anonymous> (/Users/rizumu/Library/pnpm/global/5/.pnpm/pnpm@7.1.1/node_modules/pnpm/dist/pnpm.cjs:93455:22)\n    at ChildProcess.emit (node:events:526:28)\n    at maybeClose (node:internal/child_process:1092:16)\n    at Process.ChildProcess._handle.onexit (node:internal/child_process:302:5)"
+    }
+  },
+  "2 warn pnpm:global": " Local package.json exists, but node_modules missing, did you mean to install?"
+}

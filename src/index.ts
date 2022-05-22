@@ -95,7 +95,8 @@ export function useForm<FormT extends {}>(param: {
           status[key]._ignoreUpdate(() => {
             form[key] = (initialForm.value as any)[key] as any
           })
-        } else {
+        }
+        else {
           delete form[key]
         }
       }
@@ -111,9 +112,8 @@ function initStatus<FormT extends {}>(
   formRule?: UseFormRule<FormT>,
 ) {
   for (const key in formObj) {
-    if (!hasOwn(formObj, key)) {
+    if (!hasOwn(formObj, key))
       continue
-    }
 
     /** Used to stop watchEffect */
     let stopEffect: WatchStopHandle | null = null
@@ -135,9 +135,8 @@ function initStatus<FormT extends {}>(
     // Initialization rule check
     function init() {
       // Determine if it has been initialized
-      if (stopEffect) {
+      if (stopEffect)
         return
-      }
 
       // monitor changes
       stopEffect = watchEffect(verify)
@@ -158,9 +157,8 @@ function initStatus<FormT extends {}>(
 
     function verify() {
       const fri: RuleItem | RuleItem[] = (formRule as any)?.[key]
-      if (!fri) {
+      if (!fri)
         return true
-      }
 
       // Functions or arrays of functions are allowed
       const fieldRules = typeof fri === 'function' ? [fri] : fri

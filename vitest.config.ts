@@ -1,7 +1,4 @@
-/// <reference types="vitest" />
-
-import path from 'path'
-import { fileURLToPath } from 'url'
+import path, { resolve } from 'path'
 import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -13,9 +10,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
-      'root': fileURLToPath(new URL('./..', import.meta.url)),
+      'slimeform': resolve(__dirname, 'src/index.ts'),
     },
-    dedupe: ['vue'],
+    dedupe: [
+      'vue',
+    ],
   },
   plugins: [
     Vue({
