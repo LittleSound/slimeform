@@ -13,15 +13,25 @@
 
 Form state management and validation
 
+## Why?
+
+We usually use all sorts of different pre-made form components in vue projects which may be written by ourselves, or come from other third-party UI libraries. As for those third-party UI libraries, they might shipped their own form validators with libraries, however we still will need to build our form validators for those components written by us. In most of the time, those form validators were not 'unified' or we say compatible to the others, especially when you mixed your own components with third-party components together in one project where thing might become tricky.
+
+Base on modern CSS utilities class and component-based design, it has now become way more easier to write your own `<input>` component in specific style and assemble them as a form, however, when you need to integrate form state management and rule validation with all the related input fields, the problem will be more complex.
+
 ## TODO
 
 - [x] Improve the functionalities
   - [x] Use reactive type to return the form
   - [x] For a single rule, the array can be omitted
   - [x] Mark whether the value of the form has been modified
-- [x] Unit tests
 - [x] Documentations
-- [x] Better type definations for Typescript
+- [x] Better type definitions for Typescript
+- [ ] Unit tests
+- [ ] Add support to fields with `object` type
+- [ ] Add support to async rule validation
+- [ ] Support filter, such as filter out the unmodified fields, left only modified fields for form submission
+- [ ] 💡 More ideas...
 
 ## Install
 
@@ -31,7 +41,7 @@ Form state management and validation
 npm i slimeform
 ```
 
-> SlimeForm only works for Vue 3
+> SlimeForm only works with Vue 3
 
 ## Usage
 
@@ -41,7 +51,10 @@ Use `v-model` to bind `form[key]` on to the `<input>` element or other component
 
 `status` value will be changed corresponded when the form values have been modified. Use the `reset` function to reset the form values back to its initial states.
 
-```ts
+```vue
+<script setup>
+import { useForm } from 'slimeform'
+
 const { form, status, reset } = useForm({
   // Initial form value
   form: () => ({
@@ -49,6 +62,24 @@ const { form, status, reset } = useForm({
     password: '',
   }),
 })
+</script>
+
+<template>
+  <form @submit.prevent="mySubmit">
+    <label>
+      <!-- here -->
+      <input v-model="form.username" type="text">
+      <input v-model="form.password" type="text">
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+#### State management
+
+```ts
+const { form, status, reset } = useForm(/* ... */)
 
 // whether the username has been modified
 status.username.isDirty
@@ -74,7 +105,7 @@ const { form, reset } = useForm({
 })
 
 // update the value of username and intro properties
-userStore.setInfo() /** xxx info */
+userStore.setInfo(/* ... */)
 // changes made to the `userStore` will be synced into the `form` object,
 // when reset is being called
 reset()
