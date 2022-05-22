@@ -7,7 +7,7 @@
 </p>
 
 <h1 align="center">SlimeForm</h1>
-<p align="center">English | <a href="./README.zh-Hans.md">简体中文</a></p>
+<p align="center">English | <a href="https://github.com/LittleSound/slimeform/blob/HEAD/README.zh-Hans.md">简体中文</a></p>
 
 <br>
 
