@@ -2,6 +2,10 @@
 
 No unreleased changes.
 
+## 0.1.1
+
+No unreleased changes.
+
 ## 0.1.0
 
 - 🍱 为 README.md 及其多语言版本添加图标 (#3)
