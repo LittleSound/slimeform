@@ -67,11 +67,11 @@ const { form, status, reset } = useForm({
 <template>
   <form @submit.prevent="mySubmit">
     <label>
-      <!-- 这里 -->
+      <!-- here -->
       <input v-model="form.username" type="text">
       <input v-model="form.password" type="text">
     </label>
-    <button type="submit">提交</button>
+    <button type="submit">Submit</button>
   </form>
 </template>
 ```
@@ -105,7 +105,7 @@ const { form, reset } = useForm({
 })
 
 // update the value of username and intro properties
-userStore.setInfo() /** xxx info */
+userStore.setInfo(/* ... */)
 // changes made to the `userStore` will be synced into the `form` object,
 // when reset is being called
 reset()

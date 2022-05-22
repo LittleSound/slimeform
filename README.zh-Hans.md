@@ -109,7 +109,7 @@ const { form, reset } = useForm({
 })
 
 // 假设我们调用 setInfo 函数更新了 username 和 intro 的值
-userStore.setInfo() /** xxx info */
+userStore.setInfo(/* ... */)
 // 在调用 reset 时，对 `userStore` 所做的更改将同步到 `form` 对象中
 reset()
 
@@ -131,7 +131,7 @@ function isRequired(value) {
     return true
   }
 
-  return t('required') // i18n support
+  return t('required') // i18n 支持
 }
 
 const { form, status, onSubmit, clearErrors } = useForm({
