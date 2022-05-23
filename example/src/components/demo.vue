@@ -45,16 +45,20 @@ function mySubmit() {
       <p class="text-red !mb-0 !mt-1 text-sm">{{ status.age.message || '&nbsp;' }}</p>
     </label>
     <div space-x-3 mt-1>
-      <button class="text-sm btn" type="submit">
+      <button text-sm btn type="submit">
         Submit
       </button>
 
-      <button class="text-sm btn" type="button" @click="clearErrors">
+      <button text-sm btn type="button" @click="clearErrors">
         Clear Errors
       </button>
 
-      <button class="text-sm btn" type="button" @click="reset">
+      <button text-sm btn type="button" @click="reset">
         Reset
+      </button>
+
+      <button text-sm btn bg-red hover="bg-red-600" type="button" @click="status.age.setError('Manual error!', true)">
+        Set Error
       </button>
     </div>
   </form>
