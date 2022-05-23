@@ -139,7 +139,7 @@ function initStatus<FormT extends {}>(
         return
 
       // monitor changes
-      stopEffect = watchEffect(verify)
+      stopEffect = watchEffect(ruleEffect)
     }
 
     function setError(message: string, isError = true) {
@@ -155,7 +155,7 @@ function initStatus<FormT extends {}>(
       setError('', false)
     }
 
-    function verify() {
+    function ruleEffect() {
       const fri: RuleItem | RuleItem[] = (formRule as any)?.[key]
       if (!fri)
         return true
@@ -177,6 +177,10 @@ function initStatus<FormT extends {}>(
           setError('', false)
         }
       }
+    }
+
+    function verify() {
+      ruleEffect()
       return !status[key].isError
     }
   }
