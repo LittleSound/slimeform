@@ -5,3 +5,4 @@ node_modules/
 .vscode
 .github
 package.json
+tsconfig.json
