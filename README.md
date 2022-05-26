@@ -31,10 +31,11 @@ SlimeForm is a form state management and validator which is **dependency free**,
   - [x] Mark whether the value of the form has been modified
 - [x] Documentations
 - [x] Better type definitions for Typescript
-- [ ] Unit tests
+- [x] Unit tests
 - [ ] Add support to fields with `object` type
 - [ ] Add support to async rule validation
 - [ ] Support filter, such as filter out the unmodified fields, left only modified fields for form submission
+- [ ] Support for third-party rules, such as [yup](https://github.com/jquense/yup)
 - [ ] 💡 More ideas...
 
 **Contributions are welcomed**

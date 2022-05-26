@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
     Counter: typeof import('./src/components/Counter.vue')['default']
     Demo: typeof import('./src/components/demo.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
+    NativeInput: typeof import('./src/components/NativeInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
