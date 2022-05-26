@@ -41,7 +41,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
 
 ## Try it online
 
-[🚀 slimeform-playground](https://stackblitz.com/edit/vitejs-vite-4eppne?file=package.json,src%2FApp.vue,src%2Fcomponents%2FHeader.vue,src%2Fcomponents%2FDemo.vue&terminal=dev)
+🚀 [slimeform-playground](https://stackblitz.com/edit/vitejs-vite-4eppne?file=package.json,src%2FApp.vue,src%2Fcomponents%2FHeader.vue,src%2Fcomponents%2FDemo.vue&terminal=dev)
 
 ## Install
 
