@@ -37,6 +37,10 @@ SlimeForm is a form state management and validator which is **dependency free**,
 - [ ] Support filter, such as filter out the unmodified fields, left only modified fields for form submission
 - [ ] 💡 More ideas...
 
+## Try it online
+
+[🚀 slimeform-playground](https://stackblitz.com/edit/vitejs-vite-4eppne?file=package.json,src%2FApp.vue,src%2Fcomponents%2FHeader.vue,src%2Fcomponents%2FDemo.vue&terminal=dev)
+
 ## Install
 
 > ⚗️ **Experimental**
