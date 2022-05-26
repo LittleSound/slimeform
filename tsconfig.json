@@ -9,19 +9,12 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "isolatedModules": true
-  },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "dist"],
-  "references": [
-    {
-      "path": "./tsconfig.vite-config.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
+    "isolatedModules": true,
+    "paths": {
+      "~/*": ["./example/src/*"],
+      "root/*": ["./*"]
     }
-  ]
+  },
+  "include": ["src/**/*", "test/**/*", "packages/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
