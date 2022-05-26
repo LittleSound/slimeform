@@ -39,6 +39,10 @@ SlimeForm 是一个**无组件**、**无内置规则**的表单状态管理器�
 
 **欢迎贡献**
 
+## 在线尝试
+
+🚀 [slimeform-playground](https://stackblitz.com/edit/vitejs-vite-4eppne?file=package.json,src%2FApp.vue,src%2Fcomponents%2FHeader.vue,src%2Fcomponents%2FDemo.vue&terminal=dev)
+
 ## 安装
 
 > ⚗️ **实验性**
