@@ -1,8 +1,9 @@
-import { isFunction, watchIgnorable } from '@vueuse/shared'
+import { invoke, isFunction, watchIgnorable } from '@vueuse/shared'
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
 import type { RuleItem, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
+import { deepEqual } from './util/deepEqual'
 import { isHasOwn } from './util/is'
 
 export function initStatus<FormT extends {}>(
@@ -15,11 +16,17 @@ export function initStatus<FormT extends {}>(
     if (!isHasOwn(formObj, key))
       continue
 
+    // Functions or arrays of functions are allowed
+    const fieldRules = invoke(() => {
+      const formRuleItem = formRule?.[key] as RuleItem | RuleItem[] | undefined
+      return isFunction(formRuleItem) ? [formRuleItem] : formRuleItem
+    })
+
     status[key] = reactive({
       message: '',
       isError: false,
-      isDirty: computed(() => formObj[key] !== (initialForm.value as any)[key]),
-      ...statusControl(key, status, formObj, formRule),
+      isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
+      ...statusControl(key, status, formObj, fieldRules),
     })
   }
 }
@@ -28,7 +35,7 @@ function statusControl<FormT extends {}>(
   key: keyof UnwrapNestedRefs<FormT>,
   status: Record<PropertyKey, StatusItem>,
   formObj: UnwrapNestedRefs<FormT>,
-  formRule: UseFormRule<FormT> | undefined,
+  fieldRules: RuleItem<any>[] | undefined,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
@@ -36,13 +43,6 @@ function statusControl<FormT extends {}>(
   }
 
   function ruleEffect() {
-    const formRuleItem = (formRule as any)?.[key] as RuleItem | RuleItem[]
-    if (!formRuleItem)
-      return true
-
-    // Functions or arrays of functions are allowed
-    const fieldRules = isFunction(formRuleItem) ? [formRuleItem] : formRuleItem
-
     // Traverse the ruleset and check the rules
     for (const rule of fieldRules || []) {
       const result = rule(formObj[key])
@@ -65,7 +65,7 @@ function statusControl<FormT extends {}>(
   // Initialization rule check
   const init = () => {
     // Determine if it has been initialized
-    if (stopEffect)
+    if (!fieldRules || stopEffect)
       return
 
     // monitor changes
