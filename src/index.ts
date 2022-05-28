@@ -1,48 +1,9 @@
-import type { IgnoredUpdater } from '@vueuse/shared'
-import { watchIgnorable } from '@vueuse/shared'
-import { computed, reactive, readonly, ref, watchEffect } from 'vue'
-import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
-
-type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
-interface StatusItem {
-  isError: boolean
-  /** Error message */
-  message: string
-  /** Field is modified */
-  isDirty: boolean
-  /** Manual verify */
-  verify: () => boolean
-  init: () => void
-  setError: (message: string, isError?: boolean) => void
-  clearError: () => void
-
-  _ignoreUpdate: IgnoredUpdater
-}
-type FormStatus<FormT extends {}> = {
-  readonly [K in keyof FormT]: StatusItem
-}
-
-export type UseFormBuilder<Form extends {} = {}> = () => Form
-export type UseFormRule<FormT extends {}> = {
-  readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
-}
-
-export interface UseFormReturn<FormT> {
-  /** form object */
-  form: UnwrapNestedRefs<FormT>
-  /** Form status */
-  status: FormStatus<FormT>
-  /** Manual verify */
-  verify: () => boolean
-  clearErrors: () => void
-  /** Reset form  */
-  reset: () => void
-  /**
-   * Submit form
-   * Verify before submitting, and execute callback if passed
-   */
-  onSubmit: (callback: () => any) => any
-}
+import { reactive, readonly, ref } from 'vue'
+import type { Ref, UnwrapNestedRefs } from 'vue'
+import { isHasOwn } from './util/is'
+import { initStatus } from './defineStatus'
+import type { StatusItem } from './type/formStatus'
+import type { UseFormBuilder, UseFormReturn, UseFormRule } from './type/form'
 
 /**
  *  Form state management and rule validation
@@ -67,13 +28,17 @@ export function useForm<FormT extends {}>(param: {
   return {
     form,
     status: readonly(status) as any,
-    verify,
-    clearErrors,
-    reset,
-    onSubmit: (callback: () => any) => verify() ? callback() : null,
+    ...createControl(formBuilder, initialForm, form, status),
   }
+}
 
-  function verify() {
+function createControl<FormT extends {}>(
+  formBuilder: UseFormBuilder<FormT>,
+  initialForm: Ref<FormT>,
+  form: FormT | UnwrapNestedRefs<FormT>,
+  status: Record<PropertyKey, StatusItem>,
+) {
+  const verify = () => {
     let isPass = true
     Object.keys(status).forEach((key) => {
       isPass = isPass && status[key].verify()
@@ -81,17 +46,17 @@ export function useForm<FormT extends {}>(param: {
     return isPass
   }
 
-  function clearErrors() {
+  const clearErrors = () => {
     Object.keys(status).forEach((key) => {
       status[key].clearError()
     })
   }
 
-  function reset() {
+  const reset = () => {
     initialForm.value = formBuilder()
     for (const key in form) {
-      if (hasOwn(form, key)) {
-        if (hasOwn(initialForm.value, key)) {
+      if (isHasOwn(form, key)) {
+        if (isHasOwn(initialForm.value, key)) {
           status[key]._ignoreUpdate(() => {
             form[key] = (initialForm.value as any)[key] as any
           })
@@ -103,89 +68,13 @@ export function useForm<FormT extends {}>(param: {
     }
     clearErrors()
   }
-}
 
-function initStatus<FormT extends {}>(
-  status: Record<PropertyKey, StatusItem>,
-  formObj: UnwrapNestedRefs<FormT>,
-  initialForm: Ref<FormT>,
-  formRule?: UseFormRule<FormT>,
-) {
-  for (const key in formObj) {
-    if (!hasOwn(formObj, key))
-      continue
+  const onSubmit = (callback: () => unknown) => verify() ? callback() : null
 
-    /** Used to stop watchEffect */
-    let stopEffect: WatchStopHandle | null = null
-
-    // Begin validation when user input
-    const { ignoreUpdates } = watchIgnorable(() => formObj[key], init)
-
-    status[key] = reactive({
-      message: '',
-      isError: false,
-      isDirty: computed(() => formObj[key] !== (initialForm.value as any)[key]),
-      verify,
-      setError,
-      clearError,
-      init,
-      _ignoreUpdate: ignoreUpdates,
-    })
-
-    // Initialization rule check
-    function init() {
-      // Determine if it has been initialized
-      if (stopEffect)
-        return
-
-      // monitor changes
-      stopEffect = watchEffect(ruleEffect)
-    }
-
-    function setError(message: string, isError = true) {
-      status[key].message = message
-      status[key].isError = isError
-    }
-
-    function clearError() {
-      if (stopEffect) {
-        stopEffect()
-        stopEffect = null
-      }
-      setError('', false)
-    }
-
-    function ruleEffect() {
-      const fri: RuleItem | RuleItem[] = (formRule as any)?.[key]
-      if (!fri)
-        return true
-
-      // Functions or arrays of functions are allowed
-      const fieldRules = typeof fri === 'function' ? [fri] : fri
-
-      // Traverse the ruleset and check the rules
-      for (const rule of fieldRules || []) {
-        const result = rule(formObj[key])
-
-        // result as string or falsity
-        // Exit validation on error
-        if (!result || typeof result === 'string') {
-          setError(result || '')
-          break
-        } // no errors
-        else {
-          setError('', false)
-        }
-      }
-    }
-
-    function verify() {
-      ruleEffect()
-      return !status[key].isError
-    }
+  return {
+    verify,
+    clearErrors,
+    reset,
+    onSubmit,
   }
-}
-
-function hasOwn<T extends {}>(object: T, key: PropertyKey): key is keyof T {
-  return Object.prototype.hasOwnProperty.call(object, key)
 }
