@@ -6,11 +6,15 @@ const { form, status } = useForm({
     textInput: '',
     isChecked: false,
     selected: ['A'],
+    file: null as File | null,
   }),
   rule: {
     selected: [
       val => !!val.includes('A') || 'A must be selected',
       val => val.length < 3 || 'Select at most two',
+    ],
+    file: [
+      val => !!val || 'Required',
     ],
   },
 })
@@ -76,6 +80,34 @@ const { form, status } = useForm({
             <p>isDirty: {{ status.selected.isDirty }}</p>
             <p>isError: {{ status.selected.isError }}</p>
             <p>message: {{ status.selected.message || 'none' }}</p>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div>
+      <h3 text-xl mb-1>
+        Input File
+      </h3>
+      <label>
+        <div space-x-4>
+          <input
+            :change="form.file"
+
+            type="file"
+
+            p="x-4 y-2"
+            w="250px"
+            text="center"
+            bg="transparent"
+            border="~ rounded gray-200 dark:gray-700"
+            outline="none active:none"
+          >
+          <div>
+            <p>Selected: {{ form.file?.name }}</p>
+            <p>isDirty: {{ status.file.isDirty }}</p>
+            <p>isError: {{ status.file.isError }}</p>
+            <p>message: {{ status.file.message || 'none' }}</p>
           </div>
         </div>
       </label>
