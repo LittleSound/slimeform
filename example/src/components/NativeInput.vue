@@ -6,18 +6,23 @@ const { form, status } = useForm({
     textInput: '',
     isChecked: false,
     selected: ['A'],
-    file: null as File | null,
+    files: [] as File[],
   }),
   rule: {
     selected: [
       val => !!val.includes('A') || 'A must be selected',
       val => val.length < 3 || 'Select at most two',
     ],
-    file: [
-      val => !!val || 'Required',
+    files: [
+      val => !!val.length || 'Required',
     ],
   },
 })
+
+function onChangeFile(payload: Event) {
+  const target = payload.target as HTMLInputElement
+  form.files = Array.from(target.files || [])
+}
 </script>
 
 <template>
@@ -92,22 +97,23 @@ const { form, status } = useForm({
       <label>
         <div space-x-4>
           <input
-            :change="form.file"
-
             type="file"
 
             p="x-4 y-2"
+
             w="250px"
             text="center"
             bg="transparent"
             border="~ rounded gray-200 dark:gray-700"
             outline="none active:none"
+
+            @change="onChangeFile"
           >
           <div>
-            <p>Selected: {{ form.file?.name }}</p>
-            <p>isDirty: {{ status.file.isDirty }}</p>
-            <p>isError: {{ status.file.isError }}</p>
-            <p>message: {{ status.file.message || 'none' }}</p>
+            <p>Selected: {{ form.files[0]?.name }}</p>
+            <p>isDirty: {{ status.files.isDirty }}</p>
+            <p>isError: {{ status.files.isError }}</p>
+            <p>message: {{ status.files.message || 'none' }}</p>
           </div>
         </div>
       </label>

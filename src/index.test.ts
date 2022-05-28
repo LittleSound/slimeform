@@ -288,3 +288,54 @@ describe('useForm', () => {
     wrapper.unmount()
   })
 })
+
+describe('object type field', () => {
+  it('should work', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status } = useForm({
+        form: () => ({
+          arr: [] as string[],
+          obj: null as unknown,
+        }),
+        rule: {
+          arr: [
+            val => !!val.length || 'required',
+            val => !!val.includes('A') || 'A must be selected',
+          ],
+          obj: [
+            val => !!(val as any)?.b?.c || 'need a',
+          ],
+        },
+      })
+      return { form, status }
+    })
+
+    wrapper.form.arr = []
+    expect(wrapper.status.arr.isDirty).false
+    await nextTick()
+    expect(wrapper.status.arr.isError).true
+    expect(wrapper.status.arr.message).toBe('required')
+
+    wrapper.form.arr.push('B')
+    expect(wrapper.status.arr.isDirty).true
+    await nextTick()
+    expect(wrapper.status.arr.isError).true
+    expect(wrapper.status.arr.message).toBe('A must be selected')
+
+    wrapper.form.arr.push('A')
+    await nextTick()
+    expect(wrapper.status.arr.isError).false
+    expect(wrapper.status.arr.message).toBe('')
+
+    wrapper.form.obj = { a: 1, b: { c: 2 } }
+    expect(wrapper.status.obj.isDirty).true
+    await nextTick()
+    expect(wrapper.status.obj.isError).false
+    expect(wrapper.status.obj.message).toBe('')
+
+    ;(wrapper.form.obj as any).b.c = undefined
+    await nextTick()
+    expect(wrapper.status.obj.isError).true
+    expect(wrapper.status.obj.message).toBe('need a')
+  })
+})
