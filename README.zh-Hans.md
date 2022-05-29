@@ -155,7 +155,7 @@ dirtyFields.value /* value: { intro: 'abcd' } */
 // 编辑用户简介为默认值
 userInfo.intro /* default value */
 
-= dirtyFields.value /* value: {} */
+dirtyFields.value /* value: {} */
 ```
 
 ### 表单规则校验
