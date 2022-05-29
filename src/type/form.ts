@@ -1,4 +1,4 @@
-import type { ComputedRef, UnwrapNestedRefs } from 'vue'
+import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
 
 export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
@@ -14,7 +14,7 @@ export interface UseFormReturn<FormT> {
   /** Form status */
   status: FormStatus<FormT>
 
-  dirtyFields: ComputedRef<Partial<FormT>>
+  dirtyFields: ComputedRef<DeepReadonly<UnwrapNestedRefs<Partial<FormT>>>>
 
   /** Manual verify */
   verify: () => boolean

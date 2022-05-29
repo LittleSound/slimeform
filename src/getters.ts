@@ -1,5 +1,5 @@
 import type { UnwrapNestedRefs } from 'vue'
-import { computed } from 'vue'
+import { computed, readonly } from 'vue'
 import type { StatusItem } from './type/formStatus'
 import { isHasOwn } from './util/is'
 
@@ -14,6 +14,6 @@ export function useDirtyFields<FormT extends {}>(
       if (status[key].isDirty && isHasOwn(form, key))
         (fields as any)[key] = form[key]
     }
-    return fields
+    return readonly(fields)
   })
 }
