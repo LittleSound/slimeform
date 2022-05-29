@@ -240,7 +240,7 @@ describe('useForm', () => {
   // 表单重置功能
   it('reset the form', async () => {
     // Increments by one for each call
-    const counter = ((i = 0) => () => i++)()
+    const [counter, add] = ((i = 0) => [() => i, () => i++])()
 
     const wrapper = useSetup(() => {
       const { form, status, reset } = useForm({
@@ -271,6 +271,7 @@ describe('useForm', () => {
     expect(wrapper.status.age.isError).true
     expect(wrapper.status.age.message).toBe('expect numbers')
 
+    add()
     wrapper.reset()
 
     await nextTick()
@@ -337,5 +338,71 @@ describe('object type field', () => {
     await nextTick()
     expect(wrapper.status.obj.isError).true
     expect(wrapper.status.obj.message).toBe('need a')
+  })
+
+  it('deep effect', async () => {
+    const wr = useSetup(() => {
+      const { form, status } = useForm({
+        form: () => ({
+          arr: [{
+            a: {
+              b: 1,
+            },
+          }],
+          obj: {
+            a: {
+              b: 1,
+            },
+          },
+        }),
+        rule: {
+          arr: [
+            val => !!val.length || 'required',
+            val => !val.filter(item => item.a.b !== 1).length || 'need 1',
+          ],
+          obj: [
+            val => !!val?.a.b || 'need truthy',
+          ],
+        },
+      })
+      return { form, status }
+    })
+
+    expect(wr.status.arr.isDirty).false
+    expect(wr.status.obj.isDirty).false
+
+    // Array
+    wr.form.arr.push({ a: { b: 2 } })
+    expect(wr.status.arr.isDirty).true
+    expect(wr.status.obj.isDirty).false
+    await nextTick()
+    expect(wr.status.arr.isError).true
+    expect(wr.status.arr.message).toBe('need 1')
+    expect(wr.status.obj.isError).false
+    expect(wr.status.obj.message).toBe('')
+
+    wr.form.arr.pop()
+    expect(wr.status.arr.isDirty).false
+    await nextTick()
+    expect(wr.status.arr.isError).false
+    expect(wr.status.arr.message).toBe('')
+
+    wr.form.arr.pop()
+    expect(wr.status.arr.isDirty).true
+    await nextTick()
+    expect(wr.status.arr.isError).true
+    expect(wr.status.arr.message).toBe('required')
+
+    // Object
+    wr.form.obj.a.b = 2
+    expect(wr.status.obj.isDirty).true
+    await nextTick()
+    expect(wr.status.obj.isError).false
+    expect(wr.status.obj.message).toBe('')
+
+    wr.form.obj.a.b = 0
+    await nextTick()
+    expect(wr.status.obj.isError).true
+    expect(wr.status.obj.message).toBe('need truthy')
   })
 })

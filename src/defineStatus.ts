@@ -4,7 +4,7 @@ import { computed, reactive, watchEffect } from 'vue'
 import type { RuleItem, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
-import { isHasOwn } from './util/is'
+import { isHasOwn, isObjectType } from './util/is'
 
 export function initStatus<FormT extends {}>(
   status: Record<PropertyKey, StatusItem>,
@@ -72,7 +72,13 @@ function statusControl<FormT extends {}>(
     stopEffect = watchEffect(ruleEffect)
   }
   // Begin validation when user input
-  const { ignoreUpdates } = watchIgnorable(() => formObj[key], init)
+  const { ignoreUpdates } = watchIgnorable(
+    () => formObj[key],
+    init,
+    {
+      deep: isObjectType(formObj[key]),
+    },
+  )
 
   function clearError() {
     if (stopEffect) {
