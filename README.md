@@ -17,7 +17,7 @@
   <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
     <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
   </a>
-  <a href="https://github.com/LittleSound/slimeform#try-it-online">
+  <a href="#try-it-online">
     <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
   </a>
 </p>
@@ -141,7 +141,7 @@ form.intro
 
 ### Filtering out modified fields
 
-Suppose you are developing a form to edit existing data, where the user usually only modifies some of the fields, and then the front-end submits the modified fields to the back-end via 
+Suppose you are developing a form to edit existing data, where the user usually only modifies some of the fields, and then the front-end submits the modified fields to the back-end via
 [HTTP  PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) to submit the user-modified part of the fields to the backend, and the backend will partially update based on which fields were submitted
 
 Such a requirement can use the `dirtyFields` computed function, whose value is an object that only contains the modified fields in the `form`.

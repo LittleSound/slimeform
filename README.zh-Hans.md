@@ -17,7 +17,7 @@
   <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
     <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
   </a>
-  <a href="https://github.com/LittleSound/slimeform#try-it-online">
+  <a href="#在线尝试">
     <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
   </a>
 </p>
