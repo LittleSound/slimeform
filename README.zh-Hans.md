@@ -17,7 +17,7 @@
   <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
     <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
   </a>
-  <a href="https://github.com/LittleSound/slimeform#try-it-online">
+  <a href="#在线尝试">
     <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
   </a>
 </p>
@@ -47,7 +47,7 @@ SlimeForm 是一个**无组件**、**无内置规则**的表单状态管理器�
 - [x] 单元测试
 - [x] 添加对  `object` 类型字段的支持
 - [ ] 添加对异步规则的支持
-- [ ] 支持过滤器，例如过滤未修改的条目，只留下已经修改的条目进行提交
+- [x] 支持过滤未修改的条目，只留下已经修改的条目进行提交
 - [ ] 支持第三方规则，比如 [yup](https://github.com/jquense/yup)
 - [ ] 💡 更多的点子
 
@@ -155,7 +155,7 @@ dirtyFields.value /* value: { intro: 'abcd' } */
 // 编辑用户简介为默认值
 userInfo.intro /* default value */
 
-= dirtyFields.value /* value: {} */
+dirtyFields.value /* value: {} */
 ```
 
 ### 表单规则校验
