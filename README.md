@@ -47,7 +47,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
 - [x] Unit tests
 - [x] Add support to fields with `object` type
 - [ ] Add support to async rule validation
-- [ ] Support filter, such as filter out the unmodified fields, left only modified fields for form submission
+- [x] Support filtering the unmodified entries in the form, leaving only the modified entries for submission
 - [ ] Support for third-party rules, such as [yup](https://github.com/jquense/yup)
 - [ ] 💡 More ideas...
 
