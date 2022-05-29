@@ -9,6 +9,19 @@
 <h1 align="center">SlimeForm</h1>
 <p align="center">English | <a href="https://github.com/LittleSound/slimeform/blob/HEAD/README.zh-Hans.md">简体中文</a></p>
 
+<!-- 一些美丽的标签 -->
+<p align="center">
+  <a href="https://www.npmjs.com/package/slimeform">
+    <img alt="npm" src="https://badgen.net/npm/v/slimeform">
+  </a>
+  <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
+    <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
+  </a>
+  <a href="https://github.com/LittleSound/slimeform#try-it-online">
+    <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
+  </a>
+</p>
+
 <br>
 
 Form state management and validation

@@ -9,6 +9,19 @@
 <h1 align="center">SlimeForm</h1>
 <p align="center"><a href="https://github.com/LittleSound/slimeform">English</a> | 简体中文</p>
 
+<!-- 一些美丽的标签 -->
+<p align="center">
+  <a href="https://www.npmjs.com/package/slimeform">
+    <img alt="Test" src="https://badgen.net/npm/v/slimeform">
+  </a>
+  <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
+    <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
+  </a>
+  <a href="https://github.com/LittleSound/slimeform#try-it-online">
+    <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
+  </a>
+</p>
+
 <br>
 
 表单状态管理和数值校验
