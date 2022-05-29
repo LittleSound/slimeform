@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useForm } from 'root/dist'
 
-const { form, status } = useForm({
+const { form, status, dirtyFields } = useForm({
   form: () => ({
     textInput: '',
     isChecked: false,
@@ -117,6 +117,15 @@ function onChangeFile(payload: Event) {
           </div>
         </div>
       </label>
+    </div>
+
+    <div>
+      <h3 text-xl mb-1>
+        dirtyFields
+      </h3>
+      <div>
+        {{ dirtyFields }}
+      </div>
     </div>
   </div>
 </template>

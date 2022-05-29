@@ -1,4 +1,4 @@
-import type { UnwrapNestedRefs } from 'vue'
+import type { ComputedRef, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
 
 export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
@@ -13,6 +13,9 @@ export interface UseFormReturn<FormT> {
   form: UnwrapNestedRefs<FormT>
   /** Form status */
   status: FormStatus<FormT>
+
+  dirtyFields: ComputedRef<Partial<FormT>>
+
   /** Manual verify */
   verify: () => boolean
   clearErrors: () => void
