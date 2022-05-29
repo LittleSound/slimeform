@@ -136,6 +136,28 @@ form.username
 form.intro
 ```
 
+### 筛选出已修改的字段
+
+假设你正在开发一个对现有数据进行编辑的表单，用户通常只会修改其中的部分字段，然后前端会通过 [HTTP  PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) 将用户修改过的那部分字段提交给后端，后端依据提交了哪些字段进行局部更新
+
+此类需求可以使用  `dirtyFields` 计算函数，它的值是一个只会包含 `form` 当中被修改过字段的对象。
+
+```ts
+const { form: userInfo, status, dirtyFields } = useForm(/* ... */)
+
+dirtyFields.value /* value: {} */
+
+// 编辑用户简介
+userInfo.intro = 'abcd'
+
+dirtyFields.value /* value: { intro: 'abcd' } */
+
+// 编辑用户简介为默认值
+userInfo.intro /* default value */
+
+= dirtyFields.value /* value: {} */
+```
+
 ### 表单规则校验
 
 使用 `rule` 定义表单字段的验证规则。当字段值发生更改时，验证过程将自动进行，验证结果将会存储和呈现在 `status[key].isError` 和 `status[key].message` 属性中。

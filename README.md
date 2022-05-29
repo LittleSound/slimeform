@@ -139,6 +139,29 @@ form.username
 form.intro
 ```
 
+### Filtering out modified fields
+
+Suppose you are developing a form to edit existing data, where the user usually only modifies some of the fields, and then the front-end submits the modified fields to the back-end via 
+[HTTP  PATCH](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH) to submit the user-modified part of the fields to the backend, and the backend will partially update based on which fields were submitted
+
+Such a requirement can use the `dirtyFields` computed function, whose value is an object that only contains the modified fields in the `form`.
+
+```ts
+const { form: userInfo, status, dirtyFields } = useForm(/* ... */)
+
+dirtyFields.value /* value: {} */
+
+// Edit user intro
+userInfo.intro = 'abcd'
+
+dirtyFields.value /* value: { intro: 'abcd' } */
+
+// Edit user profile to default
+userInfo.intro = '' /* default value */
+
+dirtyFields.value /* value: {} */
+```
+
 ### Validating rules for form
 
 Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more then one rule, it can be declared by using function arrays.
