@@ -153,7 +153,7 @@ userInfo.intro = 'abcd'
 dirtyFields.value /* value: { intro: 'abcd' } */
 
 // 编辑用户简介为默认值
-userInfo.intro /* default value */
+userInfo.intro = '' /* default value */
 
 dirtyFields.value /* value: {} */
 ```
@@ -166,15 +166,27 @@ dirtyFields.value /* value: {} */
 > 你可以维护自己的规则集，并在需要使用的地方导入。
 
 ```ts
-function isRequired(value) {
+// formRules.ts
+export function isRequired(value) {
   if (value && value.trim()) {
     return true
   }
 
   return t('required') // i18n 支持
 }
+```
 
-const { form, status, onSubmit, clearErrors } = useForm({
+```vue
+<script setup>
+import { isRequired } from '~/util/formRules.ts'
+const {
+  form,
+  status,
+  onSubmit,
+  clearErrors,
+  isError,
+  verify
+} = useForm({
   // 初始 form 值
   form: () => ({
     name: '',
@@ -197,6 +209,13 @@ const { form, status, onSubmit, clearErrors } = useForm({
 function mySubmit() {
   alert(`Age: ${form.age} \n Name: ${form.name}`)
 }
+</script>
+
+<template>
+  <form @submit.prevent="onSubmit(mySubmit)">
+    <!-- ... -->
+  </form>
+</template>
 ```
 
 此外，您可以在验证错误消息中使用任何响应式的值，例如如上所示，对 `vue-i18n` 库的多语言函数 `t('required')` 的调用。
@@ -204,6 +223,7 @@ function mySubmit() {
 #### 手动触发校验
 
 ```ts
+const { _, status, verify } = useForm(/* ... */)
 // 表单校验
 verify()
 // 字段校验
@@ -219,12 +239,23 @@ status.username.setError('username has been registered')
 #### 清除错误
 
 ```ts
+const { _, status, clearErrors, reset } = useForm(/* ... */)
 // 清除字段的错误
 status.username.clearError()
 // 清除全部错误
 clearErrors()
 // 重置表单也会清除错误
 reset()
+```
+
+#### 任何错误
+
+`isError`: 是否有任何表单字段包含错误的验证结果
+
+```ts
+const { _, isError } = useForm(/* ... */)
+
+isError /* true / false */
 ```
 
 ### 建议

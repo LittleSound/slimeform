@@ -1,7 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 import { nextTick, reactive, watchEffect } from 'vue'
 import { useSetup } from '../packages/.test'
-import { useDirtyFields } from './getters'
+import { useDirtyFields, useIsError } from './getters'
 import type { StatusItem } from './type/formStatus'
 import { useForm } from '.'
 
@@ -108,4 +108,32 @@ test('useForm dirtyFields', () => {
 
   wr.form.b.c = 5
   expect(wr.dirtyFields).toEqual({ a: 11, b: { c: 5 } })
+})
+
+test('useIsError', () => {
+  expect(useIsError).toBeDefined()
+
+  const status = reactive({
+    a: {
+      isError: false,
+    },
+    b: {
+      isError: false,
+    },
+  }) as any as Record<PropertyKey, StatusItem>
+  const isError = useIsError(status)
+
+  expect(isError.value).toBe(false)
+
+  status.a.isError = true
+  expect(isError.value).toBe(true)
+
+  status.b.isError = true
+  expect(isError.value).toBe(true)
+
+  status.a.isError = false
+  expect(isError.value).toBe(true)
+
+  status.b.isError = false
+  expect(isError.value).toBe(false)
 })

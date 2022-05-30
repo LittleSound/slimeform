@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useForm } from 'root/dist'
 
-const { form, status, dirtyFields } = useForm({
+const { form, status, dirtyFields, isError } = useForm({
   form: () => ({
     textInput: '',
     isChecked: false,
@@ -21,7 +21,7 @@ const { form, status, dirtyFields } = useForm({
 
 function onChangeFile(payload: Event) {
   const target = payload.target as HTMLInputElement
-  form.files = Array.from(target.files || [])
+  form.files = Array.from(target?.files || [])
 }
 </script>
 
@@ -120,12 +120,18 @@ function onChangeFile(payload: Event) {
     </div>
 
     <div>
-      <h3 text-xl mb-1>
+      <h4 text-lg mb-1>
         dirtyFields
-      </h3>
+      </h4>
       <div>
         {{ dirtyFields }}
       </div>
+    </div>
+
+    <div>
+      <h4 text-lg mb-1>
+        Any isError: {{ isError }}
+      </h4>
     </div>
   </div>
 </template>

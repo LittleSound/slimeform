@@ -10,7 +10,7 @@ describe('useForm', () => {
 
   it('should work', async () => {
     const wrapper = useSetup(() => {
-      const { form, status } = useForm({
+      const { form, status, isError } = useForm({
         form: () => ({
           name: '',
           age: '',
@@ -19,7 +19,7 @@ describe('useForm', () => {
           age: val => !isNaN(+val) || 'expect numbers',
         },
       })
-      return { form, status }
+      return { form, status, isError }
     })
 
     // Is it modified
@@ -36,6 +36,7 @@ describe('useForm', () => {
     // age
     expect(wrapper.form.age).toBe('abc')
     expect(wrapper.status.age.isError).true
+    expect(wrapper.isError).true
     expect(wrapper.status.age.message).toBe('expect numbers')
     // name
     expect(wrapper.form.name).toBe('')
@@ -52,6 +53,7 @@ describe('useForm', () => {
     // age
     expect(wrapper.form.age).toBe('18')
     expect(wrapper.status.age.isError).false
+    expect(wrapper.isError).false
     expect(wrapper.status.age.message).toBe('')
     // name
     expect(wrapper.form.name).toBe('')
@@ -64,7 +66,7 @@ describe('useForm', () => {
   // 规则验证在第一次值更改后开始工作
   it('Rule validation starts working after the first value change', async () => {
     const wrapper = useSetup(() => {
-      const { form, status } = useForm({
+      const { form, status, isError } = useForm({
         form: () => ({
           name: '',
           age: '',
@@ -74,7 +76,7 @@ describe('useForm', () => {
           name: val => !!val || 'required',
         },
       })
-      return { form, status }
+      return { form, status, isError }
     })
 
     await nextTick()
@@ -84,6 +86,8 @@ describe('useForm', () => {
     // name
     expect(wrapper.status.name.isError).false
     expect(wrapper.status.name.message).toBe('')
+    // any error
+    expect(wrapper.isError).false
 
     wrapper.form.age = '18'
 
@@ -98,6 +102,8 @@ describe('useForm', () => {
     // name
     expect(wrapper.status.name.isError).false
     expect(wrapper.status.name.message).toBe('')
+    // any error
+    expect(wrapper.isError).false
 
     wrapper.form.age = ''
 
@@ -112,6 +118,8 @@ describe('useForm', () => {
     // name
     expect(wrapper.status.name.isError).false
     expect(wrapper.status.name.message).toBe('')
+    // any error
+    expect(wrapper.isError).true
 
     wrapper.unmount()
   })
