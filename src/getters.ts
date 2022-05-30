@@ -17,3 +17,16 @@ export function useDirtyFields<FormT extends {}>(
     return readonly(fields)
   })
 }
+
+export function useIsError(
+  status: Record<PropertyKey, StatusItem>,
+) {
+  return computed(() => {
+    const keys = Object.keys(status)
+    for (const key of keys) {
+      if (status[key]?.isError)
+        return true
+    }
+    return false
+  })
+}

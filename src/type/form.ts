@@ -16,6 +16,8 @@ export interface UseFormReturn<FormT> {
 
   dirtyFields: ComputedRef<DeepReadonly<UnwrapNestedRefs<Partial<FormT>>>>
 
+  isError: ComputedRef<boolean>
+
   /** Manual verify */
   verify: () => boolean
   clearErrors: () => void

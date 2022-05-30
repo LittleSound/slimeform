@@ -4,7 +4,7 @@ import { isHasOwn } from './util/is'
 import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
 import type { UseFormBuilder, UseFormReturn, UseFormRule } from './type/form'
-import { useDirtyFields } from './getters'
+import { useDirtyFields, useIsError } from './getters'
 
 /**
  *  Form state management and rule validation
@@ -30,6 +30,7 @@ export function useForm<FormT extends {}>(param: {
     form,
     status: readonly(status) as any,
     dirtyFields: useDirtyFields(form, status),
+    isError: useIsError(status),
     ...createControl(formBuilder, initialForm, form, status),
   }
 }
