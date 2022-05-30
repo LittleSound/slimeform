@@ -9,17 +9,25 @@ export type UseFormRule<FormT extends {}> = {
 }
 
 export interface UseFormReturn<FormT> {
+  /* state */
+
   /** form object */
   form: UnwrapNestedRefs<FormT>
   /** Form status */
   status: FormStatus<FormT>
 
-  dirtyFields: ComputedRef<DeepReadonly<UnwrapNestedRefs<Partial<FormT>>>>
+  /* getter */
 
+  /** A object that only contains the modified `form` fields */
+  dirtyFields: ComputedRef<DeepReadonly<UnwrapNestedRefs<Partial<FormT>>>>
+  /** Whether any of form fields contain an errored validation result */
   isError: ComputedRef<boolean>
+
+  /* actions */
 
   /** Manual verify */
   verify: () => boolean
+  /** Clear all errors */
   clearErrors: () => void
   /** Reset form  */
   reset: () => void
