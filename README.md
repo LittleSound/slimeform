@@ -169,6 +169,7 @@ Use `rule` to define the validation rules for form fields. The verification proc
 > You can also maintain your rule collections on your own, and import them where they are needed.
 
 ```ts
+// formRules.ts
 function isRequired(value) {
   if (value && value.trim()) {
     return true
@@ -176,8 +177,19 @@ function isRequired(value) {
 
   return t('required') // i18n support
 }
+```
 
-const { form, status, onSubmit, clearErrors } = useForm({
+```vue
+<script setup>
+import { isRequired } from '~/util/formRules.ts'
+const {
+  form,
+  status,
+  onSubmit,
+  clearErrors,
+  isError,
+  verify
+} = useForm({
   // Initial form value
   form: () => ({
     name: '',
@@ -200,6 +212,13 @@ const { form, status, onSubmit, clearErrors } = useForm({
 function mySubmit() {
   alert(`Age: ${form.age} \n Name: ${form.name}`)
 }
+</script>
+
+<template>
+  <form @submit.prevent="onSubmit(mySubmit)">
+    <!-- ... -->
+  </form>
+</template>
 ```
 
 In addition, you can use any reactive values in the validation error message, such as the `t('required')` function call from `vue-i18n` as the examples shown above.
@@ -207,6 +226,7 @@ In addition, you can use any reactive values in the validation error message, su
 #### Manually trigger the validation
 
 ```ts
+const { _, status, verify } = useForm(/* ... */)
 // validate the form
 verify()
 // validate individual fields
@@ -222,12 +242,23 @@ status.username.setError('username has been registered')
 #### Maunally clear the errors
 
 ```ts
+const { _, status, clearErrors, reset } = useForm(/* ... */)
 // clear the error for individual field
 status.username.clearError()
 // clear all the errors
 clearErrors()
 // reset will also clear the errors
 reset()
+```
+
+#### Any errors
+
+`isError`: Are there any form fields that contain incorrect validation results
+
+```ts
+const { _, isError } = useForm(/* ... */)
+
+isError /* true / false */
 ```
 
 ### Suggestions
