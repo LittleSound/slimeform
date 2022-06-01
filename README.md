@@ -261,13 +261,61 @@ const { _, isError } = useForm(/* ... */)
 isError /* true / false */
 ```
 
+3. Use `&nbsp;` to avoid height collapse of `<p>` when there is no messages
+
+#### Default message for form
+
+Use `defaultMessage`sq to define placeholders for form field validation information.  The default value is `u00A0` , which will be escaped to `&nbsp` during rendering , to avoid the height collapse problem of '<p>' when there is no messages.  
+
+If you don't need this default, you can set defaultMessage to `''` or whatever placeholder you want. 
+
+```vue
+<script setup>
+const {
+  form,
+  status,
+  onSubmit,
+  clearErrors,
+  isError,
+  verify
+} = useForm({
+  form: () => ({
+    name: '',
+  }),
+  // Verification rules
+  rule: () => ({
+    name: val => (val && val.trim()) || 'Required',
+  }),
+  // Placeholder content when there are no error message
+  defaultMessage: '',
+})
+
+function mySubmit() {
+  alert(`Name: ${form.name}`)
+}
+</script>
+
+<template>
+  <form @submit.prevent="onSubmit(mySubmit)">
+    <label>
+      <input
+        v-model="form.name"
+        type="text"
+        :class="status.name.isError && '!border-red'"
+      >
+      <p>{{ status.name.message }}</p>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
+</template>
+``` 
+
 ### Suggestions
 
 Some suggestions:
 
 1. Use `@submit.prevent` instead of `@submit`, this can prevent the submitting action take place by form's default
 2. Use `isError` to determine whether to add a red border around the form dynamically
-3. Use `&nbsp;` to avoid height collapse of `<p>` when there is no messages
 
 ```vue
 <template>
@@ -279,7 +327,7 @@ Some suggestions:
         type="text"
         :class="status.age.isError && '!border-red'"
       />
-      <p>{{ error.age || '&nbsp;' }}</p>
+      <p>{{ status.age.message }}</p>
     </label>
     <button type="submit">Submit</button>
   </form>
