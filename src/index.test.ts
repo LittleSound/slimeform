@@ -41,7 +41,7 @@ describe('useForm', () => {
     // name
     expect(wrapper.form.name).toBe('')
     expect(wrapper.status.name.isError).false
-    expect(wrapper.status.name.message).toBe('')
+    expect(wrapper.status.name.message).toBe('\u00A0')
 
     wrapper.form.age = '18'
 
@@ -54,11 +54,11 @@ describe('useForm', () => {
     expect(wrapper.form.age).toBe('18')
     expect(wrapper.status.age.isError).false
     expect(wrapper.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
     // name
     expect(wrapper.form.name).toBe('')
     expect(wrapper.status.name.isError).false
-    expect(wrapper.status.name.message).toBe('')
+    expect(wrapper.status.name.message).toBe('\u00A0')
 
     wrapper.unmount()
   })
@@ -82,10 +82,10 @@ describe('useForm', () => {
     await nextTick()
     // age
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
     // name
     expect(wrapper.status.name.isError).false
-    expect(wrapper.status.name.message).toBe('')
+    expect(wrapper.status.name.message).toBe('\u00A0')
     // any error
     expect(wrapper.isError).false
 
@@ -98,10 +98,10 @@ describe('useForm', () => {
     await nextTick()
     // age
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
     // name
     expect(wrapper.status.name.isError).false
-    expect(wrapper.status.name.message).toBe('')
+    expect(wrapper.status.name.message).toBe('\u00A0')
     // any error
     expect(wrapper.isError).false
 
@@ -117,7 +117,7 @@ describe('useForm', () => {
     expect(wrapper.status.age.message).toBe('required')
     // name
     expect(wrapper.status.name.isError).false
-    expect(wrapper.status.name.message).toBe('')
+    expect(wrapper.status.name.message).toBe('\u00A0')
     // any error
     expect(wrapper.isError).true
 
@@ -149,14 +149,14 @@ describe('useForm', () => {
 
     await nextTick()
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
 
     // Rule validation starts working after the first value change
     wrapper.local = 'zh-CN'
 
     await nextTick()
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
 
     wrapper.form.age = '18'
     await nextTick()
@@ -240,7 +240,7 @@ describe('useForm', () => {
     wrapper.clearErrors()
 
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
 
     wrapper.unmount()
   })
@@ -287,12 +287,42 @@ describe('useForm', () => {
     expect(wrapper.form.isAgree).toBe(true)
     expect(wrapper.status.isAgree.isDirty).false
     expect(wrapper.status.isAgree.isError).false
-    expect(wrapper.status.isAgree.message).toBe('')
+    expect(wrapper.status.isAgree.message).toBe('\u00A0')
     // age
     expect(wrapper.form.age).toBe('1')
     expect(wrapper.status.age.isDirty).false
     expect(wrapper.status.age.isError).false
-    expect(wrapper.status.age.message).toBe('')
+    expect(wrapper.status.age.message).toBe('\u00A0')
+
+    wrapper.unmount()
+  })
+
+  // 自定义表单校验信息占位内容
+  it('Customize the placeholder content of the validation message', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status } = useForm({
+        form: () => ({
+          name: '',
+        }),
+        rule: {
+          name: val => !!val || 'Required',
+        },
+        defaultMessage: '',
+      })
+      return { form, status }
+    })
+
+    wrapper.form.name = 'a'
+
+    await nextTick()
+    expect(wrapper.status.name.isError).false
+    expect(wrapper.status.name.message).toBe('')
+
+    wrapper.form.name = ''
+
+    await nextTick()
+    expect(wrapper.status.name.isError).true
+    expect(wrapper.status.name.message).toBe('Required')
 
     wrapper.unmount()
   })
@@ -334,13 +364,13 @@ describe('object type field', () => {
     wrapper.form.arr.push('A')
     await nextTick()
     expect(wrapper.status.arr.isError).false
-    expect(wrapper.status.arr.message).toBe('')
+    expect(wrapper.status.arr.message).toBe('\u00A0')
 
     wrapper.form.obj = { a: 1, b: { c: 2 } }
     expect(wrapper.status.obj.isDirty).true
     await nextTick()
     expect(wrapper.status.obj.isError).false
-    expect(wrapper.status.obj.message).toBe('')
+    expect(wrapper.status.obj.message).toBe('\u00A0')
 
     ;(wrapper.form.obj as any).b.c = undefined
     await nextTick()
@@ -387,13 +417,13 @@ describe('object type field', () => {
     expect(wr.status.arr.isError).true
     expect(wr.status.arr.message).toBe('need 1')
     expect(wr.status.obj.isError).false
-    expect(wr.status.obj.message).toBe('')
+    expect(wr.status.obj.message).toBe('\u00A0')
 
     wr.form.arr.pop()
     expect(wr.status.arr.isDirty).false
     await nextTick()
     expect(wr.status.arr.isError).false
-    expect(wr.status.arr.message).toBe('')
+    expect(wr.status.arr.message).toBe('\u00A0')
 
     wr.form.arr.pop()
     expect(wr.status.arr.isDirty).true
@@ -406,7 +436,7 @@ describe('object type field', () => {
     expect(wr.status.obj.isDirty).true
     await nextTick()
     expect(wr.status.obj.isError).false
-    expect(wr.status.obj.message).toBe('')
+    expect(wr.status.obj.message).toBe('\u00A0')
 
     wr.form.obj.a.b = 0
     await nextTick()
