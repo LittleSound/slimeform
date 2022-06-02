@@ -265,7 +265,7 @@ isError /* true / false */
 
 #### Default message for form
 
-Use `defaultMessage`sq to define placeholders for form field validation information.  The default value is `''`,you can set it to `u00A0` , which will be escaped to `&nbsp` during rendering , to avoid the height collapse problem of '<p>' when there is no messages.  
+Use `defaultMessage` to define a placeholders for the form field validation error message. The default value is `''`, you can set it to `u00A0`, which will be escaped to `&nbsp` during rendering, to avoid the height collapse problem of '<p>' when there is no messages.  
 
 ```vue
 <script setup>
