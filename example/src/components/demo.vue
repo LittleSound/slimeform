@@ -15,7 +15,7 @@ const { form, status, reset, onSubmit, clearErrors } = useForm({
     ],
   },
   // Default error messages
-  // defaultMessage: '',
+  defaultMessage: '\u00A0',
 })
 
 function mySubmit() {

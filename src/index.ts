@@ -7,7 +7,7 @@ import type { UseFormBuilder, UseFormDefaultMessage, UseFormReturn, UseFormRule 
 import { useDirtyFields, useIsError } from './getters'
 
 export const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
-  defaultMessage: '\u00A0',
+  defaultMessage: '',
 }
 
 /**

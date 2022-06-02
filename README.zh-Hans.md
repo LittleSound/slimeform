@@ -260,9 +260,7 @@ isError /* true / false */
 
 #### 表单校验信息占位内容
 
-使用 `defaultMessage` 定义表单字段校验信息的占位内容。默认值为 `\u00A0` ，在渲染时会被转义为 `&nbsp;` ，以此来避免没有 message 时 `<p>` 出现高度坍塌问题。
-
-如果不需要这个预设，可以将 `defaultMessage` 设置为 `''` 或任何你想要的占位内容。
+使用 `defaultMessage` 定义表单字段校验信息的占位内容。默认值为 `''`,你可以将它设置为 `\u00A0` ，在渲染时会被转义为 `&nbsp;` ，以此来避免没有 message 时 `<p>` 出现高度坍塌问题。
 
 ```vue
 <script setup>
@@ -283,7 +281,7 @@ const {
     name: val => (val && val.trim()) || 'Required',
   }),
   // 没有错误消息时的占位内容
-  defaultMessage: '',
+  defaultMessage: '\u00A0',
 })
 
 function mySubmit() {
