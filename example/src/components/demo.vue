@@ -14,6 +14,8 @@ const { form, status, reset, onSubmit, clearErrors } = useForm({
       /* length */ val => val.length < 3 || 'Length needs to be less than 3',
     ],
   },
+  // Default error messages
+  defaultMessage: '\u00A0',
 })
 
 function mySubmit() {
@@ -42,7 +44,7 @@ function mySubmit() {
         outline="none active:none"
         :class="status.age.isError && '!border-red'"
       >
-      <p class="text-red !mb-0 !mt-1 text-sm">{{ status.age.message || '&nbsp;' }}</p>
+      <p class="text-red !mb-0 !mt-1 text-sm">{{ status.age.message }}</p>
     </label>
     <div space-x-3 mt-1>
       <button text-sm btn type="submit">

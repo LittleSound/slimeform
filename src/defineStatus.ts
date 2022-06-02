@@ -1,7 +1,7 @@
 import { invoke, isFunction, watchIgnorable } from '@vueuse/shared'
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
-import type { RuleItem, UseFormRule } from './type/form'
+import type { RuleItem, UseFormDefaultMessage, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
 import { isHasOwn, isObjectType } from './util/is'
@@ -10,6 +10,7 @@ export function initStatus<FormT extends {}>(
   status: Record<PropertyKey, StatusItem>,
   formObj: UnwrapNestedRefs<FormT>,
   initialForm: Ref<FormT>,
+  formDefaultMessage: UseFormDefaultMessage,
   formRule?: UseFormRule<FormT>,
 ) {
   for (const key in formObj) {
@@ -23,10 +24,10 @@ export function initStatus<FormT extends {}>(
     })
 
     status[key] = reactive({
-      message: '',
+      message: formDefaultMessage,
       isError: false,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
-      ...statusControl(key, status, formObj, fieldRules),
+      ...statusControl(key, status, formObj, fieldRules, formDefaultMessage),
     })
   }
 }
@@ -36,6 +37,7 @@ function statusControl<FormT extends {}>(
   status: Record<PropertyKey, StatusItem>,
   formObj: UnwrapNestedRefs<FormT>,
   fieldRules: RuleItem<any>[] | undefined,
+  formDefaultMessage: UseFormDefaultMessage,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
@@ -50,11 +52,11 @@ function statusControl<FormT extends {}>(
       // result as string or falsity
       // Exit validation on error
       if (!result || typeof result === 'string') {
-        setError(result || '')
+        setError(result || formDefaultMessage)
         break
       } // no errors
       else {
-        setError('', false)
+        setError(formDefaultMessage, false)
       }
     }
   }
@@ -85,7 +87,7 @@ function statusControl<FormT extends {}>(
       stopEffect()
       stopEffect = null
     }
-    setError('', false)
+    setError(formDefaultMessage, false)
   }
 
   function verify() {

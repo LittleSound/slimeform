@@ -3,8 +3,12 @@ import type { Ref, UnwrapNestedRefs } from 'vue'
 import { isHasOwn } from './util/is'
 import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
-import type { UseFormBuilder, UseFormReturn, UseFormRule } from './type/form'
+import type { UseFormBuilder, UseFormDefaultMessage, UseFormReturn, UseFormRule } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
+
+export const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
+  defaultMessage: '',
+}
 
 /**
  *  Form state management and rule validation
@@ -17,14 +21,17 @@ export function useForm<FormT extends {}>(param: {
   form: UseFormBuilder<FormT>
   /** Verification rules */
   rule?: UseFormRule<FormT>
+  /** Default error message */
+  defaultMessage?: UseFormDefaultMessage
 }): UseFormReturn<FormT> {
-  const { form: formBuilder, rule: FormRule } = param
+  const options = Object.assign({}, defaultParam, param)
+  const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage } = options
 
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>(formBuilder())
 
   const status = reactive({} as Record<PropertyKey, StatusItem>)
-  initStatus<FormT>(status, form, initialForm, FormRule)
+  initStatus<FormT>(status, form, initialForm, formDefaultMessage, formRule)
 
   return {
     form,

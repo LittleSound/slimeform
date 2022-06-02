@@ -7,6 +7,7 @@ export type UseFormBuilder<Form extends {} = {}> = () => Form
 export type UseFormRule<FormT extends {}> = {
   readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
 }
+export type UseFormDefaultMessage = string
 
 export interface UseFormReturn<FormT> {
   /* state */

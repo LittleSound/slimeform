@@ -296,6 +296,36 @@ describe('useForm', () => {
 
     wrapper.unmount()
   })
+
+  // 自定义表单校验信息占位内容
+  it('Customize the placeholder content of the validation message', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status } = useForm({
+        form: () => ({
+          name: '',
+        }),
+        rule: {
+          name: val => !!val || 'Required',
+        },
+        defaultMessage: '\u00A0',
+      })
+      return { form, status }
+    })
+
+    wrapper.form.name = 'a'
+
+    await nextTick()
+    expect(wrapper.status.name.isError).false
+    expect(wrapper.status.name.message).toBe('\u00A0')
+
+    wrapper.form.name = ''
+
+    await nextTick()
+    expect(wrapper.status.name.isError).true
+    expect(wrapper.status.name.message).toBe('Required')
+
+    wrapper.unmount()
+  })
 })
 
 describe('object type field', () => {
