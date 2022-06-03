@@ -12,7 +12,6 @@
     "isolatedModules": true,
     "paths": {
       "~/*": ["./example/src/*"],
-      "root/*": ["./*"]
     }
   },
   "include": ["src/**/*", "test/**/*", "packages/**/*"],

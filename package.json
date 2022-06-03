@@ -3,7 +3,6 @@
   "version": "0.3.2",
   "type": "module",
   "description": "Form state management and validation for Vue3",
-  "main": "dist/index.cjs",
   "author": {
     "name": "Ayaka Rizumu",
     "url": "https://github.com/LittleSound"
@@ -18,12 +17,21 @@
     "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.js",
-      "default": "./dist/index.cjs"
+      "default": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./resolvers": {
+      "import": "./dist/resolvers.js",
+      "default": "./dist/resolvers.cjs",
+      "types": "./dist/resolvers.d.ts"
     }
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
   "scripts": {
     "dev": "run-p dev:*",
@@ -65,14 +73,15 @@
     "pnpm": "^7.1.3",
     "tsup": "5.12.6",
     "typescript": "4.6.3",
-    "unocss": "^0.34.0",
+    "unocss": "^0.37.2",
     "unplugin-auto-import": "^0.7.2",
     "unplugin-vue-components": "^0.19.5",
     "vite": "2.9.6",
     "vite-plugin-pages": "^0.23.0",
     "vitest": "^0.12.9",
     "vue": "^3.2.33",
-    "vue-tsc": "^0.34.15"
+    "vue-tsc": "^0.34.15",
+    "yup": "^0.32.11"
   },
   "peerDependencies": {
     "vue": ">=3"
@@ -85,9 +94,10 @@
     "*.{js,ts,md,json,yaml}": "eslint . --fix"
   },
   "tsup": {
-    "entry": [
-      "src/index.ts"
-    ],
+    "entry": {
+      "index": "src/index.ts",
+      "resolvers": "packages/resolvers/index.ts"
+    },
     "format": [
       "esm",
       "cjs"
