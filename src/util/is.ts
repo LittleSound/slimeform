@@ -23,3 +23,5 @@ export const isObject = <T extends {}>(value: any): value is T =>
 export const isBaseType = (value: unknown): value is BaseType =>
   isNullOrUndefined(value)
   || !isObjectType(value)
+
+export const isPromise = (obj: unknown) => Promise.resolve(obj) === obj
