@@ -1,20 +1,32 @@
 <script lang="ts" setup>
 import { useForm } from 'slimeform'
-// import Unocss from 'unocss/vite'
 import { yupFieldRule } from 'slimeform/resolvers'
 import * as yup from 'yup'
 import RouteNav from '~/components/RouteNav.vue'
 
 const local = ref('en')
 
-const t = (value: string) => local.value === 'en' ? value : '中文消息'
+/** mock i18n `t` function */
+const mockT = (_: string) => local.value === 'en' ? 'Valid age up to 120 years old' : '有效年龄至 120 岁'
+yup.object({
 
+})
 const { form, status } = useForm({
   form: () => ({
-    textInput: '',
+    age: '',
+    asyncTest: '',
   }),
   rule: {
-    textInput: yupFieldRule(yup.string().min(3, () => t('message')).max(10).nullable()),
+    age: [
+      yupFieldRule(yup.string()
+        .required(),
+      ),
+      yupFieldRule(yup.number()
+        .max(120, () => mockT('xxx_i18n_key'))
+        .integer()
+        .nullable(),
+      ),
+    ],
   },
   defaultMessage: 'none',
 })
@@ -38,11 +50,11 @@ const { form, status } = useForm({
       </h2>
       <div>
         <h3 text-xl mb-1>
-          Text
+          Input Age
         </h3>
         <label>
           <input
-            v-model="form.textInput"
+            v-model="form.age"
             type="text"
             placeholder="edit me"
             autocomplete="false"
@@ -56,10 +68,36 @@ const { form, status } = useForm({
           >
         </label>
         <div>
-          <p>Value: {{ form.textInput }}</p>
-          <p>isDirty: {{ status.textInput.isDirty }}</p>
-          <p>isError: {{ status.textInput.isError }}</p>
-          <p>message: {{ status.textInput.message }}</p>
+          <p>Value: {{ form.age }}</p>
+          <p>isDirty: {{ status.age.isDirty }}</p>
+          <p>isError: {{ status.age.isError }}</p>
+          <p>message: {{ status.age.message }}</p>
+        </div>
+      </div>
+      <div>
+        <h3 text-xl mb-1>
+          Async Rule
+        </h3>
+        <label>
+          <input
+            v-model="form.age"
+            type="text"
+            placeholder="edit me"
+            autocomplete="false"
+
+            p="x-4 y-2"
+            w="250px"
+            text="center"
+            bg="transparent"
+            border="~ rounded gray-200 dark:gray-700"
+            outline="none active:none"
+          >
+        </label>
+        <div>
+          <p>Value: {{ form.age }}</p>
+          <p>isDirty: {{ status.age.isDirty }}</p>
+          <p>isError: {{ status.age.isError }}</p>
+          <p>message: {{ status.age.message }}</p>
         </div>
       </div>
       <div>

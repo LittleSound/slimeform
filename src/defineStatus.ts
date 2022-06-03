@@ -44,20 +44,27 @@ function statusControl<FormT extends {}>(
     status[key].isError = isError
   }
 
+  function parseError(result: string | boolean) {
+    // result as string or falsity
+    // Exit validation on error
+    if (!result || typeof result === 'string') {
+      setError(result || formDefaultMessage)
+      return true
+    } // no errors
+    else {
+      setError(formDefaultMessage, false)
+      return false
+    }
+  }
+
   function ruleEffect() {
     // Traverse the ruleset and check the rules
+
     for (const rule of fieldRules || []) {
       const result = rule(formObj[key])
 
-      // result as string or falsity
-      // Exit validation on error
-      if (!result || typeof result === 'string') {
-        setError(result || formDefaultMessage)
+      if (parseError(result))
         break
-      } // no errors
-      else {
-        setError(formDefaultMessage, false)
-      }
     }
   }
 

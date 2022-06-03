@@ -1,12 +1,31 @@
+import type { BaseSchema, ValidationError } from 'yup'
+import type { ValidateOptions } from 'yup/lib/types'
+
+export interface ResolverOptions {
+  model?: 'validateSync' | 'validate'
+}
+
 /** yup field rule resolver */
-export const yupFieldRule = (fieldSchema: any) => (val: any) => {
-  try {
-    fieldSchema.validateSync(val)
-    return true
+export const yupFieldRule = <SchemaT extends BaseSchema, TContext = {}>(
+  fieldSchema: SchemaT,
+  schemaOptions: ValidateOptions<TContext> = {},
+) => {
+  return (val: unknown) => {
+    try {
+      fieldSchema.validateSync(
+        val,
+        Object.assign({ abortEarly: false }, schemaOptions),
+      )
+      return true
+    }
+    catch (error: any) {
+      if (!error?.inner)
+        throw error
+      return parseYupError(error)
+    }
   }
-  catch (error: any) {
-    if (error.inner)
-      return error.message
-    throw error
-  }
+}
+
+function parseYupError(error: ValidationError) {
+  return error.errors[0]
 }
