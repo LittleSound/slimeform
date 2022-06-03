@@ -2,6 +2,10 @@
 
 No unreleased changes.
 
+## 0.4.0
+
+No unreleased changes.
+
 ## 0.3.2
 
 No unreleased changes.
