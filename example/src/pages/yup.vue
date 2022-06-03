@@ -14,6 +14,7 @@ yup.object({
 const { form, status } = useForm({
   form: () => ({
     age: '',
+    // ToDo: 支持 yup 的异步验证
     asyncTest: '',
   }),
   rule: {
@@ -80,7 +81,7 @@ const { form, status } = useForm({
         </h3>
         <label>
           <input
-            v-model="form.age"
+            v-model="form.asyncTest"
             type="text"
             placeholder="edit me"
             autocomplete="false"
@@ -94,10 +95,10 @@ const { form, status } = useForm({
           >
         </label>
         <div>
-          <p>Value: {{ form.age }}</p>
-          <p>isDirty: {{ status.age.isDirty }}</p>
-          <p>isError: {{ status.age.isError }}</p>
-          <p>message: {{ status.age.message }}</p>
+          <p>Value: {{ form.asyncTest }}</p>
+          <p>isDirty: {{ status.asyncTest.isDirty }}</p>
+          <p>isError: {{ status.asyncTest.isError }}</p>
+          <p>message: {{ status.asyncTest.message }}</p>
         </div>
       </div>
       <div>
