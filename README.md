@@ -1,3 +1,6 @@
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable no-inline-html -->
+<!-- markdownlint-disable first-line-h1 -->
 <br>
 <br>
 <br>
@@ -23,6 +26,7 @@
 </p>
 
 <br>
+<!-- markdownlint-restore -->
 
 Form state management and validation
 
@@ -53,7 +57,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
   - [ ] Support `validate` (Async)
 - [ ] 💡 More ideas...
 
-**Contributions are welcomed**
+### Contributions are welcomed
 
 ## Try it online
 
@@ -63,7 +67,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
 
 > ⚗️ **Experimental**
 
-```
+```shell
 npm i slimeform
 ```
 
@@ -362,4 +366,3 @@ Some suggestions:
   </form>
 </template>
 ```
-
