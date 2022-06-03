@@ -27,13 +27,6 @@ jobs:
 
       - name: Lint
         run: pnpm lint
-      
-      - name: Lint Markdown
-        uses: nosborn/github-action-markdown-cli@v3.0.1
-        with:
-          files: .
-          config_file: .markdownlint.jsonc
-          ignore_path: .markdownlintignore
 
       - name: Test
         run: pnpm test
