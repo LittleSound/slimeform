@@ -1,6 +1,3 @@
-<!-- markdownlint-capture -->
-<!-- markdownlint-disable no-inline-html -->
-<!-- markdownlint-disable first-line-h1 -->
 <br>
 <br>
 <br>
@@ -26,7 +23,6 @@
 </p>
 
 <br>
-<!-- markdownlint-restore -->
 
 Form state management and validation
 
