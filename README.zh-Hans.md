@@ -49,6 +49,8 @@ SlimeForm 是一个**无组件**、**无内置规则**的表单状态管理器�
 - [ ] 添加对异步规则的支持
 - [x] 支持过滤未修改的条目，只留下已经修改的条目进行提交
 - [ ] 支持第三方规则，比如 [yup](https://github.com/jquense/yup)
+  - [x] 支持 `validateSync`
+  - [ ] 支持 `validate`（异步）
 - [ ] 💡 更多的点子
 
 **欢迎贡献**
@@ -271,7 +273,48 @@ const { form, status } = useForm({
 })
 ```
 
-### 建议
+## 集成
+
+### 使用 Yup 作为规则
+
+如果你不想自己编写验证规则的细节，已经有一种非常简洁的方法可以使用 [Yup](https://github.com/jquense/yup) 作为规则。
+
+SlimeForm 内置了 [Yup](https://github.com/jquense/yup) 同步规则的解析器：`yupFieldRule`，你可以从 `slimeform/resolvers` 导入它。`yupFieldRule` 函数在内部调用 `schema.validateSync` 方法，并处理结果为 SlimeForm 可接受的格式。
+
+**首先，你要安装 [Yup](https://github.com/jquense/yup)**
+
+```sh
+$ npm install yup
+```
+
+```ts
+import { useForm } from 'slimeform'
+import * as yup from 'yup'
+
+/* 导入解析器 */
+import { yupFieldRule } from 'slimeform/resolvers'
+
+const { t } = useI18n()
+
+const { form, status } = useForm({
+  form: () => ({ age: '' }),
+  rule: {
+    /* 一些使用案例 */
+    age: [
+      yupFieldRule(yup.string()
+        .required(),
+      ),
+      yupFieldRule(yup.number()
+        .max(120, () => t('xxx_i18n_key'))
+        .integer()
+        .nullable(),
+      ),
+    ],
+  },
+})
+```
+
+## 建议
 
 一些建议：
 1. 使用 `@submit.prevent` 而不是 `@submit` 来屏蔽表单默认提交行为
@@ -295,6 +338,3 @@ const { form, status } = useForm({
   </form>
 </template>
 ```
-
-
-

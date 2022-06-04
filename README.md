@@ -49,6 +49,8 @@ SlimeForm is a form state management and validator which is **dependency free**,
 - [ ] Add support to async rule validation
 - [x] Support filtering the unmodified entries in the form, leaving only the modified entries for submission
 - [ ] Support for third-party rules, such as [yup](https://github.com/jquense/yup)
+  - [x] Support `validateSync`
+  - [ ] Support `validate` (Async)
 - [ ] 💡 More ideas...
 
 **Contributions are welcomed**
@@ -276,7 +278,48 @@ const { form, status } = useForm({
 })
 ```
 
-### Suggestions
+## Integrations
+
+### Using Yup as a rule
+
+If you don't want to write the details of validation rules yourself, there is already a very clean way to use [Yup](https://github.com/jquense/yup) as a rule.
+
+SlimeForm has a built-in resolvers for [Yup](https://github.com/jquense/yup) synchronization rules: `yupFieldRule`, which you can import from `slimeform/resolvers`. `yupFieldRule` function internally calls `schema.validateSync` method and processes the result in a format acceptable to SlimeForm.
+
+**First, you have to install [Yup](https://github.com/jquense/yup)**
+
+```sh
+$ npm install yup
+```
+
+```ts
+import { useForm } from 'slimeform'
+import * as yup from 'yup'
+
+/* Importing a resolvers */
+import { yupFieldRule } from 'slimeform/resolvers'
+
+const { t } = useI18n()
+
+const { form, status } = useForm({
+  form: () => ({ age: '' }),
+  rule: {
+    /* Some use cases */
+    age: [
+      yupFieldRule(yup.string()
+        .required(),
+      ),
+      yupFieldRule(yup.number()
+        .max(120, () => t('xxx_i18n_key'))
+        .integer()
+        .nullable(),
+      ),
+    ],
+  },
+})
+```
+
+## Suggestions
 
 Some suggestions:
 
