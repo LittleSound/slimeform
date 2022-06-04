@@ -310,6 +310,8 @@ SlimeForm has a built-in resolvers for [Yup](https://github.com/jquense/yup) syn
 $ npm install yup
 ```
 
+then import `yup` and `yupFieldRule` into your code and you're ready to go!
+
 ```ts
 import { useForm } from 'slimeform'
 import * as yup from 'yup'
