@@ -80,7 +80,7 @@ npm i slimeform
 <script setup>
 import { useForm } from 'slimeform'
 
-const { form, status, reset } = useForm({
+const { form, status, reset, dirtyFields } = useForm({
   // 初始的 form 值
   form: () => ({
     username: '',
@@ -100,6 +100,7 @@ const { form, status, reset } = useForm({
   </form>
 </template>
 ```
+
 #### 状态管理
 
 ```ts
@@ -222,7 +223,8 @@ function mySubmit() {
 
 此外，您可以在验证错误消息中使用任何响应式的值，例如如上所示，对 `vue-i18n` 库的多语言函数 `t('required')` 的调用。
 
-#### 手动触发校验
+<details><summary>手动触发校验</summary>
+<p>
 
 ```ts
 const { _, status, verify } = useForm(/* ... */)
@@ -232,13 +234,21 @@ verify()
 status.username.verify()
 ```
 
-#### 手动指定错误
+</p>
+</details>
+
+<details><summary>手动指定错误</summary>
+<p>
 
 ```ts
 status.username.setError('username has been registered')
 ```
 
-#### 清除错误
+</p>
+</details>
+
+<details><summary>清除错误</summary>
+<p>
 
 ```ts
 const { _, status, clearErrors, reset } = useForm(/* ... */)
@@ -250,7 +260,11 @@ clearErrors()
 reset()
 ```
 
-#### 任何错误
+</p>
+</details>
+
+<details><summary>任何错误</summary>
+<p>
 
 `isError`: 是否有任何表单字段包含错误的验证结果
 
@@ -260,7 +274,11 @@ const { _, isError } = useForm(/* ... */)
 isError /* true / false */
 ```
 
-#### 表单校验信息占位内容
+</p>
+</details>
+
+<details><summary>表单校验信息占位内容</summary>
+<p>
 
 使用 `defaultMessage` 定义表单字段校验信息的占位内容。默认值为 `''`，你可以将它设置为 `\u00A0`，在渲染时会被转义为 `&nbsp;`，以此来避免没有 message 时 `<p>` 出现高度坍塌问题。
 
@@ -272,6 +290,9 @@ const { form, status } = useForm({
   defaultMessage: '\u00A0',
 })
 ```
+
+</p>
+</details>
 
 ## 集成
 
