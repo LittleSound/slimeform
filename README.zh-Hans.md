@@ -49,6 +49,8 @@ SlimeForm 是一个**无组件**、**无内置规则**的表单状态管理器�
 - [ ] 添加对异步规则的支持
 - [x] 支持过滤未修改的条目，只留下已经修改的条目进行提交
 - [ ] 支持第三方规则，比如 [yup](https://github.com/jquense/yup)
+  - [x] 支持 `validateSync`
+  - [ ] 支持 `validate`（异步）
 - [ ] 💡 更多的点子
 
 **欢迎贡献**
@@ -78,7 +80,7 @@ npm i slimeform
 <script setup>
 import { useForm } from 'slimeform'
 
-const { form, status, reset } = useForm({
+const { form, status, reset, dirtyFields } = useForm({
   // 初始的 form 值
   form: () => ({
     username: '',
@@ -98,6 +100,7 @@ const { form, status, reset } = useForm({
   </form>
 </template>
 ```
+
 #### 状态管理
 
 ```ts
@@ -193,7 +196,7 @@ const {
     age: '',
   }),
   // 进行校验
-  rule: () => ({
+  rule: {
     name: isRequired,
     // 如果一个字段有多条规则，可以使用数组
     age: [
@@ -203,7 +206,7 @@ const {
       // 要求字段有最大值
       val => val.length < 3 || 'Length needs to be less than 3',
     ],
-  }),
+  },
 })
 
 function mySubmit() {
@@ -220,7 +223,8 @@ function mySubmit() {
 
 此外，您可以在验证错误消息中使用任何响应式的值，例如如上所示，对 `vue-i18n` 库的多语言函数 `t('required')` 的调用。
 
-#### 手动触发校验
+<details><summary>手动触发校验</summary>
+<p>
 
 ```ts
 const { _, status, verify } = useForm(/* ... */)
@@ -230,13 +234,21 @@ verify()
 status.username.verify()
 ```
 
-#### 手动指定错误
+</p>
+</details>
+
+<details><summary>手动指定错误</summary>
+<p>
 
 ```ts
 status.username.setError('username has been registered')
 ```
 
-#### 清除错误
+</p>
+</details>
+
+<details><summary>清除错误</summary>
+<p>
 
 ```ts
 const { _, status, clearErrors, reset } = useForm(/* ... */)
@@ -248,7 +260,11 @@ clearErrors()
 reset()
 ```
 
-#### 任何错误
+</p>
+</details>
+
+<details><summary>任何错误</summary>
+<p>
 
 `isError`: 是否有任何表单字段包含错误的验证结果
 
@@ -258,55 +274,70 @@ const { _, isError } = useForm(/* ... */)
 isError /* true / false */
 ```
 
-#### 表单校验信息占位内容
+</p>
+</details>
+
+<details><summary>表单校验信息占位内容</summary>
+<p>
 
 使用 `defaultMessage` 定义表单字段校验信息的占位内容。默认值为 `''`，你可以将它设置为 `\u00A0`，在渲染时会被转义为 `&nbsp;`，以此来避免没有 message 时 `<p>` 出现高度坍塌问题。
 
-```vue
-<script setup>
-const {
-  form,
-  status,
-  onSubmit,
-  clearErrors,
-  isError,
-  verify
-} = useForm({
-  // 初始 form 值
-  form: () => ({
-    name: '',
-  }),
-  // 进行校验
-  rule: () => ({
-    name: val => (val && val.trim()) || 'Required',
-  }),
+```ts
+const { form, status } = useForm({
+  form: () => ({/* ... */}),
+  rule: {/* ... */},
   // 没有错误消息时的占位内容
   defaultMessage: '\u00A0',
 })
-
-function mySubmit() {
-  alert(`Name: ${form.name}`)
-}
-</script>
-
-<template>
-  <form @submit.prevent="onSubmit(mySubmit)">
-    <label>
-      <input
-        v-model="form.name"
-        type="text"
-        :class="status.name.isError && '!border-red'"
-      >
-      <p>{{ status.name.message }}</p>
-    </label>
-    <button type="submit">
-      提交
-    </button>
-  </form>
-</template>
 ```
 
-### 建议
+</p>
+</details>
+
+## 集成
+
+### 使用 Yup 作为规则
+
+如果你不想自己编写验证规则的细节，已经有一种非常简洁的方法可以使用 [Yup](https://github.com/jquense/yup) 作为规则。
+
+SlimeForm 内置了 [Yup](https://github.com/jquense/yup) 同步规则的解析器：`yupFieldRule`，你可以从 `slimeform/resolvers` 导入它。`yupFieldRule` 函数在内部调用 `schema.validateSync` 方法，并处理结果为 SlimeForm 可接受的格式。
+
+**首先，你要安装 [Yup](https://github.com/jquense/yup)**
+
+```sh
+$ npm install yup
+```
+
+然后在代码中导入 `yup` 和 `yupFieldRule` 就可以使用了
+
+```ts
+import { useForm } from 'slimeform'
+import * as yup from 'yup'
+
+/* 导入解析器 */
+import { yupFieldRule } from 'slimeform/resolvers'
+
+const { t } = useI18n()
+
+const { form, status } = useForm({
+  form: () => ({ age: '' }),
+  rule: {
+    /* 一些使用案例 */
+    age: [
+      yupFieldRule(yup.string()
+        .required(),
+      ),
+      yupFieldRule(yup.number()
+        .max(120, () => t('xxx_i18n_key'))
+        .integer()
+        .nullable(),
+      ),
+    ],
+  },
+})
+```
+
+## 建议
 
 一些建议：
 1. 使用 `@submit.prevent` 而不是 `@submit` 来屏蔽表单默认提交行为
@@ -330,6 +361,3 @@ function mySubmit() {
   </form>
 </template>
 ```
-
-
-

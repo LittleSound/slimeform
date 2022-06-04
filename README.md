@@ -49,6 +49,8 @@ SlimeForm is a form state management and validator which is **dependency free**,
 - [ ] Add support to async rule validation
 - [x] Support filtering the unmodified entries in the form, leaving only the modified entries for submission
 - [ ] Support for third-party rules, such as [yup](https://github.com/jquense/yup)
+  - [x] Support `validateSync`
+  - [ ] Support `validate` (Async)
 - [ ] 💡 More ideas...
 
 **Contributions are welcomed**
@@ -79,7 +81,7 @@ Use `v-model` to bind `form[key]` on to the `<input>` element or other component
 <script setup>
 import { useForm } from 'slimeform'
 
-const { form, status, reset } = useForm({
+const { form, status, reset, dirtyFields } = useForm({
   // Initial form value
   form: () => ({
     username: '',
@@ -196,7 +198,7 @@ const {
     age: '',
   }),
   // Verification rules
-  rule: () => ({
+  rule: {
     name: isRequired,
     // If one fields requires more then one rule, it can be declared by using function arrays.
     age: [
@@ -206,7 +208,7 @@ const {
       // max length
       val => val.length < 3 || 'Length needs to be less than 3',
     ],
-  }),
+  },
 })
 
 function mySubmit() {
@@ -223,7 +225,8 @@ function mySubmit() {
 
 In addition, you can use any reactive values in the validation error message, such as the `t('required')` function call from `vue-i18n` as the examples shown above.
 
-#### Manually trigger the validation
+<details><summary>Manually trigger the validation</summary>
+<p>
 
 ```ts
 const { _, status, verify } = useForm(/* ... */)
@@ -233,13 +236,21 @@ verify()
 status.username.verify()
 ```
 
-#### Manually specify error message
+</p>
+</details>
+
+<details><summary>Manually specify error message</summary>
+<p>
 
 ```ts
 status.username.setError('username has been registered')
 ```
 
-#### Maunally clear the errors
+</p>
+</details>
+
+<details><summary>Maunally clear the errors</summary>
+<p>
 
 ```ts
 const { _, status, clearErrors, reset } = useForm(/* ... */)
@@ -251,7 +262,11 @@ clearErrors()
 reset()
 ```
 
-#### Any errors
+</p>
+</details>
+
+<details><summary>Any errors</summary>
+<p>
 
 `isError`: Are there any form fields that contain incorrect validation results
 
@@ -261,54 +276,70 @@ const { _, isError } = useForm(/* ... */)
 isError /* true / false */
 ```
 
-3. Use `&nbsp;` to avoid height collapse of `<p>` when there is no messages
+</p>
+</details>
 
-#### Default message for form
+<details><summary>Default message for form</summary>
+<p>
 
-Use `defaultMessage` to define a placeholders for the form field validation error message. The default value is `''`, you can set it to `u00A0`, which will be escaped to `&nbsp` during rendering, to avoid the height collapse problem of '<p>' when there is no messages.  
+Use `defaultMessage` to define a placeholders for the form field validation error message. The default value is `''`, you can set it to `\u00A0`, which will be escaped to `&nbsp;` during rendering, to avoid the height collapse problem of `<p>` when there is no messages.
 
-```vue
-<script setup>
-const {
-  form,
-  status,
-  onSubmit,
-  clearErrors,
-  isError,
-  verify
-} = useForm({
-  form: () => ({
-    name: '',
-  }),
-  // Verification rules
-  rule: () => ({
-    name: val => (val && val.trim()) || 'Required',
-  }),
+```ts
+const { form, status } = useForm({
+  form: () => ({/* ... */}),
+  rule: {/* ... */},
   // Placeholder content when there are no error message
   defaultMessage: '\u00A0',
 })
+```
 
-function mySubmit() {
-  alert(`Name: ${form.name}`)
-}
-</script>
+</p>
+</details>
 
-<template>
-  <form @submit.prevent="onSubmit(mySubmit)">
-    <label>
-      <input
-        v-model="form.name"
-        type="text"
-        :class="status.name.isError && '!border-red'"
-      >
-      <p>{{ status.name.message }}</p>
-    </label>
-    <button type="submit">Submit</button>
-  </form>
-</template>
-``` 
+## Integrations
 
-### Suggestions
+### Using Yup as a rule
+
+If you don't want to write the details of validation rules yourself, there is already a very clean way to use [Yup](https://github.com/jquense/yup) as a rule.
+
+SlimeForm has a built-in resolvers for [Yup](https://github.com/jquense/yup) synchronization rules: `yupFieldRule`, which you can import from `slimeform/resolvers`. `yupFieldRule` function internally calls `schema.validateSync` method and processes the result in a format acceptable to SlimeForm.
+
+**First, you have to install [Yup](https://github.com/jquense/yup)**
+
+```sh
+$ npm install yup
+```
+
+then import `yup` and `yupFieldRule` into your code and you're ready to go!
+
+```ts
+import { useForm } from 'slimeform'
+import * as yup from 'yup'
+
+/* Importing a resolvers */
+import { yupFieldRule } from 'slimeform/resolvers'
+
+const { t } = useI18n()
+
+const { form, status } = useForm({
+  form: () => ({ age: '' }),
+  rule: {
+    /* Some use cases */
+    age: [
+      yupFieldRule(yup.string()
+        .required(),
+      ),
+      yupFieldRule(yup.number()
+        .max(120, () => t('xxx_i18n_key'))
+        .integer()
+        .nullable(),
+      ),
+    ],
+  },
+})
+```
+
+## Suggestions
 
 Some suggestions:
 
