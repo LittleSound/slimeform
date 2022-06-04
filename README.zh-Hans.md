@@ -305,7 +305,7 @@ SlimeForm 内置了 [Yup](https://github.com/jquense/yup) 同步规则的解析�
 **首先，你要安装 [Yup](https://github.com/jquense/yup)**
 
 ```sh
-$ npm install yup
+npm install yup
 ```
 
 然后在代码中导入 `yup` 和 `yupFieldRule` 就可以使用了
