@@ -193,7 +193,7 @@ const {
     age: '',
   }),
   // 进行校验
-  rule: () => ({
+  rule: {
     name: isRequired,
     // 如果一个字段有多条规则，可以使用数组
     age: [
@@ -203,7 +203,7 @@ const {
       // 要求字段有最大值
       val => val.length < 3 || 'Length needs to be less than 3',
     ],
-  }),
+  },
 })
 
 function mySubmit() {
@@ -262,48 +262,13 @@ isError /* true / false */
 
 使用 `defaultMessage` 定义表单字段校验信息的占位内容。默认值为 `''`，你可以将它设置为 `\u00A0`，在渲染时会被转义为 `&nbsp;`，以此来避免没有 message 时 `<p>` 出现高度坍塌问题。
 
-```vue
-<script setup>
-const {
-  form,
-  status,
-  onSubmit,
-  clearErrors,
-  isError,
-  verify
-} = useForm({
-  // 初始 form 值
-  form: () => ({
-    name: '',
-  }),
-  // 进行校验
-  rule: () => ({
-    name: val => (val && val.trim()) || 'Required',
-  }),
+```ts
+const { form, status } = useForm({
+  form: () => ({/* ... */}),
+  rule: {/* ... */},
   // 没有错误消息时的占位内容
   defaultMessage: '\u00A0',
 })
-
-function mySubmit() {
-  alert(`Name: ${form.name}`)
-}
-</script>
-
-<template>
-  <form @submit.prevent="onSubmit(mySubmit)">
-    <label>
-      <input
-        v-model="form.name"
-        type="text"
-        :class="status.name.isError && '!border-red'"
-      >
-      <p>{{ status.name.message }}</p>
-    </label>
-    <button type="submit">
-      提交
-    </button>
-  </form>
-</template>
 ```
 
 ### 建议

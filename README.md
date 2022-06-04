@@ -196,7 +196,7 @@ const {
     age: '',
   }),
   // Verification rules
-  rule: () => ({
+  rule: {
     name: isRequired,
     // If one fields requires more then one rule, it can be declared by using function arrays.
     age: [
@@ -206,7 +206,7 @@ const {
       // max length
       val => val.length < 3 || 'Length needs to be less than 3',
     ],
-  }),
+  },
 })
 
 function mySubmit() {
@@ -265,48 +265,16 @@ isError /* true / false */
 
 #### Default message for form
 
-Use `defaultMessage` to define a placeholders for the form field validation error message. The default value is `''`, you can set it to `u00A0`, which will be escaped to `&nbsp` during rendering, to avoid the height collapse problem of '<p>' when there is no messages.  
+Use `defaultMessage` to define a placeholders for the form field validation error message. The default value is `''`, you can set it to `\u00A0`, which will be escaped to `&nbsp;` during rendering, to avoid the height collapse problem of `<p>` when there is no messages.
 
-```vue
-<script setup>
-const {
-  form,
-  status,
-  onSubmit,
-  clearErrors,
-  isError,
-  verify
-} = useForm({
-  form: () => ({
-    name: '',
-  }),
-  // Verification rules
-  rule: () => ({
-    name: val => (val && val.trim()) || 'Required',
-  }),
+```ts
+const { form, status } = useForm({
+  form: () => ({/* ... */}),
+  rule: {/* ... */},
   // Placeholder content when there are no error message
   defaultMessage: '\u00A0',
 })
-
-function mySubmit() {
-  alert(`Name: ${form.name}`)
-}
-</script>
-
-<template>
-  <form @submit.prevent="onSubmit(mySubmit)">
-    <label>
-      <input
-        v-model="form.name"
-        type="text"
-        :class="status.name.isError && '!border-red'"
-      >
-      <p>{{ status.name.message }}</p>
-    </label>
-    <button type="submit">Submit</button>
-  </form>
-</template>
-``` 
+```
 
 ### Suggestions
 
