@@ -27,7 +27,7 @@ export function initStatus<FormT extends {}>(
     status[key] = reactive({
       message: formDefaultMessage,
       isError: false,
-      verifyingCount: 0,
+      verifying: false,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
       ...statusControl(key, status, formObj, fieldRules, formDefaultMessage),
     })
@@ -60,6 +60,9 @@ function statusControl<FormT extends {}>(
     }
   }
 
+  /** Number of asynchronous validations in progress */
+  let verifyingCount = 0
+
   function ruleEffect() {
     // Traverse the ruleset and check the rules
 
@@ -74,12 +77,14 @@ function statusControl<FormT extends {}>(
       else {
         // If it's async validation, wait for its result in a new function
         invoke(async () => {
-          status[key].verifyingCount += 1
+          verifyingCount += 1
+          status[key].verifying = !!verifyingCount
           try {
             parseError(await result)
           }
           finally {
-            status[key].verifyingCount -= 1
+            verifyingCount -= 1
+            status[key].verifying = !!verifyingCount
           }
         })
       }

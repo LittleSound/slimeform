@@ -112,7 +112,7 @@ const { form, status } = useForm({
         <div>
           <p>Value: {{ form.asyncTest }}</p>
           <p>isDirty: {{ status.asyncTest.isDirty }}</p>
-          <p>verifyingCount: {{ status.asyncTest.verifyingCount }}</p>
+          <p>verifying: {{ status.asyncTest.verifying }}</p>
           <p>isError: {{ status.asyncTest.isError }}</p>
           <p>message: {{ status.asyncTest.message }}</p>
         </div>
