@@ -6,7 +6,7 @@ import type { StatusItem } from './type/formStatus'
 import type { UseFormBuilder, UseFormDefaultMessage, UseFormReturn, UseFormRule } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
 
-export const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
+const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
   defaultMessage: '',
 }
 
