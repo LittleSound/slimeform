@@ -1,0 +1,36 @@
+{
+  // Example markdownlint JSON(C) configuration with all properties set to their default value
+  // Default state for all rules
+  "default": true,
+
+  // Path to configuration file to extend
+  "extends": null,
+
+  // MD013/line-length - Line length
+  "MD013": {
+    // Number of characters
+    "line_length": -1,
+    // Number of characters for headings
+    "heading_line_length": 150,
+    // Number of characters for code blocks
+    "code_block_line_length": 150,
+    // Include code blocks
+    "code_blocks": true,
+    // Include tables
+    "tables": false,
+    // Include headings
+    "headings": true,
+    // Include headings
+    "headers": true,
+    // Strict length checking
+    "strict": false,
+    // Stern length checking
+    "stern": false
+  },
+
+  // MD041/first-line-heading/first-line-h1 - First line in a file should be a top-level heading
+  "MD041": false,
+
+  // MD033/no-inline-html - Inline HTML
+  "MD033": false
+}

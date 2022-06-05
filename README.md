@@ -53,7 +53,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
   - [ ] Support `validate` (Async)
 - [ ] 💡 More ideas...
 
-**Contributions are welcomed**
+### Contributions are welcomed
 
 ## Try it online
 
@@ -63,7 +63,7 @@ SlimeForm is a form state management and validator which is **dependency free**,
 
 > ⚗️ **Experimental**
 
-```
+```shell
 npm i slimeform
 ```
 
@@ -307,7 +307,7 @@ SlimeForm has a built-in resolvers for [Yup](https://github.com/jquense/yup) syn
 **First, you have to install [Yup](https://github.com/jquense/yup)**
 
 ```sh
-$ npm install yup
+npm install yup
 ```
 
 then import `yup` and `yupFieldRule` into your code and you're ready to go!
@@ -362,4 +362,3 @@ Some suggestions:
   </form>
 </template>
 ```
-
