@@ -31,7 +31,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "*.d.ts"
+    "resolvers.d.ts"
   ],
   "scripts": {
     "dev": "run-p dev:*",
