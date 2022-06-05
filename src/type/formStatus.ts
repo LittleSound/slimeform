@@ -1,4 +1,4 @@
-import type { IgnoredUpdater } from '@vueuse/shared'
+import type { IgnoredUpdater } from '../util/watchIgnorable'
 
 export interface StatusItem {
   isError: boolean

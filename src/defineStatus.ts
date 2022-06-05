@@ -1,10 +1,11 @@
-import { invoke, isFunction, watchIgnorable } from '@vueuse/shared'
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
 import type { RuleItem, UseFormDefaultMessage, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
-import { isHasOwn, isObjectType } from './util/is'
+import { invoke } from './util/invoke'
+import { isFunction, isHasOwn, isObjectType } from './util/is'
+import { watchIgnorable } from './util/watchIgnorable'
 
 export function initStatus<FormT extends {}>(
   status: Record<PropertyKey, StatusItem>,
