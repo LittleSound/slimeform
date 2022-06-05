@@ -1,7 +1,7 @@
 import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
 
-export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
+export type RuleItem<ValueT = any> = (val: ValueT) => boolean | string | Promise<boolean | string>
 
 export type UseFormBuilder<Form extends {} = {}> = () => Form
 export type UseFormRule<FormT extends {}> = {

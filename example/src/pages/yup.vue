@@ -8,9 +8,7 @@ const local = ref('en')
 
 /** mock i18n `t` function */
 const mockT = (_: string) => local.value === 'en' ? 'Valid age up to 120 years old' : '有效年龄至 120 岁'
-yup.object({
 
-})
 const { form, status } = useForm({
   form: () => ({
     age: '',

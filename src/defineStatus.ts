@@ -4,7 +4,7 @@ import type { RuleItem, UseFormDefaultMessage, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
 import { invoke } from './util/invoke'
-import { isFunction, isHasOwn, isObjectType } from './util/is'
+import { isFunction, isHasOwn, isObjectType, isPromise } from './util/is'
 import { watchIgnorable } from './util/watchIgnorable'
 
 export function initStatus<FormT extends {}>(
@@ -27,6 +27,7 @@ export function initStatus<FormT extends {}>(
     status[key] = reactive({
       message: formDefaultMessage,
       isError: false,
+      verifyingCount: 0,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
       ...statusControl(key, status, formObj, fieldRules, formDefaultMessage),
     })
@@ -45,6 +46,7 @@ function statusControl<FormT extends {}>(
     status[key].isError = isError
   }
 
+  /** parsing verification result */
   function parseError(result: string | boolean) {
     // result as string or falsity
     // Exit validation on error
@@ -64,8 +66,23 @@ function statusControl<FormT extends {}>(
     for (const rule of fieldRules || []) {
       const result = rule(formObj[key])
 
-      if (parseError(result))
-        break
+      // Determine whether it is synchronous verification
+      if (!isPromise(result)) {
+        if (parseError(result))
+          break
+      }
+      else {
+        // If it's async validation, wait for its result in a new function
+        invoke(async () => {
+          status[key].verifyingCount += 1
+          try {
+            parseError(await result)
+          }
+          finally {
+            status[key].verifyingCount -= 1
+          }
+        })
+      }
     }
   }
 

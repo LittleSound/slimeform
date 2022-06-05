@@ -6,6 +6,8 @@ export interface StatusItem {
   message: string
   /** Field is modified */
   isDirty: boolean
+  /** Number of asynchronous verification results being awaited */
+  verifyingCount: number
   /** Manual verify */
   verify: () => boolean
   init: () => void
