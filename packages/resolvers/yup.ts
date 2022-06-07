@@ -1,5 +1,6 @@
 import type { BaseSchema, ValidationError } from 'yup'
 import type { ValidateOptions } from 'yup/lib/types'
+import type { RuleItem } from '../../src/type/form'
 
 export const parseYupError = (error: ValidationError) => {
   return error.errors[0] || true
@@ -9,12 +10,12 @@ export const parseYupError = (error: ValidationError) => {
 export const yupFieldRule = <SchemaT extends BaseSchema, TContext = {}>(
   fieldSchema: SchemaT,
   schemaOptions: ValidateOptions<TContext> = {},
-) => {
-  return (val: unknown) => {
+): RuleItem => {
+  return (val) => {
     try {
       fieldSchema.validateSync(
         val,
-        Object.assign({ abortEarly: false }, schemaOptions),
+        Object.assign({ abortEarly: true }, schemaOptions),
       )
       return true
     }
@@ -30,12 +31,12 @@ export const yupFieldRule = <SchemaT extends BaseSchema, TContext = {}>(
 export const yupAsyncFieldRule = <SchemaT extends BaseSchema, TContext = {}>(
   fieldSchema: SchemaT,
   schemaOptions: ValidateOptions<TContext> = {},
-) => {
-  return async (val: unknown) => {
+): RuleItem => {
+  return async (val) => {
     try {
       await fieldSchema.validate(
         val,
-        Object.assign({ abortEarly: false }, schemaOptions),
+        Object.assign({ abortEarly: true }, schemaOptions),
       )
       return true
     }

@@ -27,11 +27,13 @@ const { form, status } = useForm({
       ),
     ],
     asyncTest: [
-      yupAsyncFieldRule(yup.string()
-        .required(),
+      yupFieldRule(yup
+        .string()
+        .required(() => local.value === 'en' ? 'Required' : '必填'),
       ),
       yupAsyncFieldRule(yup
         .number()
+        .integer()
         .test(
           'is-42',
           'this isn\'t the number i want',

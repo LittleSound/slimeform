@@ -2,6 +2,7 @@ import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
 import type { RuleItem, UseFormDefaultMessage, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
+import type { OnCleanup } from './type/util'
 import { deepEqual } from './util/deepEqual'
 import { invoke } from './util/invoke'
 import { isFunction, isHasOwn, isObjectType, isPromise } from './util/is'
@@ -63,16 +64,21 @@ function statusControl<FormT extends {}>(
   /** Number of asynchronous validations in progress */
   let verifyingCount = 0
 
-  function ruleEffect() {
-    // Traverse the ruleset and check the rules
+  function ruleEffect(onCleanup?: OnCleanup) {
+    let isEnded = false
+    if (onCleanup)
+      onCleanup(() => isEnded = true)
 
+    // Traverse the ruleset and check the rules
     for (const rule of fieldRules || []) {
-      const result = rule(formObj[key])
+      const result = rule(formObj[key], onCleanup)
 
       // Determine whether it is synchronous verification
       if (!isPromise(result)) {
-        if (parseError(result))
+        if (parseError(result)) {
+          isEnded = true
           break
+        }
       }
       else {
         // If it's async validation, wait for its result in a new function
@@ -80,7 +86,11 @@ function statusControl<FormT extends {}>(
           verifyingCount += 1
           status[key].verifying = !!verifyingCount
           try {
-            parseError(await result)
+            const err = await result
+            if (isEnded)
+              return
+            if (parseError(err))
+              isEnded = true
           }
           finally {
             verifyingCount -= 1
