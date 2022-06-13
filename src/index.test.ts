@@ -297,6 +297,72 @@ describe('useForm', () => {
     wrapper.unmount()
   })
 
+  // 重置特定字段
+  it('reset the fields', async () => {
+    // Increments by one for each call
+    const [counter, add] = ((i = 0) => [() => i, () => i++])()
+
+    const wrapper = useSetup(() => {
+      const { form, status, reset } = useForm({
+        form: () => ({
+          // The initial value is mutable
+          age: `${counter()}`,
+          isAgree: true,
+        }),
+        rule: {
+          isAgree: val => !!val || 'required',
+          age: [
+            val => !!val || 'required',
+            val => !isNaN(+val) || 'expect numbers',
+          ],
+        },
+      })
+      return { form, status, reset }
+    })
+
+    wrapper.form.isAgree = false
+    wrapper.form.age = 'abc'
+
+    await nextTick()
+    // isAgree
+    expect(wrapper.status.isAgree.isError).true
+    expect(wrapper.status.isAgree.message).toBe('required')
+    // age
+    expect(wrapper.status.age.isError).true
+    expect(wrapper.status.age.message).toBe('expect numbers')
+
+    wrapper.reset('isAgree')
+
+    await nextTick()
+    // isAgree
+    expect(wrapper.form.isAgree).toBe(true)
+    expect(wrapper.status.isAgree.isDirty).false
+    expect(wrapper.status.isAgree.isError).false
+    expect(wrapper.status.isAgree.message).toBe('')
+    // age
+    expect(wrapper.form.age).toBe('abc')
+    expect(wrapper.status.age.isDirty).true
+    expect(wrapper.status.age.isError).true
+    expect(wrapper.status.age.message).toBe('expect numbers')
+
+    add()
+    wrapper.reset('age', 'isAgree')
+
+    await nextTick()
+    // isAgree
+    expect(wrapper.form.isAgree).toBe(true)
+    expect(wrapper.status.isAgree.isDirty).false
+    expect(wrapper.status.isAgree.isError).false
+    expect(wrapper.status.isAgree.message).toBe('')
+    // age
+    expect(wrapper.form.age).toBe('1')
+    expect(wrapper.status.age.isDirty).false
+    expect(wrapper.status.age.isError).false
+    expect(wrapper.status.age.message).toBe('')
+
+    wrapper.unmount()
+  })
+
   // 自定义表单校验信息占位内容
   it('Customize the placeholder content of the validation message', async () => {
     const wrapper = useSetup(() => {

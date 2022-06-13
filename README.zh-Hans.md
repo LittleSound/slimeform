@@ -113,6 +113,9 @@ status.password.isDirty
 
 // 重置表单, 恢复到初始状态
 reset()
+
+// 重置指定字段
+reset('username', 'password', /* ... */)
 ```
 
 ### 可变的初始 form 值

@@ -30,8 +30,12 @@ export interface UseFormReturn<FormT> {
   verify: () => boolean
   /** Clear all errors */
   clearErrors: () => void
-  /** Reset form  */
-  reset: () => void
+
+  /**
+   * Reset form to initial value
+   * @param fields If not specified, all form fields will be reset
+   */
+  reset: (...fields: (keyof FormT)[]) => void
 
   /**
    * Submit form
