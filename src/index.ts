@@ -62,21 +62,29 @@ function createControl<FormT extends {}>(
     })
   }
 
-  const reset = () => {
+  const reset = (...fields: PropertyKey[]) => {
     initialForm.value = formBuilder()
+
+    const needReset = (field: PropertyKey) => fields.length === 0 || fields.includes(field)
+
     for (const key in form) {
-      if (isHasOwn(form, key)) {
-        if (isHasOwn(initialForm.value, key)) {
-          status[key]._ignoreUpdate(() => {
-            form[key] = (initialForm.value as any)[key] as any
-          })
-        }
-        else {
-          delete form[key]
-        }
+      if (!needReset(key))
+        continue
+
+      if (!isHasOwn(form, key))
+        continue
+
+      if (isHasOwn(initialForm.value, key)) {
+        status[key]._ignoreUpdate(() => {
+          form[key] = (initialForm.value as any)[key] as any
+        })
+
+        status[key].clearError()
+      }
+      else {
+        delete form[key]
       }
     }
-    clearErrors()
   }
 
   const onSubmit = (callback: () => unknown) => verify() ? callback() : null
