@@ -115,7 +115,7 @@ status.password.isDirty
 // Reset form, restore form values to default
 reset()
 
-// Reset the specified field
+// Reset the specified fields
 reset('username', 'password', /* ... */)
 ```
 

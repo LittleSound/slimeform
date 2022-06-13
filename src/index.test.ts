@@ -298,7 +298,7 @@ describe('useForm', () => {
   })
 
   // 重置特定字段
-  it('reset the field', async () => {
+  it('reset the fields', async () => {
     // Increments by one for each call
     const [counter, add] = ((i = 0) => [() => i, () => i++])()
 
