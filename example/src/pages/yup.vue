@@ -37,7 +37,6 @@ const { form, status } = useForm({
         .test(
           'is-42',
           'this isn\'t the number i want',
-          // eslint-disable-next-line eqeqeq
           async (value: any) => {
             await new Promise(resolve => setTimeout(resolve, 1000))
             return value !== 111

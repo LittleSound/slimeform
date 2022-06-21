@@ -87,6 +87,8 @@ function statusControl<FormT extends {}>(
           status[key].verifying = !!verifyingCount
           try {
             const err = await result
+            // Validation will end when there is any one error result
+            // If the validation has ended, no further results will be processed
             if (isEnded)
               return
             if (parseError(err))
