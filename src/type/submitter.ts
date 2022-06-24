@@ -3,6 +3,11 @@ import type { UseFormReturn } from './form'
 
 export type SubmitFunction<FormT = any, FnReturnT = any> = (formData: UseFormReturn<FormT>) => FnReturnT
 
+export type Submitter<FormT extends {}> = <FnT extends SubmitFunction<FormT>>(
+  fn: FnT,
+  options?: CreateSubmitOptions,
+) => CreateSubmitReturn<FnT>
+
 export interface CreateSubmitOptions {
   /**
    * ## Enable Verification

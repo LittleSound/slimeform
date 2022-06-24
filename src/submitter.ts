@@ -1,7 +1,7 @@
 import { isPromise } from 'util/types'
 import { ref } from 'vue'
 import type { UseFormReturn } from './type/form'
-import type { CreateSubmitOptions, CreateSubmitReturn, SubmitFunction } from './type/submitter'
+import type { CreateSubmitOptions, CreateSubmitReturn, SubmitFunction, Submitter } from './type/submitter'
 import { invoke } from './util/invoke'
 
 export function createSubmit<FormT extends {}, FnT extends SubmitFunction<FormT>>(
@@ -44,4 +44,8 @@ export function createSubmit<FormT extends {}, FnT extends SubmitFunction<FormT>
     submitting,
     submit: submitFn,
   }
+}
+
+export function createSubmitter(formData: () => any): Submitter<any> {
+  return (...args: [any]) => createSubmit(formData(), ...args)
 }

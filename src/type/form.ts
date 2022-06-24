@@ -1,5 +1,6 @@
 import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
+import type { Submitter } from './submitter'
 
 export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
 
@@ -42,4 +43,11 @@ export interface UseFormReturn<FormT> {
    * Verify before submitting, and execute callback if passed
    */
   onSubmit: (callback: () => unknown) => unknown
+
+  /**
+   * Define a submit function
+   * Returns the wrapped commit function and status variables
+   * Verify before submitting, and execute callback if passed
+   */
+  submitter: Submitter<FormT>
 }

@@ -82,3 +82,26 @@ describe('createSubmit', () => {
     expect(submitFn).toHaveBeenCalledOnce()
   })
 })
+
+describe('submitter in useForm', () => {
+  test('this should work', async () => {
+    const { form, submitter } = useForm({
+      form: () => ({
+        field: 0,
+      }),
+      rule: {
+        field: value => value !== 1 || 'error',
+      },
+    })
+
+    const { submit, submitting } = submitter(async ({ form: subForm }) => {
+      await new Promise(resolve => setTimeout(resolve, 100))
+      return subForm.field
+    })
+    expect(submitting.value).false
+    const wait = expect(submit()).resolves.toBe(form.field)
+    expect(submitting.value).true
+    await wait
+    expect(submitting.value).false
+  })
+})
