@@ -1,24 +1,8 @@
 import { isPromise } from 'util/types'
-import type { Ref } from 'vue'
 import { ref } from 'vue'
 import type { UseFormReturn } from './type/form'
+import type { CreateSubmitOptions, CreateSubmitReturn, SubmitFunction } from './type/submitter'
 import { invoke } from './util/invoke'
-
-export type SubmitFunction<FormT = any, FnReturnT = any> = (formData: UseFormReturn<FormT>) => FnReturnT
-
-export interface CreateSubmitOptions {
-  /**
-   * ## Enable Verification
-   * Check validation before committing and skip the commit process if it fails
-   * @default true
-   */
-  enableVerify?: boolean
-}
-
-export interface CreateSubmitReturn<FnT extends SubmitFunction<any>> {
-  submit: SubmitFunction<Parameters<FnT>, ReturnType<FnT> | undefined>
-  submitting: Ref<boolean>
-}
 
 export function createSubmit<FormT extends {}, FnT extends SubmitFunction<FormT>>(
   formData: UseFormReturn<FormT>,
@@ -33,7 +17,7 @@ export function createSubmit<FormT extends {}, FnT extends SubmitFunction<FormT>
 
   const submitting = ref(false)
 
-  const submitFn = ((formData) => {
+  const submitFn = (() => {
     if (enableVerify && !verify())
       return
 
