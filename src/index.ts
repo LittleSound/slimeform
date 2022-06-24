@@ -96,3 +96,5 @@ function createControl<FormT extends {}>(
     onSubmit,
   }
 }
+
+export * from './type'
