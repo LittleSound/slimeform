@@ -94,10 +94,14 @@ describe('submitter in useForm', () => {
       },
     })
 
-    const { submit, submitting } = submitter(async ({ form: subForm }) => {
+    const {
+      submit,
+      submitting,
+    } = submitter(async ({ form: subForm }) => {
       await new Promise(resolve => setTimeout(resolve, 100))
       return subForm.field
     })
+
     expect(submitting.value).false
     const wait = expect(submit()).resolves.toBe(form.field)
     expect(submitting.value).true
