@@ -297,6 +297,53 @@ const { form, status } = useForm({
 </p>
 </details>
 
+### 提交
+
+`submitter` 接受一个回调函数参数，返回触发这个回调函数的函数和表示函数运行中的状态变量；传入 `submitter` 的回调函数可以拿到 `useForm` 函数返回的所有状态和函数，这样可以将回调函数放到单独的代码中，甚至编写通用的提交函数，方便组合使用。
+
+```vue
+<script setup>
+import { useForm } from 'slimeform'
+
+const { _, submitter } = useForm(/* ... */)
+
+// Define the submit function
+const {
+  // trigger submit callback
+  submit,
+  // Indicates whether the asynchronous commit function is executing
+  submitting,
+} = submitter(async ({ form, status, isError, reset /* ... */ }) => {
+  // Submission Code
+  const res = await fetch(/* ... */)
+  // ....
+})
+</script>
+
+<template>
+  <form @submit.prevent="submit">
+    <!-- ... -->
+
+    <!-- Use `submitting` to disable buttons and add loading indicator -->
+    <button type="submit" :disabled="submitting">
+      <icon v-if="submitting" name="loading" />
+      Submit
+    </button>
+  </form>
+</template>
+```
+
+默认情况下调用 `submit` 函数后会先进行表单规则验证，如果验证失败，将会直接结束函数执行，如果需要关闭此行为可以在 `submitter` 函数的第二个参数参数 `options` 中配置 `enableVerify: false` 来跳过验证。
+
+#### 包装通用提交函数并使用
+
+```ts
+import { mySubmitForm } from './myFetch.ts'
+const { _, submitter } = useForm(/* ... */)
+// Wrap the generic submission code and use it later
+const { submit, submitting } = submitter(mySubmitForm({ url: '/register', method: 'POST' }))
+```
+
 ## 集成
 
 ### 使用 Yup 作为规则
