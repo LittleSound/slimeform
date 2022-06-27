@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { UseFormReturn } from './form'
 
-export type SubmitFunction<FormT = any, FnReturnT = any> = (formData: UseFormReturn<FormT>) => FnReturnT
+export type SubmitFunction<FormT = any, FnReturnT = any> = (formData: Omit<UseFormReturn<FormT>, 'submitter'>) => FnReturnT
 
 export type Submitter<FormT extends {}> = <FnT extends SubmitFunction<FormT>>(
   fn: FnT,

@@ -1,4 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { createSubmit } from './submitter'
 import { useForm } from '.'
 
@@ -107,5 +108,36 @@ describe('submitter in useForm', () => {
     expect(submitting.value).true
     await wait
     expect(submitting.value).false
+  })
+
+  test('contains various parameters', async () => {
+    const { form, submitter } = useForm({
+      form: () => ({
+        field: 0,
+      }),
+      rule: {
+        field: value => value !== 1 || 'error',
+      },
+    })
+
+    const {
+      submit,
+    } = submitter(async ({
+      status,
+      reset,
+      // @ts-expect-error expected undefined
+      submitter,
+    }) => {
+      await new Promise(resolve => setTimeout(resolve, 100))
+      reset()
+      expect(submitter).undefined
+      return status.field.isDirty
+    })
+
+    form.field = 2
+    await nextTick()
+
+    await expect(submit()).resolves.toBe(false)
+    expect(form.field).toBe(0)
   })
 })

@@ -34,16 +34,18 @@ export function useForm<FormT extends {}>(param: {
   const status = reactive({} as Record<PropertyKey, StatusItem>)
   initStatus<FormT>(status, form, initialForm, formDefaultMessage, formRule)
 
-  const formData: UseFormReturn<FormT> = {
+  const formData = {
     form,
     status: readonly(status) as any,
     dirtyFields: useDirtyFields(form, status),
     isError: useIsError(status),
-    submitter: createSubmitter(() => formData),
     ...createControl(formBuilder, initialForm, form, status),
   }
 
-  return formData
+  return {
+    ...formData,
+    submitter: createSubmitter(() => formData),
+  }
 }
 
 function createControl<FormT extends {}>(
