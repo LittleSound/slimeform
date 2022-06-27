@@ -41,6 +41,7 @@ export interface UseFormReturn<FormT> {
   /**
    * Submit form
    * Verify before submitting, and execute callback if passed
+   * @deprecated use `submitter` instead of it
    */
   onSubmit: (callback: () => unknown) => unknown
 

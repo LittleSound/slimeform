@@ -188,7 +188,7 @@ import { isRequired } from '~/util/formRules.ts'
 const {
   form,
   status,
-  onSubmit,
+  submitter,
   clearErrors,
   isError,
   verify
@@ -212,13 +212,13 @@ const {
   },
 })
 
-function mySubmit() {
+const { submit } = submitter(() => {
   alert(`Age: ${form.age} \n Name: ${form.name}`)
-}
+})
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit(mySubmit)">
+  <form @submit.prevent="submit">
     <!-- ... -->
   </form>
 </template>
@@ -397,7 +397,7 @@ const { form, status } = useForm({
 ```vue
 <template>
   <h3>请输入你的年龄</h3>
-  <form @submit.prevent="onSubmit(mySubmit)">
+  <form @submit.prevent="submitFn">
     <label>
       <input
         v-model="form.age"
