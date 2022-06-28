@@ -1,8 +1,8 @@
-import { isPromise } from 'util/types'
 import { ref } from 'vue'
 import type { UseFormReturn } from './type/form'
 import type { CreateSubmitOptions, CreateSubmitReturn, SubmitFunction, Submitter } from './type/submitter'
 import { invoke } from './util/invoke'
+import { isPromise } from './util/is'
 
 export function createSubmit<FormT extends {}, FnT extends SubmitFunction<FormT>>(
   formData: UseFormReturn<FormT>,
