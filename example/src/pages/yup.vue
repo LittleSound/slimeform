@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useForm } from 'slimeform'
-import { yupFieldRule } from 'slimeform/resolvers'
+import { yupAsyncFieldRule, yupFieldRule } from 'slimeform/resolvers'
 import * as yup from 'yup'
 import RouteNav from '~/components/RouteNav.vue'
 
@@ -8,9 +8,7 @@ const local = ref('en')
 
 /** mock i18n `t` function */
 const mockT = (_: string) => local.value === 'en' ? 'Valid age up to 120 years old' : '有效年龄至 120 岁'
-yup.object({
 
-})
 const { form, status } = useForm({
   form: () => ({
     age: '',
@@ -26,6 +24,24 @@ const { form, status } = useForm({
         .max(120, () => mockT('xxx_i18n_key'))
         .integer()
         .nullable(),
+      ),
+    ],
+    asyncTest: [
+      yupFieldRule(yup
+        .string()
+        .required(() => local.value === 'en' ? 'Required' : '必填'),
+      ),
+      yupAsyncFieldRule(yup
+        .number()
+        .integer()
+        .test(
+          'is-42',
+          'this isn\'t the number i want',
+          async (value: any) => {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            return value !== 111
+          },
+        ),
       ),
     ],
   },
@@ -97,6 +113,7 @@ const { form, status } = useForm({
         <div>
           <p>Value: {{ form.asyncTest }}</p>
           <p>isDirty: {{ status.asyncTest.isDirty }}</p>
+          <p>verifying: {{ status.asyncTest.verifying }}</p>
           <p>isError: {{ status.asyncTest.isError }}</p>
           <p>message: {{ status.asyncTest.message }}</p>
         </div>

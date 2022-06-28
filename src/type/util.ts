@@ -6,3 +6,5 @@ export type BaseType =
 | boolean
 | symbol
 | bigint
+
+export type OnCleanup = (cleanupFn: () => void) => void

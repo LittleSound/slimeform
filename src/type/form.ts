@@ -1,7 +1,8 @@
 import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
+import type { OnCleanup } from './util'
 
-export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
+export type RuleItem<ValueT = any> = (val: ValueT, onCleanup?: OnCleanup) => boolean | string | Promise<boolean | string>
 
 export type UseFormBuilder<Form extends {} = {}> = () => Form
 export type UseFormRule<FormT extends {}> = {
