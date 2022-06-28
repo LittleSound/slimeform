@@ -55,7 +55,7 @@ function mySubmit() {
         Clear Errors
       </button>
 
-      <button text-sm btn type="button" @click="reset">
+      <button text-sm btn type="button" @click="reset()">
         Reset
       </button>
 
