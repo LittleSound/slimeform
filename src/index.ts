@@ -5,6 +5,7 @@ import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
 import type { UseFormBuilder, UseFormDefaultMessage, UseFormParam, UseFormReturn } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
+import { createSubmitter } from './submitter'
 
 const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
   defaultMessage: '',
@@ -26,12 +27,17 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
   const status = reactive({} as Record<PropertyKey, StatusItem>)
   initStatus<FormT>(status, form, initialForm, formDefaultMessage, formRule)
 
-  return {
+  const formData = {
     form,
     status: readonly(status) as any,
     dirtyFields: useDirtyFields(form, status),
     isError: useIsError(status),
     ...createControl(formBuilder, initialForm, form, status),
+  }
+
+  return {
+    ...formData,
+    submitter: createSubmitter(() => formData),
   }
 }
 
@@ -89,3 +95,5 @@ function createControl<FormT extends {}>(
     onSubmit,
   }
 }
+
+export * from './type'

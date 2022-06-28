@@ -190,7 +190,7 @@ import { isRequired } from '~/util/formRules.ts'
 const {
   form,
   status,
-  onSubmit,
+  submitter,
   clearErrors,
   isError,
   verify
@@ -214,13 +214,13 @@ const {
   },
 })
 
-function mySubmit() {
+const { submit } = submitter(() => {
   alert(`Age: ${form.age} \n Name: ${form.name}`)
-}
+})
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit(mySubmit)">
+  <form @submit.prevent="submit">
     <!-- ... -->
   </form>
 </template>
@@ -299,6 +299,54 @@ const { form, status } = useForm({
 </p>
 </details>
 
+### Submission
+
+`submitter` accepts a callback function as argument which returns the function that be able to triggered this callback function and a state variable that indicates the function is running. The callback function passed into `submitter` can get all the states and functions returned by the `useForm`, which allows you to put the callback function into separate code or even write generic submission functions for combination easily.
+
+```vue
+<script setup>
+import { useForm } from 'slimeform'
+
+const { _, submitter } = useForm(/* ... */)
+
+// Define the submit function
+const {
+  // trigger submit callback
+  submit,
+  // Indicates whether the asynchronous commit function is executing
+  submitting,
+} = submitter(async ({ form, status, isError, reset /* ... */ }) => {
+  // Submission Code
+  const res = await fetch(/* ... */)
+  // ....
+})
+</script>
+
+<template>
+  <form @submit.prevent="submit">
+    <!-- ... -->
+
+    <!-- Use `submitting` to disable buttons and add loading indicator -->
+    <button type="submit" :disabled="submitting">
+      <icon v-if="submitting" name="loading" />
+      Submit
+    </button>
+  </form>
+</template>
+```
+
+By default, the form rules validation will take place first after the `submit` function have been called, if the validation failed, the function call will be terminated immediately.
+If you want to turn off this behavior, you can configure `enableVerify: false` option in the second parameter `options` of the `submitter` to skip the validation.
+
+#### Wrap the generic submission code and use it later
+
+```ts
+import { mySubmitForm } from './myFetch.ts'
+const { _, submitter } = useForm(/* ... */)
+// Wrap the generic submission code and use it later
+const { submit, submitting } = submitter(mySubmitForm({ url: '/register', method: 'POST' }))
+```
+
 ## Integrations
 
 ### Using Yup as a rule
@@ -352,7 +400,7 @@ Some suggestions:
 ```vue
 <template>
   <h3>Please enter your age</h3>
-  <form @submit.prevent="onSubmit(mySubmit)">
+  <form @submit.prevent="submitFn">
     <label>
       <input
         v-model="form.age"
