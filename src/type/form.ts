@@ -10,6 +10,15 @@ export type UseFormRule<FormT extends {}> = {
 }
 export type UseFormDefaultMessage = string
 
+export interface UseFormParam<FormT> {
+  /** Initial form value */
+  form: UseFormBuilder<FormT>
+  /** Verification rules */
+  rule?: UseFormRule<FormT>
+  /** Default error message */
+  defaultMessage?: UseFormDefaultMessage
+}
+
 export interface UseFormReturn<FormT> {
   /* state */
 

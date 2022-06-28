@@ -3,7 +3,7 @@ import type { Ref, UnwrapNestedRefs } from 'vue'
 import { isHasOwn } from './util/is'
 import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
-import type { UseFormBuilder, UseFormDefaultMessage, UseFormReturn, UseFormRule } from './type/form'
+import type { UseFormBuilder, UseFormDefaultMessage, UseFormParam, UseFormReturn } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
 import { createSubmitter } from './submitter'
 
@@ -17,14 +17,7 @@ const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
  * @param param Form and Rule object
  * @returns Form and Form Status
  */
-export function useForm<FormT extends {}>(param: {
-  /** Initial form value */
-  form: UseFormBuilder<FormT>
-  /** Verification rules */
-  rule?: UseFormRule<FormT>
-  /** Default error message */
-  defaultMessage?: UseFormDefaultMessage
-}): UseFormReturn<FormT> {
+export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormReturn<FormT> {
   const options = Object.assign({}, defaultParam, param)
   const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage } = options
 
