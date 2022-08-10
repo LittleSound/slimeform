@@ -110,6 +110,35 @@ test('useForm dirtyFields', () => {
   expect(wr.dirtyFields).toEqual({ a: 11, b: { c: 5 } })
 })
 
+// 确保重制后的修改检查依然是正确的
+// Ensure that the modification checks are still correct after the remake
+test('useForm reset dirtyFields', async () => {
+  const wr = useSetup(() => {
+    const { form, status, reset, dirtyFields } = useForm({
+      form: () => ({
+        a: {
+          b: '',
+        },
+      }),
+    })
+    return { form, status, reset, dirtyFields }
+  })
+
+  expect(wr.dirtyFields).toEqual({})
+
+  wr.form.a.b = '1'
+  await nextTick()
+
+  wr.reset()
+  await nextTick()
+  expect(wr.dirtyFields).toEqual({})
+
+  wr.form.a.b = '2'
+  await nextTick()
+  expect(wr.status.a.isDirty).toBe(true)
+  expect(wr.dirtyFields).toEqual({ a: { b: '2' } })
+})
+
 test('useIsError', () => {
   expect(useIsError).toBeDefined()
 

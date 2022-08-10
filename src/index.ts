@@ -63,6 +63,7 @@ function createControl<FormT extends {}>(
 
   const reset = (...fields: PropertyKey[]) => {
     initialForm.value = formBuilder()
+    const newForm = formBuilder()
 
     const needReset = (field: PropertyKey) => fields.length === 0 || fields.includes(field)
 
@@ -73,9 +74,9 @@ function createControl<FormT extends {}>(
       if (!isHasOwn(form, key))
         continue
 
-      if (isHasOwn(initialForm.value, key)) {
+      if (isHasOwn(newForm, key)) {
         status[key]._ignoreUpdate(() => {
-          form[key] = (initialForm.value as any)[key] as any
+          form[key] = (newForm as any)[key] as any
         })
 
         status[key].clearError()
