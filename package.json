@@ -1,6 +1,6 @@
 {
   "name": "slimeform",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "description": "Form state management and validation for Vue3",
   "author": {
