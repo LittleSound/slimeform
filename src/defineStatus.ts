@@ -1,6 +1,6 @@
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
-import type { RuleItem, UseFormDefaultMessage, UseFormRule } from './type/form'
+import type { RuleItem, UseFormDefaultMessage, UseFormLazy, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
 import { invoke } from './util/invoke'
@@ -12,6 +12,7 @@ export function initStatus<FormT extends {}>(
   formObj: UnwrapNestedRefs<FormT>,
   initialForm: Ref<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
+  formLazy: UseFormLazy,
   formRule?: UseFormRule<FormT>,
 ) {
   for (const key in formObj) {
@@ -28,7 +29,7 @@ export function initStatus<FormT extends {}>(
       message: formDefaultMessage,
       isError: false,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
-      ...statusControl(key, status, formObj, fieldRules, formDefaultMessage),
+      ...statusControl(key, status, formObj, fieldRules, formDefaultMessage, formLazy),
     })
   }
 }
@@ -39,6 +40,7 @@ function statusControl<FormT extends {}>(
   formObj: UnwrapNestedRefs<FormT>,
   fieldRules: RuleItem<any>[] | undefined,
   formDefaultMessage: UseFormDefaultMessage,
+  formLazy: UseFormLazy,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
@@ -74,8 +76,11 @@ function statusControl<FormT extends {}>(
 
   // Initialization rule check
   const init = () => {
-    // Determine if it has been initialized
-    if (!fieldRules || stopEffect)
+    if (
+      !fieldRules
+      || stopEffect // Determine if it has been initialized
+      || formLazy
+    )
       return
 
     // monitor changes

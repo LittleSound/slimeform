@@ -392,6 +392,37 @@ describe('useForm', () => {
 
     wrapper.unmount()
   })
+
+  it('can be lazy so that rule won\'t be automaticlly verified when data changes', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status, isError, verify, dirtyFields } = useForm({
+        form: () => ({
+          name: '',
+          age: '',
+        }),
+        rule: {
+          age: val => !isNaN(+val) || 'expect numbers',
+        },
+        lazy: true,
+      })
+      return { form, status, isError, verify, dirtyFields }
+    })
+
+    wrapper.form.age = 'abc'
+    expect(wrapper.status.age.isDirty).toBe(true)
+
+    await nextTick()
+
+    expect(wrapper.status.age.isError).toBe(false)
+    expect(wrapper.isError).toBe(false)
+    expect(wrapper.status.age.message).toBe('')
+
+    wrapper.verify()
+
+    expect(wrapper.status.age.isError).toBe(true)
+    expect(wrapper.isError).toBe(true)
+    expect(wrapper.status.age.message).toBe('expect numbers')
+  })
 })
 
 describe('object type field', () => {

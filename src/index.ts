@@ -3,12 +3,13 @@ import type { Ref, UnwrapNestedRefs } from 'vue'
 import { isHasOwn } from './util/is'
 import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
-import type { UseFormBuilder, UseFormDefaultMessage, UseFormParam, UseFormReturn } from './type/form'
+import type { UseFormBuilder, UseFormDefaultMessage, UseFormLazy, UseFormParam, UseFormReturn } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
 import { createSubmitter } from './submitter'
 
-const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
+const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage; lazy: UseFormLazy }> = {
   defaultMessage: '',
+  lazy: false,
 }
 
 /**
@@ -19,13 +20,13 @@ const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage }> = {
  */
 export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormReturn<FormT> {
   const options = Object.assign({}, defaultParam, param)
-  const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage } = options
+  const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage, lazy: formLazy } = options
 
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>(formBuilder())
 
   const status = reactive({} as Record<PropertyKey, StatusItem>)
-  initStatus<FormT>(status, form, initialForm, formDefaultMessage, formRule)
+  initStatus<FormT>(status, form, initialForm, formDefaultMessage, formLazy, formRule)
 
   const formData = {
     form,

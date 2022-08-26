@@ -169,7 +169,7 @@ dirtyFields.value /* value: {} */
 
 ### Validating rules for form
 
-Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more then one rule, it can be declared by using function arrays.
+Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more than one rule, it can be declared by using function arrays.
 
 > You can also maintain your rule collections on your own, and import them where they are needed.
 
@@ -294,6 +294,38 @@ const { form, status } = useForm({
   // Placeholder content when there are no error message
   defaultMessage: '\u00A0',
 })
+```
+
+</p>
+</details>
+
+<details><summary>Lazy rule validation</summary>
+<p>
+
+You can set `lazy` to `true` to prevent rules from being automatically verified when data changes.
+
+In this case, consider call `verify()` or `status[fieldName].verify()` to manually validate fields.
+
+```ts
+const { form, status, verify } = useForm({
+  form: () => ({
+    userName: '',
+    /* ... */
+  }),
+
+  rule: {
+    userName: v => v.length < 3,
+  },
+
+  lazy: true,
+})
+
+form.userName = 'abc'
+status.userName.isError // false
+
+verify()
+
+status.userName.isError // true
 ```
 
 </p>

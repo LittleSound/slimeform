@@ -9,6 +9,7 @@ export type UseFormRule<FormT extends {}> = {
   readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
 }
 export type UseFormDefaultMessage = string
+export type UseFormLazy = boolean
 
 export interface UseFormParam<FormT> {
   /** Initial form value */
@@ -17,6 +18,13 @@ export interface UseFormParam<FormT> {
   rule?: UseFormRule<FormT>
   /** Default error message */
   defaultMessage?: UseFormDefaultMessage
+  /**
+   * Prevent rules from being automatically verified when data changes,
+   * Unless `verify()` or `status[fieldName].verify()` is called manually to validate the rule.
+   *
+   * @default false
+   * */
+  lazy?: UseFormLazy
 }
 
 export interface UseFormReturn<FormT> {

@@ -297,6 +297,38 @@ const { form, status } = useForm({
 </p>
 </details>
 
+<details><summary>规则懒校验</summary>
+<p>
+
+将 `lazy` 设置为 `true` 可以阻止数据变化时规则自动校验。
+
+此时, 可以考虑调用 `verify()` 或 `status[fieldName].verify()` 来手动校验字段。
+
+```ts
+const { form, status, verify } = useForm({
+  form: () => ({
+    userName: '',
+    /* ... */
+  }),
+
+  rule: {
+    userName: v => v.length < 3,
+  },
+
+  lazy: true,
+})
+
+form.userName = 'abc'
+status.userName.isError // false
+
+verify()
+
+status.userName.isError // true
+```
+
+</p>
+</details>
+
 ### 提交
 
 `submitter` 接受一个回调函数参数，返回触发这个回调函数的函数和表示函数运行中的状态变量；传入 `submitter` 的回调函数可以拿到 `useForm` 函数返回的所有状态和函数，这样可以将回调函数放到单独的代码中，甚至编写通用的提交函数，方便组合使用。
