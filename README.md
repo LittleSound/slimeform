@@ -299,6 +299,38 @@ const { form, status } = useForm({
 </p>
 </details>
 
+<details><summary>Lazy rule validation</summary>
+<p>
+
+You can set `lazy` to `true` to prevent rules from being automatically verified when data changes.
+
+In this case, consider call `verify()` or `status[fieldName].verify()` to manually validate the rule.
+
+```ts
+const { form, status, verify } = useForm({
+  form: () => ({
+    userName: '',
+    /* ... */
+  }),
+
+  rule: {
+    userName: v => v.length < 3,
+  },
+
+  lazy: true,
+})
+
+form.userName = 'abc'
+status.userName.isError // false
+
+verify()
+
+status.userName.isError // true
+```
+
+</p>
+</details>
+
 ### Submission
 
 `submitter` accepts a callback function as argument which returns the function that be able to triggered this callback function and a state variable that indicates the function is running. The callback function passed into `submitter` can get all the states and functions returned by the `useForm`, which allows you to put the callback function into separate code or even write generic submission functions for combination easily.
