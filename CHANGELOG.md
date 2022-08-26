@@ -2,6 +2,11 @@
 
 No unreleased changes.
 
+## 0.7.0
+
+- fix(pnpm-lock): fix dependent lock
+- feat(lazy option): support manual trigger only validate (#45)
+
 ## 0.6.1
 
 No unreleased changes.
