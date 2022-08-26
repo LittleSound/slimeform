@@ -76,12 +76,15 @@ function statusControl<FormT extends {}>(
 
   // Initialization rule check
   const init = () => {
-    // Determine if it has been initialized
-    if (!fieldRules || stopEffect)
+    if (
+      !fieldRules
+      || stopEffect // Determine if it has been initialized
+      || formLazy
+    )
       return
 
     // monitor changes
-    !formLazy && (stopEffect = watchEffect(ruleEffect))
+    stopEffect = watchEffect(ruleEffect)
   }
   // Begin validation when user input
   const { ignoreUpdates } = watchIgnorable(
