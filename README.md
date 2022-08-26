@@ -169,7 +169,7 @@ dirtyFields.value /* value: {} */
 
 ### Validating rules for form
 
-Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more then one rule, it can be declared by using function arrays.
+Use `rule` to define the validation rules for form fields. The verification process will be take placed automatically when values of fields have been changed, the validation result will be stored and provided in `status[key].isError` and `status[key].message` properties. If one fields requires more than one rule, it can be declared by using function arrays.
 
 > You can also maintain your rule collections on your own, and import them where they are needed.
 
