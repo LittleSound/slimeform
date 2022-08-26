@@ -18,7 +18,12 @@ export interface UseFormParam<FormT> {
   rule?: UseFormRule<FormT>
   /** Default error message */
   defaultMessage?: UseFormDefaultMessage
-  /** Default error message */
+  /**
+   * Prevent rules from being automatically verified when data changes,
+   * Unless `verify()` or `status[fieldName].verify()` is called manually to validate the rule.
+   *
+   * @default false
+   * */
   lazy?: UseFormLazy
 }
 
