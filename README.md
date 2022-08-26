@@ -304,7 +304,7 @@ const { form, status } = useForm({
 
 You can set `lazy` to `true` to prevent rules from being automatically verified when data changes.
 
-In this case, consider call `verify()` or `status[fieldName].verify()` to manually validate the rule.
+In this case, consider call `verify()` or `status[fieldName].verify()` to manually validate fields.
 
 ```ts
 const { form, status, verify } = useForm({

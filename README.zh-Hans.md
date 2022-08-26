@@ -302,7 +302,7 @@ const { form, status } = useForm({
 
 将 `lazy` 设置为 `true` 可以阻止数据变化时规则自动校验。
 
-此时, 可以考虑调用 `verify()` 或 `status[fieldName].verify()` 来手动校验规则。
+此时, 可以考虑调用 `verify()` 或 `status[fieldName].verify()` 来手动校验字段。
 
 ```ts
 const { form, status, verify } = useForm({
