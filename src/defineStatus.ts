@@ -1,5 +1,5 @@
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
-import { computed, reactive, watchEffect } from 'vue'
+import { computed, reactive, readonly, watchEffect } from 'vue'
 import type { RuleItem, UseFormDefaultMessage, UseFormLazy, UseFormRule } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
@@ -60,11 +60,13 @@ function statusControl<FormT extends {}>(
     }
   }
 
+  const readonlyForm = readonly(formObj)
+
   function ruleEffect() {
     // Traverse the ruleset and check the rules
 
     for (const rule of fieldRules || []) {
-      const result = rule(formObj[key])
+      const result = rule(formObj[key], readonlyForm)
 
       if (parseError(result))
         break

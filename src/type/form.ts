@@ -2,16 +2,16 @@ import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
 import type { Submitter } from './submitter'
 
-export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
+export type RuleItem<ValueT = unknown, FormT = unknown> = ((val: ValueT, full: DeepReadonly<FormT>) => boolean | string)
 
-export type UseFormBuilder<Form extends {} = {}> = () => Form
-export type UseFormRule<FormT extends {}> = {
-  readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
+export type UseFormBuilder<Form extends object> = () => Form
+export type UseFormRule<FormT> = {
+  readonly [K in keyof FormT]?: RuleItem<FormT[K], FormT> | RuleItem<FormT[K], FormT>[]
 }
 export type UseFormDefaultMessage = string
 export type UseFormLazy = boolean
 
-export interface UseFormParam<FormT> {
+export interface UseFormParam<FormT extends object> {
   /** Initial form value */
   form: UseFormBuilder<FormT>
   /** Verification rules */
@@ -27,7 +27,7 @@ export interface UseFormParam<FormT> {
   lazy?: UseFormLazy
 }
 
-export interface UseFormReturn<FormT> {
+export interface UseFormReturn<FormT extends object> {
   /* state */
 
   /** form object */
