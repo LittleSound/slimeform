@@ -423,6 +423,24 @@ describe('useForm', () => {
     expect(wrapper.isError).toBe(true)
     expect(wrapper.status.age.message).toBe('expect numbers')
   })
+
+  it('returns the rule object', async () => {
+    const wrapper = useSetup(() => {
+      const { form, rule } = useForm({
+        form: () => ({
+          name: '',
+          age: '',
+        }),
+        rule: {
+          age: val => !isNaN(+val) || 'expect numbers',
+        },
+        lazy: true,
+      })
+      return { form, rule }
+    })
+
+    expect(wrapper.rule.age.validate('abc')).toBe('expect numbers')
+  })
 })
 
 describe('object type field', () => {

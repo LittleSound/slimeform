@@ -27,6 +27,8 @@ export interface UseFormParam<FormT> {
   lazy?: UseFormLazy
 }
 
+export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, { validate: (v: any) => boolean | string }>
+
 export interface UseFormReturn<FormT> {
   /* state */
 
@@ -34,6 +36,8 @@ export interface UseFormReturn<FormT> {
   form: UnwrapNestedRefs<FormT>
   /** Form status */
   status: FormStatus<FormT>
+
+  rule: UseFormReturnRule<FormT>
 
   /* getter */
 

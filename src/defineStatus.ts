@@ -1,10 +1,9 @@
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
-import type { RuleItem, UseFormDefaultMessage, UseFormLazy, UseFormRule } from './type/form'
+import type { UseFormDefaultMessage, UseFormLazy } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
-import { invoke } from './util/invoke'
-import { isFunction, isHasOwn, isObjectType } from './util/is'
+import { isHasOwn, isObjectType } from './util/is'
 import { watchIgnorable } from './util/watchIgnorable'
 
 export function initStatus<FormT extends {}>(
@@ -13,23 +12,17 @@ export function initStatus<FormT extends {}>(
   initialForm: Ref<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
-  formRule?: UseFormRule<FormT>,
+  rule: Record<PropertyKey, { validate: (v: any) => boolean | string }>,
 ) {
   for (const key in formObj) {
     if (!isHasOwn(formObj, key))
       continue
 
-    // Functions or arrays of functions are allowed
-    const fieldRules = invoke(() => {
-      const formRuleItem = formRule?.[key] as RuleItem | RuleItem[] | undefined
-      return isFunction(formRuleItem) ? [formRuleItem] : formRuleItem
-    })
-
     status[key] = reactive({
       message: formDefaultMessage,
       isError: false,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
-      ...statusControl(key, status, formObj, fieldRules, formDefaultMessage, formLazy),
+      ...statusControl(key, status, formObj, formDefaultMessage, formLazy, rule),
     })
   }
 }
@@ -38,9 +31,9 @@ function statusControl<FormT extends {}>(
   key: keyof UnwrapNestedRefs<FormT>,
   status: Record<PropertyKey, StatusItem>,
   formObj: UnwrapNestedRefs<FormT>,
-  fieldRules: RuleItem<any>[] | undefined,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
+  rule: Record<PropertyKey, { validate: (v: any) => boolean | string }>,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
@@ -60,15 +53,10 @@ function statusControl<FormT extends {}>(
     }
   }
 
+  const ruleForKey = rule[key]
+
   function ruleEffect() {
-    // Traverse the ruleset and check the rules
-
-    for (const rule of fieldRules || []) {
-      const result = rule(formObj[key])
-
-      if (parseError(result))
-        break
-    }
+    ruleForKey && parseError(ruleForKey.validate(formObj[key]))
   }
 
   /** Used to stop watchEffect */
@@ -77,15 +65,16 @@ function statusControl<FormT extends {}>(
   // Initialization rule check
   const init = () => {
     if (
-      !fieldRules
-      || stopEffect // Determine if it has been initialized
+      !ruleForKey
       || formLazy
+      || stopEffect // Determine if it has been initialized
     )
       return
 
     // monitor changes
     stopEffect = watchEffect(ruleEffect)
   }
+
   // Begin validation when user input
   const { ignoreUpdates } = watchIgnorable(
     () => formObj[key],
