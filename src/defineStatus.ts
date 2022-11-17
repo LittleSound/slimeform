@@ -1,6 +1,6 @@
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
-import type { UseFormDefaultMessage, UseFormLazy } from './type/form'
+import type { UseFormDefaultMessage, UseFormLazy, UseFormReturnRuleItem } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
 import { isHasOwn, isObjectType } from './util/is'
@@ -12,7 +12,7 @@ export function initStatus<FormT extends {}>(
   initialForm: Ref<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
-  rule: Record<PropertyKey, { validate: (v: any) => boolean | string }>,
+  rule: Record<PropertyKey, UseFormReturnRuleItem>,
 ) {
   for (const key in formObj) {
     if (!isHasOwn(formObj, key))
@@ -33,20 +33,18 @@ function statusControl<FormT extends {}>(
   formObj: UnwrapNestedRefs<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
-  rule: Record<PropertyKey, { validate: (v: any) => boolean | string }>,
+  rule: Record<PropertyKey, UseFormReturnRuleItem>,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
     status[key].isError = isError
   }
 
-  function parseError(result: string | boolean) {
-    // result as string or falsity
-    // Exit validation on error
-    if (!result || typeof result === 'string') {
-      setError(result || formDefaultMessage)
+  function parseError(valid: boolean, message: string | null) {
+    if (!valid) {
+      setError(message || formDefaultMessage)
       return true
-    } // no errors
+    }
     else {
       setError(formDefaultMessage, false)
       return false
@@ -56,7 +54,10 @@ function statusControl<FormT extends {}>(
   const ruleForKey = rule[key]
 
   function ruleEffect() {
-    ruleForKey && parseError(ruleForKey.validate(formObj[key]))
+    if (!ruleForKey)
+      return
+    const { valid, message } = ruleForKey.validate(formObj[key], { fullResult: true })
+    parseError(valid, message)
   }
 
   /** Used to stop watchEffect */

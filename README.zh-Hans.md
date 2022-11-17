@@ -346,10 +346,18 @@ const { form, rule } = useForm({
   },
 })
 
-const myUserName = 'abcd'
-if (rule.userName.validate(myUserName) === true) {
-  form.userName = myUserName // won't pass into form
+const text = 'abcd'
+const isValid = rule.userName.validate(text) // false
+if (isValid) {
+  form.userName = text
 }
+```
+
+您还可以获取到该字段的错误信息，方法是在第二个选项参数里传入 `fullResult: true`。此时该方法会返回一个带有错误信息的对象。
+
+```ts
+rule.userName.validate('abcd', { fullResult: true }) // { valid: false, message: "to many characters" }
+rule.userName.validate('abc', { fullResult: true }) // { valid: true, message: null }
 ```
 
 </p>

@@ -27,7 +27,12 @@ export interface UseFormParam<FormT> {
   lazy?: UseFormLazy
 }
 
-export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, { validate: (v: any) => boolean | string }>
+export interface ValidateOptions { fullResult?: boolean}
+export interface UseFormReturnRuleItem {
+  validate(v: any): boolean
+  validate(v: any, validateOptions?: ValidateOptions): { valid: boolean; message: string | null }
+}
+export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, UseFormReturnRuleItem>
 
 export interface UseFormReturn<FormT> {
   /* state */

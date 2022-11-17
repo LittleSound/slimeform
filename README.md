@@ -348,10 +348,18 @@ const { form, rule } = useForm({
   },
 })
 
-const myUserName = 'abcd'
-if (rule.userName.validate(myUserName) === true) {
-  form.userName = myUserName // won't pass into form
+const text = 'abcd'
+const isValid = rule.userName.validate(text) // false
+if (isValid) {
+  form.userName = text
 }
+```
+
+You can also get access to the error message by indicating `fullResult: true` in the second options argument, in which case an object containing the message will be returned.
+
+```ts
+rule.userName.validate('abcd', { fullResult: true }) // { valid: false, message: "to many characters" }
+rule.userName.validate('abc', { fullResult: true }) // { valid: true, message: null }
 ```
 
 </p>

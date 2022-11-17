@@ -1,4 +1,4 @@
-import type { RuleItem, UseFormReturnRule, UseFormRule } from './type'
+import type { RuleItem, UseFormReturnRule, UseFormRule, ValidateOptions } from './type'
 import { invoke } from './util/invoke'
 import { isFunction } from './util/is'
 
@@ -11,13 +11,20 @@ export function initRule<FormT extends {}>(formRule: UseFormRule<FormT> | undefi
       return isFunction(formRuleItem) ? [formRuleItem] : formRuleItem
     })
 
-    function validate(v: any) {
+    function validate(v: any): boolean
+    function validate(v: any, validateOptions?: ValidateOptions): { valid: boolean; message: string | null }
+
+    function validate(v: any, validateOptions: ValidateOptions = {}) {
+      const { fullResult } = validateOptions
       for (const r of fieldRules || []) {
         const result = r(v)
+        // result as string or falsity
+        // Exit validation on error
         if (!result || typeof result === 'string')
-          return result || ''
+          return fullResult ? { valid: false, message: result || '' } : false
       }
-      return true
+      // no errors
+      return fullResult ? { valid: true, message: null } : true
     }
 
     rule[key] = { validate }
