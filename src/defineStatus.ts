@@ -1,6 +1,6 @@
 import type { Ref, UnwrapNestedRefs, WatchStopHandle } from 'vue'
 import { computed, reactive, watchEffect } from 'vue'
-import type { UseFormDefaultMessage, UseFormLazy, UseFormReturnRuleItem } from './type/form'
+import type { UseFormDefaultMessage, UseFormLazy, UseFormReturnRule, UseFormReturnRuleItem } from './type/form'
 import type { StatusItem } from './type/formStatus'
 import { deepEqual } from './util/deepEqual'
 import { isHasOwn, isObjectType } from './util/is'
@@ -12,17 +12,19 @@ export function initStatus<FormT extends {}>(
   initialForm: Ref<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
-  rule: Record<PropertyKey, UseFormReturnRuleItem>,
+  rule: UseFormReturnRule<FormT>,
 ) {
   for (const key in formObj) {
     if (!isHasOwn(formObj, key))
       continue
 
+    const fieldRule = isHasOwn(rule, key) ? rule[key] : undefined
+
     status[key] = reactive({
       message: formDefaultMessage,
       isError: false,
       isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
-      ...statusControl(key, status, formObj, formDefaultMessage, formLazy, rule),
+      ...statusControl(key, status, formObj, formDefaultMessage, formLazy, fieldRule),
     })
   }
 }
@@ -33,7 +35,7 @@ function statusControl<FormT extends {}>(
   formObj: UnwrapNestedRefs<FormT>,
   formDefaultMessage: UseFormDefaultMessage,
   formLazy: UseFormLazy,
-  rule: Record<PropertyKey, UseFormReturnRuleItem>,
+  fieldRule?: UseFormReturnRuleItem,
 ) {
   function setError(message: string, isError = true) {
     status[key].message = message
@@ -51,12 +53,10 @@ function statusControl<FormT extends {}>(
     }
   }
 
-  const ruleForKey = rule[key]
-
   function ruleEffect() {
-    if (!ruleForKey)
+    if (!fieldRule)
       return
-    const { valid, message } = ruleForKey.validate(formObj[key], { fullResult: true })
+    const { valid, message } = fieldRule.validate(formObj[key], { fullResult: true })
     parseError(valid, message)
   }
 
@@ -66,7 +66,7 @@ function statusControl<FormT extends {}>(
   // Initialization rule check
   const init = () => {
     if (
-      !ruleForKey
+      !fieldRule
       || formLazy
       || stopEffect // Determine if it has been initialized
     )
