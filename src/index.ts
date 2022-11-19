@@ -26,7 +26,7 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>(formBuilder())
 
-  const rule = initRule(formRule)
+  const rule = initRule(formRule, formDefaultMessage)
 
   const status = reactive({} as Record<PropertyKey, StatusItem>)
   initStatus<FormT>(status, form, initialForm, formDefaultMessage, formLazy, rule)

@@ -42,22 +42,11 @@ function statusControl<FormT extends {}>(
     status[key].isError = isError
   }
 
-  function parseError(valid: boolean, message: string | null) {
-    if (!valid) {
-      setError(message || formDefaultMessage)
-      return true
-    }
-    else {
-      setError(formDefaultMessage, false)
-      return false
-    }
-  }
-
   function ruleEffect() {
     if (!fieldRule)
       return
-    const { valid, message } = fieldRule.validate(formObj[key], { fullResult: true })
-    parseError(valid, message)
+    const { message, valid } = fieldRule.validate(formObj[key], { fullResult: true })
+    setError(message, !valid)
   }
 
   /** Used to stop watchEffect */

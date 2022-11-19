@@ -29,7 +29,7 @@ export interface UseFormParam<FormT> {
 
 export interface ValidateOptions<FullResult = boolean> { fullResult?: FullResult }
 export interface UseFormReturnRuleItem {
-  validate<FullResult extends Readonly<boolean> = false>(v: any, validateOptions?: ValidateOptions<FullResult>): FullResult extends true ? { valid: boolean; message: string | null } : boolean
+  validate<FullResult extends Readonly<boolean> = false>(v: any, validateOptions?: ValidateOptions<FullResult>): FullResult extends true ? { valid: boolean; message: string } : boolean
 }
 export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, UseFormReturnRuleItem>
 

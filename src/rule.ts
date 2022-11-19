@@ -2,7 +2,7 @@ import type { RuleItem, UseFormReturnRule, UseFormRule, ValidateOptions } from '
 import { invoke } from './util/invoke'
 import { isFunction } from './util/is'
 
-export function initRule<FormT extends {}>(formRule: UseFormRule<FormT> | undefined) {
+export function initRule<FormT extends {}>(formRule: UseFormRule<FormT> | undefined, defaultMessage: string) {
   const rule = {} as UseFormReturnRule<FormT>
 
   for (const key in formRule) {
@@ -12,7 +12,7 @@ export function initRule<FormT extends {}>(formRule: UseFormRule<FormT> | undefi
     })
 
     function validate(v: any): boolean
-    function validate(v: any, validateOptions?: ValidateOptions): { valid: boolean; message: string | null }
+    function validate(v: any, validateOptions?: ValidateOptions): { valid: boolean; message: string }
 
     function validate(v: any, validateOptions: ValidateOptions = {}) {
       const { fullResult } = validateOptions
@@ -21,10 +21,10 @@ export function initRule<FormT extends {}>(formRule: UseFormRule<FormT> | undefi
         // result as string or falsity
         // Exit validation on error
         if (!result || typeof result === 'string')
-          return fullResult ? { valid: false, message: result || '' } : false
+          return fullResult ? { valid: false, message: result || defaultMessage } : false
       }
       // no errors
-      return fullResult ? { valid: true, message: null } : true
+      return fullResult ? { valid: true, message: defaultMessage } : true
     }
 
     rule[key] = { validate }
