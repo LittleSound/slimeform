@@ -435,20 +435,16 @@ describe('useForm', () => {
           age: val => !isNaN(+val) || 'expect numbers',
           name: v => v.length < 3 || 'to many characters',
         },
-        lazy: true,
       })
-
-      const myUserName = 'abcd'
-      if (rule.name.validate(myUserName) === true)
-        form.name = myUserName // won't pass into form
-
       return { form, rule }
     })
 
     expect(wrapper.rule.age.validate(20)).toBe(true)
     expect(wrapper.rule.age.validate(20, { fullResult: true })).toStrictEqual({ valid: true, message: null })
+    expect(wrapper.rule.age.validate(20, { fullResult: false })).toEqual(true)
     expect(wrapper.rule.age.validate('abc')).toBe(false)
     expect(wrapper.rule.age.validate('abc', { fullResult: true })).toStrictEqual({ valid: false, message: 'expect numbers' })
+    expect(wrapper.rule.age.validate('abc', { fullResult: false })).toEqual(false)
   })
 })
 
