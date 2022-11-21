@@ -27,9 +27,13 @@ export interface UseFormParam<FormT> {
   lazy?: UseFormLazy
 }
 
-export interface ValidateOptions<FullResult = boolean> { fullResult?: FullResult }
+export interface ValidateOptions<FullResult extends boolean> { fullResult?: FullResult }
+export interface ValidateResult { valid: boolean; message: string }
+
 export interface UseFormReturnRuleItem {
-  validate<FullResult extends Readonly<boolean> = false>(v: any, validateOptions?: ValidateOptions<FullResult>): FullResult extends true ? { valid: boolean; message: string } : boolean
+  validate(value: any): boolean
+  validate(value: any, options: ValidateOptions<false>): boolean
+  validate(value: any, options: ValidateOptions<true>): ValidateResult
 }
 export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, UseFormReturnRuleItem>
 
