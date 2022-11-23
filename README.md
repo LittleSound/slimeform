@@ -331,6 +331,40 @@ status.userName.isError // true
 </p>
 </details>
 
+<details><summary><code>rule</code> in return value of <code>useForm()</code></summary>
+<p>
+
+Slimeform provides `rule` in return value of `useForm()`, which can be used to validate data not included in form. This can be useful if you want to make sure anything passing into form is valid.
+
+```ts
+const { form, rule } = useForm({
+  form: () => ({
+    userName: '',
+    /* ... */
+  }),
+
+  rule: {
+    userName: v => v.length < 3 || 'to many characters',
+  },
+})
+
+const text = 'abcd'
+const isValid = rule.userName.validate(text) // false
+if (isValid) {
+  form.userName = text
+}
+```
+
+You can also get access to the error message by indicating `fullResult: true` in the second options argument, in which case an object containing the message will be returned.
+
+```ts
+rule.userName.validate('abcd', { fullResult: true }) // { valid: false, message: "to many characters" }
+rule.userName.validate('abc', { fullResult: true }) // { valid: true, message: null }
+```
+
+</p>
+</details>
+
 ### Submission
 
 `submitter` accepts a callback function as argument which returns the function that be able to triggered this callback function and a state variable that indicates the function is running. The callback function passed into `submitter` can get all the states and functions returned by the `useForm`, which allows you to put the callback function into separate code or even write generic submission functions for combination easily.
