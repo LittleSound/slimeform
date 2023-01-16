@@ -564,4 +564,53 @@ describe('object type field', () => {
     expect(wr.status.obj.isError).true
     expect(wr.status.obj.message).toBe('need truthy')
   })
+
+  // rule callback 可以通过 full 参数获取表单其它的值
+  it('rule callback full params', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status, isError } = useForm({
+        form: () => ({
+          password1: '',
+          password2: '',
+        }),
+        rule: {
+          password1: val => !!val || 'required',
+          password2: (val, full) => full.password1 === val || 'no equal',
+        },
+      })
+      return { form, status, isError }
+    })
+
+    await nextTick()
+    // age
+    expect(wrapper.status.password1.isError).false
+    expect(wrapper.status.password1.message).toBe('')
+    // name
+    expect(wrapper.status.password2.isError).false
+    expect(wrapper.status.password2.message).toBe('')
+    // any error
+    expect(wrapper.isError).false
+
+    wrapper.form.password1 = '123456'
+    await nextTick()
+    expect(wrapper.status.password2.isError).false
+    expect(wrapper.status.password2.message).toBe('')
+
+    wrapper.form.password1 = ''
+    await nextTick()
+    expect(wrapper.status.password2.isError).false
+    expect(wrapper.status.password2.message).toBe('')
+
+    wrapper.form.password2 = '654321'
+    await nextTick()
+    expect(wrapper.status.password2.isError).true
+    expect(wrapper.status.password2.message).toBe('no equal')
+
+    wrapper.form.password1 = '654321'
+    await nextTick()
+    expect(wrapper.status.password2.isError).false
+    expect(wrapper.status.password2.message).toBe('')
+
+    wrapper.unmount()
+  })
 })

@@ -15,6 +15,6 @@ export interface StatusItem {
   _ignoreUpdate: IgnoredUpdater
 }
 
-export type FormStatus<FormT extends {}> = {
+export type FormStatus<FormT> = {
   readonly [K in keyof FormT]: StatusItem
 }
