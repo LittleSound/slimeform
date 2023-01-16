@@ -329,6 +329,40 @@ status.userName.isError // true
 </p>
 </details>
 
+<details><summary><code>useForm()</code> 返回的 <code>rule</code></summary>
+<p>
+
+Slimeform 在 `useForm()` 的返回值中提供了 `rule`, 该字段可以校验表单外的数据。如果您想确保数据在传入表单之前一定是满足规则的，那么这个字段是很有用的。
+
+```ts
+const { form, rule } = useForm({
+  form: () => ({
+    userName: '',
+    /* ... */
+  }),
+
+  rule: {
+    userName: v => v.length < 3 || 'to many characters',
+  },
+})
+
+const text = 'abcd'
+const isValid = rule.userName.validate(text) // false
+if (isValid) {
+  form.userName = text
+}
+```
+
+您还可以获取到该字段的错误信息，方法是在第二个选项参数里传入 `fullResult: true`。此时该方法会返回一个带有错误信息的对象。
+
+```ts
+rule.userName.validate('abcd', { fullResult: true }) // { valid: false, message: "to many characters" }
+rule.userName.validate('abc', { fullResult: true }) // { valid: true, message: null }
+```
+
+</p>
+</details>
+
 ### 提交
 
 `submitter` 接受一个回调函数参数，返回触发这个回调函数的函数和表示函数运行中的状态变量；传入 `submitter` 的回调函数可以拿到 `useForm` 函数返回的所有状态和函数，这样可以将回调函数放到单独的代码中，甚至编写通用的提交函数，方便组合使用。

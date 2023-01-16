@@ -2,6 +2,12 @@
 
 No unreleased changes.
 
+## 0.8.0
+
+- chore: update example demo
+- feat(rule): `rule` in return value of `useForm()`, validate a value before assigning it into form (#48)
+- chore: update vite dependencies
+
 ## 0.7.0
 
 - fix(pnpm-lock): fix dependent lock

@@ -27,13 +27,25 @@ export interface UseFormParam<FormT extends object> {
   lazy?: UseFormLazy
 }
 
-export interface UseFormReturn<FormT extends object> {
+export interface ValidateOptions<FullResult extends boolean> { fullResult?: FullResult }
+export interface ValidateResult { valid: boolean; message: string }
+
+export interface UseFormReturnRuleItem {
+  validate(value: any): boolean
+  validate(value: any, options: ValidateOptions<false>): boolean
+  validate(value: any, options: ValidateOptions<true>): ValidateResult
+}
+export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, UseFormReturnRuleItem>
+
+export interface UseFormReturn<FormT> {
   /* state */
 
   /** form object */
   form: UnwrapNestedRefs<FormT>
   /** Form status */
   status: FormStatus<FormT>
+
+  rule: UseFormReturnRule<FormT>
 
   /* getter */
 

@@ -6,6 +6,7 @@ import type { StatusItem } from './type/formStatus'
 import type { UseFormBuilder, UseFormDefaultMessage, UseFormLazy, UseFormParam, UseFormReturn } from './type/form'
 import { useDirtyFields, useIsError } from './getters'
 import { createSubmitter } from './submitter'
+import { initRule } from './rule'
 
 const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage; lazy: UseFormLazy }> = {
   defaultMessage: '',
@@ -25,8 +26,10 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>(formBuilder())
 
+  const rule = initRule(formRule, formDefaultMessage)
+
   const status = reactive({} as Record<PropertyKey, StatusItem>)
-  initStatus<FormT>(status, form, initialForm, formDefaultMessage, formLazy, formRule)
+  initStatus<FormT>(status, form, initialForm, formDefaultMessage, formLazy, rule)
 
   const formData = {
     form,
@@ -38,6 +41,7 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
 
   return {
     ...formData,
+    rule,
     submitter: createSubmitter(() => formData),
   }
 }
