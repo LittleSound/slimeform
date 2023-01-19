@@ -51,6 +51,8 @@ export interface UseFormReturn<FormT> {
 
   /** A object that only contains the modified `form` fields */
   dirtyFields: ComputedRef<DeepReadonly<UnwrapNestedRefs<Partial<FormT>>>>
+  /** Form is modified */
+  isDirty: ComputedRef<boolean>
   /** Whether any of form fields contain an errored validation result */
   isError: ComputedRef<boolean>
 

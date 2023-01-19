@@ -82,7 +82,7 @@ describe('useDirtyFields', () => {
 
 test('useForm dirtyFields', () => {
   const wr = useSetup(() => {
-    const { form, status, reset, dirtyFields } = useForm({
+    const { form, status, reset, dirtyFields, isDirty } = useForm({
       form: () => ({
         // The initial value is mutable
         a: 1,
@@ -91,40 +91,46 @@ test('useForm dirtyFields', () => {
         },
       }),
     })
-    return { form, status, reset, dirtyFields }
+    return { form, status, reset, dirtyFields, isDirty }
   })
 
   expect(wr.dirtyFields).toEqual({})
+  expect(wr.isDirty).false
 
   wr.form.a = 11
 
   expect(wr.dirtyFields).toEqual({ a: 11 })
+  expect(wr.isDirty).true
 
   wr.form.b.c = 3
   expect(wr.dirtyFields).toEqual({ a: 11, b: { c: 3 } })
+  expect(wr.isDirty).true
 
   wr.form.b = { c: 4 }
   expect(wr.dirtyFields).toEqual({ a: 11, b: { c: 4 } })
+  expect(wr.isDirty).true
 
   wr.form.b.c = 5
   expect(wr.dirtyFields).toEqual({ a: 11, b: { c: 5 } })
+  expect(wr.isDirty).true
 })
 
 // 确保重制后的修改检查依然是正确的
 // Ensure that the modification checks are still correct after the remake
 test('useForm reset dirtyFields', async () => {
   const wr = useSetup(() => {
-    const { form, status, reset, dirtyFields } = useForm({
+    const { form, status, reset, dirtyFields, isDirty } = useForm({
       form: () => ({
         a: {
           b: '',
         },
       }),
     })
-    return { form, status, reset, dirtyFields }
+    return { form, status, reset, dirtyFields, isDirty }
   })
 
   expect(wr.dirtyFields).toEqual({})
+  expect(wr.isDirty).false
 
   wr.form.a.b = '1'
   await nextTick()
@@ -132,11 +138,13 @@ test('useForm reset dirtyFields', async () => {
   wr.reset()
   await nextTick()
   expect(wr.dirtyFields).toEqual({})
+  expect(wr.isDirty).false
 
   wr.form.a.b = '2'
   await nextTick()
-  expect(wr.status.a.isDirty).toBe(true)
+  expect(wr.status.a.isDirty).true
   expect(wr.dirtyFields).toEqual({ a: { b: '2' } })
+  expect(wr.isDirty).true
 })
 
 test('useIsError', () => {

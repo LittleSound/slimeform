@@ -4,7 +4,7 @@ import { isHasOwn } from './util/is'
 import { initStatus } from './defineStatus'
 import type { StatusItem } from './type/formStatus'
 import type { UseFormBuilder, UseFormDefaultMessage, UseFormLazy, UseFormParam, UseFormReturn } from './type/form'
-import { useDirtyFields, useIsError } from './getters'
+import { useDirtyFields, useIsError, useIsFormDirty } from './getters'
 import { createSubmitter } from './submitter'
 import { initRule } from './rule'
 
@@ -31,10 +31,13 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
   const status = reactive({} as Record<PropertyKey, StatusItem>)
   initStatus<FormT>(status, form, initialForm, formDefaultMessage, formLazy, rule)
 
+  const dirtyFields = useDirtyFields(form, status)
+
   const formData = {
     form,
     status: readonly(status) as any,
-    dirtyFields: useDirtyFields(form, status),
+    dirtyFields,
+    isDirty: useIsFormDirty(dirtyFields),
     isError: useIsError(status),
     ...createControl(formBuilder, initialForm, form, status),
   }
