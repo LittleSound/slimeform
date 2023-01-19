@@ -55,7 +55,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.23.1",
+    "@antfu/eslint-config": "^0.34.1",
     "@iconify-json/carbon": "^1.1.5",
     "@iconify-json/noto-v1": "^1.1.1",
     "@types/jsdom": "^16.2.14",
