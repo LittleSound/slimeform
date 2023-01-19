@@ -2,6 +2,13 @@
 
 No unreleased changes.
 
+## 0.9.0
+
+- docs: the isDirty function for the entire form
+- chore: update typescript (#50)
+- feat: the isDirty function for the entire form (#49)
+- chore: add typecheck script
+
 ## 0.8.0
 
 - chore: update example demo
