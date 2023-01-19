@@ -1,11 +1,12 @@
 import type { ComputedRef, DeepReadonly, UnwrapNestedRefs } from 'vue'
 import type { FormStatus } from './formStatus'
 import type { Submitter } from './submitter'
+import type { UnknownObject } from './util'
 
 export type RuleItem<ValueT = any> = ((val: ValueT) => boolean | string)
 
-export type UseFormBuilder<Form extends {} = {}> = () => Form
-export type UseFormRule<FormT extends {}> = {
+export type UseFormBuilder<Form = UnknownObject> = () => Form
+export type UseFormRule<FormT = UnknownObject> = {
   readonly [K in keyof FormT]?: RuleItem<FormT[K]> | RuleItem<FormT[K]>[]
 }
 export type UseFormDefaultMessage = string
