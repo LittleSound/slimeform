@@ -105,8 +105,10 @@ const { form, status, reset, dirtyFields } = useForm({
 #### State management
 
 ```ts
-const { form, status, reset } = useForm(/* ... */)
+const { form, status, reset, isDirty } = useForm(/* ... */)
 
+// whether the form has been modified
+isDirty.value
 // whether the username has been modified
 status.username.isDirty
 // whether the password has been modified

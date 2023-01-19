@@ -104,8 +104,10 @@ const { form, status, reset, dirtyFields } = useForm({
 #### 状态管理
 
 ```ts
-const { form, status, reset } = useForm(/* ... */)
+const { form, status, reset, isDirty } = useForm(/* ... */)
 
+// 表单是否已经被修改
+isDirty.value
 // username 是否已经被修改
 status.username.isDirty
 // password 是否已经被修改
