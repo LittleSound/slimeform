@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useForm } from 'slimeform'
 
-const { form, status, reset, submitter, clearErrors, isError, rule } = useForm({
+const { form, status, reset, submitter, clearErrors, isError, rule, isDirty } = useForm({
   // Initial form value
   form: () => ({
     age: '',
@@ -98,11 +98,11 @@ function validatePreInput() {
         }}
       </button>
 
-      <button text-sm btn type="button" @click="clearErrors">
+      <button text-sm btn type="button" :disabled="!isError" @click="clearErrors">
         Clear Errors
       </button>
 
-      <button text-sm btn type="button" @click="reset()">
+      <button text-sm btn type="button" :disabled="!(isDirty || isError)" @click="reset()">
         Reset
       </button>
 

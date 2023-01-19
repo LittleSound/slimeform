@@ -1,7 +1,7 @@
 import type { UnwrapNestedRefs } from 'vue'
 import { computed, readonly } from 'vue'
 import type { StatusItem } from './type/formStatus'
-import { isHasOwn } from './util/is'
+import { isEmptyObject, isHasOwn } from './util/is'
 
 export function useDirtyFields<FormT extends {}>(
   form: UnwrapNestedRefs<FormT>,
@@ -29,4 +29,8 @@ export function useIsError(
     }
     return false
   })
+}
+
+export function useIsFormDirty(dirtyFields: ReturnType<typeof useDirtyFields>) {
+  return computed(() => !isEmptyObject(dirtyFields.value))
 }

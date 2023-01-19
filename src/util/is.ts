@@ -25,3 +25,5 @@ export const isBaseType = (value: unknown): value is BaseType =>
   || !isObjectType(value)
 
 export const isPromise = (obj: unknown) => Promise.resolve(obj) === obj
+
+export const isEmptyObject = (object: Object) => Object.keys(object).length === 0
