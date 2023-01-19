@@ -6,3 +6,6 @@ export type BaseType =
 | boolean
 | symbol
 | bigint
+
+export type AnyObject = Record<string, any>
+export type UnknownObject = Record<string, unknown>
