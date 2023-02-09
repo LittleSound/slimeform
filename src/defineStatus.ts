@@ -23,7 +23,13 @@ export function initStatus<FormT extends {}>(
     status[key] = reactive({
       message: formDefaultMessage,
       isError: false,
-      isDirty: computed(() => !deepEqual((initialForm.value as any)[key], formObj[key])),
+      isDirty: computed(() => {
+        const res = deepEqual((initialForm.value as any)[key], formObj[key])
+        if (res.pointersEqual)
+          console.error(new Error('[SlimeForm]: in useForm(...): The "form" parameter is an invalid factory function because a duplicate reference is returned. Maybe you need a deep copy of your initial value in the form function.'))
+
+        return !res.equal
+      }),
       ...statusControl(key, status, formObj, formDefaultMessage, formLazy, fieldRule),
     })
   }
