@@ -2,6 +2,11 @@
 
 No unreleased changes.
 
+## 0.9.1
+
+- chore: error message exclude the production
+- chore(deepEqual): error alert when objects are not copied in depth
+
 ## 0.9.0
 
 - docs: the isDirty function for the entire form
