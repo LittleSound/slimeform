@@ -25,8 +25,10 @@ export function initStatus<FormT extends {}>(
       isError: false,
       isDirty: computed(() => {
         const res = deepEqual((initialForm.value as any)[key], formObj[key])
-        if (res.pointersEqual)
-          console.error(new Error('[SlimeForm]: in useForm(...): The "form" parameter is an invalid factory function because a duplicate reference is returned. Maybe you need a deep copy of your initial value in the form function.'))
+        if (process.env.NODE_ENV !== 'production') {
+          if (res.pointersEqual)
+            console.error(new Error('[SlimeForm]: in useForm(...): The "form" parameter is an invalid factory function because a duplicate reference is returned. Maybe you need a deep copy of your initial value in the form function.'))
+        }
 
         return !res.equal
       }),
