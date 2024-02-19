@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { useForm } from 'slimeform'
 import { yupFieldRule } from 'slimeform/resolvers'
-import * as yup from 'yup'
+import { number, object, string } from 'yup'
 import RouteNav from '~/components/RouteNav.vue'
 
 const local = ref('en')
 
 /** mock i18n `t` function */
 const mockT = (_: string) => local.value === 'en' ? 'Valid age up to 120 years old' : '有效年龄至 120 岁'
-yup.object({
+object({
 
 })
 const { form, status } = useForm({
@@ -19,10 +19,10 @@ const { form, status } = useForm({
   }),
   rule: {
     age: [
-      yupFieldRule(yup.string()
+      yupFieldRule(string()
         .required(),
       ),
-      yupFieldRule(yup.number()
+      yupFieldRule(number()
         .max(120, () => mockT('xxx_i18n_key'))
         .integer()
         .nullable(),

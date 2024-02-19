@@ -1,12 +1,11 @@
-import type { BaseSchema, ValidationError } from 'yup'
-import type { AnyObject, ValidateOptions } from 'yup/lib/types'
+import type { Schema, ValidationError, AnyObject, ValidateOptions } from 'yup'
 
 export interface ResolverOptions {
   model?: 'validateSync' | 'validate'
 }
 
 /** yup field rule resolver */
-export const yupFieldRule = <SchemaT extends BaseSchema, TContext = {}>(
+export const yupFieldRule = <SchemaT extends Schema, TContext = {}>(
   fieldSchema: SchemaT,
   schemaOptions: ValidateOptions<TContext> = {},
 ) => {

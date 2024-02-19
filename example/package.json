@@ -1,7 +1,8 @@
 {
   "name": "slimeform-example",
+  "type": "module",
   "private": true,
-  "packageManager": "pnpm@7.0.0",
+  "packageManager": "pnpm@8.15.3",
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3333 --open",
@@ -10,12 +11,9 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.2",
     "slimeform": "workspace:*",
-    "@vueuse/core": "^8.4.2",
-    "vue": "^3.2.33",
-    "vue-router": "^4.0.15"
-  },
-  "eslintConfig": {
-    "extends": "@antfu"
+    "vue": "^3.4.19",
+    "vue-router": "^4.2.5"
   }
 }
