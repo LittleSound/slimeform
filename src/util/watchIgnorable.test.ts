@@ -1,8 +1,8 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { nextTick, ref } from 'vue'
 import { watchIgnorable } from './watchIgnorable'
 
-test('ignore async updates', async () => {
+it('ignore async updates', async () => {
   const source = ref(0)
   const target = ref(0)
   const { ignoreUpdates } = watchIgnorable(source, value => target.value = value)

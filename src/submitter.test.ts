@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { createSubmit } from './submitter'
 import { useForm } from '.'
@@ -14,7 +14,7 @@ describe('createSubmit', () => {
   })
   const { form } = formData
 
-  test('this should work', () => {
+  it('this should work', () => {
     const submitFn = vi.fn(() => 0)
 
     const { submit } = createSubmit(formData, submitFn)
@@ -28,7 +28,7 @@ describe('createSubmit', () => {
     expect(submitFn).toHaveBeenCalledTimes(1)
   })
 
-  test('skip rule validation', () => {
+  it('skip rule validation', () => {
     form.field = 1
 
     const submitFn = vi.fn(() => 0)
@@ -41,7 +41,7 @@ describe('createSubmit', () => {
     expect(submitFn).toHaveBeenCalledTimes(1)
   })
 
-  test('async submit', async () => {
+  it('async submit', async () => {
     form.field = 0
 
     const submitFn = vi.fn(async () => {
@@ -62,7 +62,7 @@ describe('createSubmit', () => {
     expect(submitFn).toHaveBeenCalledOnce()
   })
 
-  test('close `submitting` after async error', async () => {
+  it('close `submitting` after async error', async () => {
     form.field = 0
 
     const submitFn = vi.fn(async () => {
@@ -85,7 +85,7 @@ describe('createSubmit', () => {
 })
 
 describe('submitter in useForm', () => {
-  test('this should work', async () => {
+  it('this should work', async () => {
     const { form, submitter } = useForm({
       form: () => ({
         field: 0,
@@ -110,7 +110,7 @@ describe('submitter in useForm', () => {
     expect(submitting.value).false
   })
 
-  test('contains various parameters', async () => {
+  it('contains various parameters', async () => {
     const { form, submitter } = useForm({
       form: () => ({
         field: 0,

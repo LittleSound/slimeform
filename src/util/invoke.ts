@@ -4,5 +4,6 @@
  * @param args arguments
  * @returns result
  */
-export const invoke = <RetT = unknown, ArgsT extends any[] = unknown[]>
-  (func: (...ages: ArgsT) => RetT, ...args: ArgsT) => func(...args)
+export function invoke<RetT = unknown, ArgsT extends any[] = unknown[]>(func: (...ages: ArgsT) => RetT, ...args: ArgsT) {
+  return func(...args)
+}

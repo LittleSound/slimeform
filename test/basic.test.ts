@@ -1,6 +1,6 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { message } from '../src/constants'
 
-test('message contains \'Hello\'', () => {
+it('message contains \'Hello\'', () => {
   expect(message).toContain('Hello')
 })

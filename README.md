@@ -97,7 +97,9 @@ const { form, status, reset, dirtyFields } = useForm({
       <input v-model="form.username" type="text">
       <input v-model="form.password" type="text">
     </label>
-    <button type="submit">Submit</button>
+    <button type="submit">
+      Submit
+    </button>
   </form>
 </template>
 ```
@@ -178,9 +180,8 @@ Use `rule` to define the validation rules for form fields. The verification proc
 ```ts
 // formRules.ts
 function isRequired(value) {
-  if (value && value.trim()) {
+  if (value && value.trim())
     return true
-  }
 
   return t('required') // i18n support
 }
@@ -352,9 +353,8 @@ const { form, rule } = useForm({
 
 const text = 'abcd'
 const isValid = rule.userName.validate(text) // false
-if (isValid) {
+if (isValid)
   form.userName = text
-}
 ```
 
 You can also get access to the error message by indicating `fullResult: true` in the second options argument, in which case an object containing the message will be returned.
@@ -474,10 +474,12 @@ Some suggestions:
         v-model="form.age"
         type="text"
         :class="status.age.isError && '!border-red'"
-      />
+      >
       <p>{{ status.age.message }}</p>
     </label>
-    <button type="submit">Submit</button>
+    <button type="submit">
+      Submit
+    </button>
   </form>
 </template>
 ```

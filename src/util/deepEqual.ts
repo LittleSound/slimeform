@@ -1,6 +1,6 @@
 import { isBaseType, isDateObject } from './is'
 
-export interface DeepEqualReturn { equal: boolean; pointersEqual: boolean }
+export interface DeepEqualReturn { equal: boolean, pointersEqual: boolean }
 
 export function deepEqual(value1: any, value2: any): DeepEqualReturn {
   return deepEqualRecursion(value1, value2)

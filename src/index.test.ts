@@ -64,7 +64,7 @@ describe('useForm', () => {
   })
 
   // 规则验证在第一次值更改后开始工作
-  it('Rule validation starts working after the first value change', async () => {
+  it('rule validation starts working after the first value change', async () => {
     const wrapper = useSetup(() => {
       const { form, status, isError } = useForm({
         form: () => ({
@@ -125,7 +125,7 @@ describe('useForm', () => {
   })
 
   // 响应规则更改
-  it('Responding to rule changes', async () => {
+  it('responding to rule changes', async () => {
     const useI18n = () => {
       const local = ref('en')
       return {
@@ -176,7 +176,7 @@ describe('useForm', () => {
   })
 
   // 使用数组定义多个规则
-  it('Define multiple rules using an array', async () => {
+  it('define multiple rules using an array', async () => {
     const wrapper = useSetup(() => {
       const { form, status } = useForm({
         form: () => ({
@@ -208,7 +208,7 @@ describe('useForm', () => {
   })
 
   // 手动触发验证和清除错误
-  it('Manually trigger validation and clearErrors', async () => {
+  it('manually trigger validation and clearErrors', async () => {
     const wrapper = useSetup(() => {
       const { form, status, clearErrors, verify } = useForm({
         form: () => ({
@@ -364,7 +364,7 @@ describe('useForm', () => {
   })
 
   // 自定义表单校验信息占位内容
-  it('Customize the placeholder content of the validation message', async () => {
+  it('customize the placeholder content of the validation message', async () => {
     const wrapper = useSetup(() => {
       const { form, status } = useForm({
         form: () => ({

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import Counter from '../src/components/Counter.vue'
 
-describe('Counter.vue', () => {
+describe('counter.vue', () => {
   it('should render', () => {
     const wrapper = mount(Counter, { props: { initial: 10 } })
     expect(wrapper.text()).toContain('10')

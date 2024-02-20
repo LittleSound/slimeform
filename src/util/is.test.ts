@@ -1,7 +1,7 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { isPromise } from './is'
 
-test('isPromise', () => {
+it('isPromise', () => {
   const promise = new Promise(() => 1)
   expect(isPromise(promise)).toBe(true)
 

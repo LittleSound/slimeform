@@ -1,7 +1,7 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { invoke } from './invoke'
 
-test('invoke', async () => {
+it('invoke', async () => {
   expect(invoke(() => 'hello')).toBe('hello')
 
   expect(await invoke(async () => 'wait')).toBe('wait')

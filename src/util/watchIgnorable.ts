@@ -21,19 +21,16 @@ export function watchIgnorable<T, Immediate extends Readonly<boolean> = false>(
     },
     { ...options, flush: 'sync' },
   )
-  const stop = watch(source,
-    (...args) => {
-      const ignore = ignoreCount.value > 0
-        && ignoreCount.value === syncCount.value
+  const stop = watch(source, (...args) => {
+    const ignore = ignoreCount.value > 0
+      && ignoreCount.value === syncCount.value
 
-      ignoreCount.value = 0
-      syncCount.value = 0
+    ignoreCount.value = 0
+    syncCount.value = 0
 
-      if (!ignore)
-        cb(...args)
-    },
-    options,
-  )
+    if (!ignore)
+      cb(...args)
+  }, options)
   const ignoreUpdates: IgnoredUpdater = (updater) => {
     const prev = syncCount.value
     updater()

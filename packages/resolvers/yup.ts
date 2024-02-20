@@ -1,14 +1,11 @@
-import type { Schema, ValidationError, AnyObject, ValidateOptions } from 'yup'
+import type { AnyObject, Schema, ValidateOptions, ValidationError } from 'yup'
 
 export interface ResolverOptions {
   model?: 'validateSync' | 'validate'
 }
 
 /** yup field rule resolver */
-export const yupFieldRule = <SchemaT extends Schema, TContext = {}>(
-  fieldSchema: SchemaT,
-  schemaOptions: ValidateOptions<TContext> = {},
-) => {
+export function yupFieldRule<SchemaT extends Schema, TContext = {}>(fieldSchema: SchemaT, schemaOptions: ValidateOptions<TContext> = {}) {
   return (val: unknown) => {
     try {
       fieldSchema.validateSync(

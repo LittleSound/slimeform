@@ -3,16 +3,16 @@
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "isolatedModules": true,
     "paths": {
-      "~/*": ["./example/src/*"],
-    }
+      "~/*": ["./example/src/*"]
+    },
+    "strict": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "test/**/*", "packages/**/*"],
   "exclude": ["node_modules", "dist"]

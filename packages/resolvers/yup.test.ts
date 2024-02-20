@@ -1,11 +1,11 @@
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { nextTick, ref } from 'vue'
 import * as yup from 'yup'
 import { useForm } from '../../src'
 import { useSetup } from '../.test'
 import { yupFieldRule } from './yup'
 
-test('yupFieldRule', async () => {
+it('yupFieldRule', async () => {
   const wr = useSetup(() => {
     const local = ref('en')
     /** mock i18n `t` function */

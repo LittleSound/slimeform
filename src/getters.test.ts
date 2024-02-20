@@ -1,4 +1,4 @@
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick, reactive, watchEffect } from 'vue'
 import { useSetup } from '../packages/.test'
 import { useDirtyFields, useIsError } from './getters'
@@ -80,7 +80,7 @@ describe('useDirtyFields', () => {
   })
 })
 
-test('useForm dirtyFields', () => {
+it('useForm dirtyFields', () => {
   const wr = useSetup(() => {
     const { form, status, reset, dirtyFields, isDirty } = useForm({
       form: () => ({
@@ -117,7 +117,7 @@ test('useForm dirtyFields', () => {
 
 // 确保重制后的修改检查依然是正确的
 // Ensure that the modification checks are still correct after the remake
-test('useForm reset dirtyFields', async () => {
+it('useForm reset dirtyFields', async () => {
   const wr = useSetup(() => {
     const { form, status, reset, dirtyFields, isDirty } = useForm({
       form: () => ({
@@ -147,7 +147,7 @@ test('useForm reset dirtyFields', async () => {
   expect(wr.isDirty).true
 })
 
-test('useIsError', () => {
+it('useIsError', () => {
   expect(useIsError).toBeDefined()
 
   const status = reactive({

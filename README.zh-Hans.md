@@ -96,7 +96,9 @@ const { form, status, reset, dirtyFields } = useForm({
       <input v-model="form.username" type="text">
       <input v-model="form.password" type="text">
     </label>
-    <button type="submit">提交</button>
+    <button type="submit">
+      提交
+    </button>
   </form>
 </template>
 ```
@@ -176,9 +178,8 @@ dirtyFields.value /* value: {} */
 ```ts
 // formRules.ts
 export function isRequired(value) {
-  if (value && value.trim()) {
+  if (value && value.trim())
     return true
-  }
 
   return t('required') // i18n 支持
 }
@@ -350,9 +351,8 @@ const { form, rule } = useForm({
 
 const text = 'abcd'
 const isValid = rule.userName.validate(text) // false
-if (isValid) {
+if (isValid)
   form.userName = text
-}
 ```
 
 您还可以获取到该字段的错误信息，方法是在第二个选项参数里传入 `fullResult: true`。此时该方法会返回一个带有错误信息的对象。

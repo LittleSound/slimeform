@@ -8,7 +8,7 @@ import { useDirtyFields, useIsError, useIsFormDirty } from './getters'
 import { createSubmitter } from './submitter'
 import { initRule } from './rule'
 
-const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage; lazy: UseFormLazy }> = {
+const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage, lazy: UseFormLazy }> = {
   defaultMessage: '',
   lazy: false,
 }

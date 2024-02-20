@@ -24,17 +24,15 @@ export interface UseFormParam<FormT> {
    * Unless `verify()` or `status[fieldName].verify()` is called manually to validate the rule.
    *
    * @default false
-   * */
+   */
   lazy?: UseFormLazy
 }
 
 export interface ValidateOptions<FullResult extends boolean> { fullResult?: FullResult }
-export interface ValidateResult { valid: boolean; message: string }
+export interface ValidateResult { valid: boolean, message: string }
 
 export interface UseFormReturnRuleItem {
-  validate(value: any): boolean
-  validate(value: any, options: ValidateOptions<false>): boolean
-  validate(value: any, options: ValidateOptions<true>): ValidateResult
+  validate: ((value: any) => boolean) & ((value: any, options: ValidateOptions<false>) => boolean) & ((value: any, options: ValidateOptions<true>) => ValidateResult)
 }
 export type UseFormReturnRule<FormT> = Record<keyof UseFormRule<FormT>, UseFormReturnRuleItem>
 
