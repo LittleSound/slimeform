@@ -1,12 +1,15 @@
-import path, { resolve } from 'path'
+import path, { resolve } from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import Pages from 'vite-plugin-pages'
 
 export default defineConfig({
+  define: {
+    __DEV__: true,
+  },
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -41,8 +44,6 @@ export default defineConfig({
     // see unocss.config.ts for config
     Unocss(),
   ],
-
-  // https://github.com/vitest-dev/vitest
   test: {
     environment: 'jsdom',
   },
