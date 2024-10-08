@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/sponsors/LittleSound">
-    <img src="https://raw.githubusercontent.com/LittleSound/sponsors/main/sponsors.svg"/>
+    <img src="https://cdn.jsdelivr.net/gh/littlesound/sponsors/sponsors.svg"/>
   </a>
 </p>
 
@@ -29,9 +29,9 @@
   <a href="https://www.npmjs.com/package/slimeform">
     <img alt="Test" src="https://badgen.net/npm/v/slimeform">
   </a>
-  <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
+  <!-- <a href="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml">
     <img alt="Test" src="https://github.com/LittleSound/slimeform/actions/workflows/test.yaml/badge.svg">
-  </a>
+  </a> -->
   <a href="#在线尝试">
     <img alt="docs" src="https://img.shields.io/badge/-docs%20%26%20demos-1e8a7a">
   </a>
