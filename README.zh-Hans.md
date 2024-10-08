@@ -7,6 +7,21 @@
 </p>
 
 <h1 align="center">SlimeForm</h1>
+
+<p align="center">
+  <a href="https://github.com/sponsors/LittleSound">
+    <img src="https://raw.githubusercontent.com/LittleSound/sponsors/main/sponsors.svg"/>
+  </a>
+</p>
+
+<p align="center">
+  这个项目得以实现，要感谢所有支持我的工作的 Sponsors<br>
+  您可以在我的赞助商资料中加入他们：
+</p>
+<p align="center"><a href="https://github.com/sponsors/LittleSound"><img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86&style=for-the-badge" /></a></p>
+
+---
+
 <p align="center"><a href="https://github.com/LittleSound/slimeform">English</a> | 简体中文</p>
 
 <!-- 一些美丽的标签 -->
