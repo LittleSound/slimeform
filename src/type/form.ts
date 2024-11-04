@@ -27,7 +27,8 @@ export interface UseFormParam<FormT> {
    */
   lazy?: UseFormLazy
   /**
-   * Verify all rules even if some rules fail
+   * If `true`, all rules will be fully validated.
+   *
    * @default false
    */
   fullValidation?: boolean
