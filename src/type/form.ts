@@ -26,6 +26,11 @@ export interface UseFormParam<FormT> {
    * @default false
    */
   lazy?: UseFormLazy
+  /**
+   * Verify all rules even if some rules fail
+   * @default false
+   */
+  fullValidation?: boolean
 }
 
 export interface ValidateOptions<FullResult extends boolean> { fullResult?: FullResult }
