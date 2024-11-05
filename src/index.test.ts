@@ -447,6 +447,37 @@ describe('useForm', () => {
     expect(wrapper.rule.age.validate('abc', { fullResult: true })).toStrictEqual({ valid: false, message: 'expect numbers' })
     expect(wrapper.rule.age.validate('abc', { fullResult: false })).toEqual(false)
   })
+
+  it('should verify all fields when fullValidation is true', async () => {
+    const wrapper = useSetup(() => {
+      const { form, status, verify } = useForm({
+        form: () => ({
+          name: '',
+          age: '',
+          email: '',
+        }),
+        rule: {
+          name: val => !!val || 'name required',
+          age: val => !!val || 'age required',
+          email: val => !!val || 'email required',
+        },
+        fullValidation: true,
+      })
+      return { form, status, verify }
+    })
+
+    wrapper.verify()
+    await nextTick()
+
+    expect(wrapper.status.name.isError).true
+    expect(wrapper.status.age.isError).true
+    expect(wrapper.status.email.isError).true
+    expect(wrapper.status.name.message).toBe('name required')
+    expect(wrapper.status.age.message).toBe('age required')
+    expect(wrapper.status.email.message).toBe('email required')
+
+    wrapper.unmount()
+  })
 })
 
 describe('object type field', () => {

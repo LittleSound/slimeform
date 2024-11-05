@@ -8,9 +8,10 @@ import { useDirtyFields, useIsError, useIsFormDirty } from './getters'
 import { createSubmitter } from './submitter'
 import { initRule } from './rule'
 
-const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage, lazy: UseFormLazy }> = {
+const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage, lazy: UseFormLazy, fullValidation: boolean }> = {
   defaultMessage: '',
   lazy: false,
+  fullValidation: false,
 }
 
 /**
@@ -21,7 +22,7 @@ const defaultParam: Required<{ defaultMessage: UseFormDefaultMessage, lazy: UseF
  */
 export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormReturn<FormT> {
   const options = Object.assign({}, defaultParam, param)
-  const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage, lazy: formLazy } = options
+  const { form: formBuilder, rule: formRule, defaultMessage: formDefaultMessage, lazy: formLazy, fullValidation } = options
 
   const initialForm = ref(formBuilder()) as Ref<FormT>
   const form = reactive<FormT>(formBuilder())
@@ -39,7 +40,7 @@ export function useForm<FormT extends {}>(param: UseFormParam<FormT>): UseFormRe
     dirtyFields,
     isDirty: useIsFormDirty(dirtyFields),
     isError: useIsError(status),
-    ...createControl(formBuilder, initialForm, form, status),
+    ...createControl(formBuilder, initialForm, form, status, fullValidation),
   }
 
   return {
@@ -54,12 +55,21 @@ function createControl<FormT extends {}>(
   initialForm: Ref<FormT>,
   form: FormT | UnwrapNestedRefs<FormT>,
   status: Record<PropertyKey, StatusItem>,
+  fullValidation: boolean,
 ) {
   const verify = () => {
     let isPass = true
-    Object.keys(status).forEach((key) => {
-      isPass = isPass && status[key].verify()
-    })
+    if (fullValidation) {
+      Object.keys(status).forEach((key) => {
+        const fieldResult = status[key].verify()
+        isPass = isPass && fieldResult
+      })
+    }
+    else {
+      Object.keys(status).forEach((key) => {
+        isPass = isPass && status[key].verify()
+      })
+    }
     return isPass
   }
 
